@@ -1,0 +1,352 @@
+/* FONT IMPORT */
+@font-face {
+	font-family: 'Freight Sans Book';
+	src: url('../fonts/Freight Sans Book.otf');
+}
+
+@font-face {
+	font-family: 'Freight Sans Book Italic';
+	src: url('../fonts/Freight Sans Book Italic.otf');
+}
+
+/* CORE ELEMENTS */
+hr {
+	border: 1px solid rgb(204,204,204);
+	width: 70%;
+}
+
+/* CLASSES */
+.blackout-checkboxes {
+	font-size: 1.25vw;
+}
+
+.blackout-checkboxes input {
+	display: inline-block;
+	vertical-align: middle;
+	height: 15px;
+	width: 15px;
+}
+
+.blackout-title {
+	font-size: 1.25vw;
+}
+
+.checkmark {
+	height: 25px;
+	width: 25px;
+}
+
+.cong-blackouts {
+	margin-top: 5%;
+}
+
+.congNames {
+	width: 30%;
+}
+
+.custom-bg {
+	background-color: rgb(204,204,204);
+}
+
+.custom-bg li {
+	font-family: "Freight Sans Book";
+}
+
+.edited-congs {
+	margin-top: 5%;
+}
+
+.forgot-submit {
+	width: 40%;
+	margin: 5% auto;
+}
+
+.forgot-submit p {
+	text-align: center;
+	color: #CC2936;
+	font-weight: bold;
+}
+
+.green-checkmark {
+    height: 25px;
+    width: 25px;
+}
+
+.loader {
+	border: 16px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 16px solid #0D6AA8;
+	width: 120px;
+	height: 120px;
+	-webkit-animation: spin 2s linear infinite; /* Safari */
+	animation: spin 2s linear infinite;
+	margin: 5% auto;
+}
+
+.pw-toggle-group {
+  position: relative;
+}
+
+.pw-toggle-group a {
+  position: absolute;
+  right: 1em;
+  top: 0.5em;
+  color: #23527C;
+}
+
+.pw-toggle-group a.pw-hide {
+  color: #23527C;
+}
+
+.pw-toggle-group a:hover,
+.pw-toggle-group a:focus {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.red-x {
+    height: 25px;
+    width: 25px;
+}
+
+.rotation-head {
+	background-color: #0D6AA8;
+}
+
+.tbl-heading {
+	color: white;
+}
+
+.warning-symbol {
+	height: 18px;
+	width: 18px;
+}
+
+/* IDs */
+#admin-blackouts-entered-buttons {
+	text-align: center;
+}
+
+#admin-cong-buttons {
+	text-align: center;
+}
+
+#admin-finalize {
+	margin-left: 1%;
+}
+
+#blackout-content {
+	float: left;
+	width: 45%;
+	margin-left: 3%;
+}
+
+#blackouts-per-rotation {
+	margin: 0 1%;
+}
+
+#blackoutSubmit {
+	margin-top: 2%;
+}
+
+#calendar {
+	float: right;
+	width: 45%;
+	margin-right: 3%;
+}
+
+#done-word-conf {
+	color: #549F93;
+	display: none;
+}
+
+#done-word-new {
+	color: #549F93;
+	display: none;
+}
+
+#eight-chars-msg {
+	color: #CC2936;
+	display: none;
+}
+
+#error-container {
+	text-align: center;
+	top: 50%;
+	margin-top: 10%;
+}
+
+#insert-date-form {
+	width: 60%;
+	margin: 5% auto;
+}
+
+#login-form {
+	width: 40%;
+	margin: 5% auto;
+}
+
+#login-form p {
+	text-align: center;
+}
+
+#login-form a {
+	text-decoration: none;
+}
+
+#logo {
+	width: 500px;
+	position: absolute;
+	padding-left: 1rem;
+	bottom: 0;
+}
+
+#logo a:hover {
+	text-decoration: none;
+}
+
+#logo h1 {
+	font-family: "Rockwell";
+	font-size: 60px;
+	font-weight: bold;
+	color: white;
+}
+
+#logo-img {
+	float: left;
+}
+
+#logo-text-pt1 {
+	padding-top: 0;
+}
+
+#logo-text-pt2 {
+	margin-top: -15px;
+}
+
+#main-body {
+	width: 70%;
+	margin: 2% auto;
+}
+
+#pass-confirm-msg {
+	color: #CC2936;
+	display: none;
+}
+
+#prev-btn {
+	display: none;
+	margin-right: 5px;
+}
+
+#rmembr-chckbox {
+	text-align: center;
+}
+
+#scheduler-font {
+	font-family: "Freight Sans Book Italic";
+	font-size: 30px;
+	font-weight: lighter;
+	color: white;
+}
+
+#sch-finalized-rot {
+	margin-bottom: 7px;
+}
+
+#sch-rot-nums-select {
+	margin-bottom: 7px;
+}
+
+#submit-button {
+	text-align: center;
+}
+
+#title-section {
+	height: 200px;
+	background-color: #0D6AA8;
+	position: relative;
+}
+
+/* KEYFRAMES */
+/* Safari */
+@-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+/* BOOTSTRAP OVERRIDES */
+
+.alert-danger {
+	width: 50%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.alert-success {
+	width: 50%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.alert-warning {
+	width: 50%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.btn-info, .btn-info:active, .btn-info:visited {
+	background-color: rgb(13,106,168);
+	border-color: rgb(13,106,168);
+}
+
+.btn-info:hover {
+	background-color: rgb(13,120,180);
+	border-color: rgb(13,120,180);
+}
+
+.btn-success, .btn-success:active, .btn-success:visited {
+	background-color: rgb(2,195,154);
+	border-color: rgb(2,195,154);
+}
+
+.btn-success:hover {
+	background-color: rgb(2,166,139);
+	border-color: rgb(2,166,139);
+}
+
+.dropdown-menu a{
+	margin-left: 2px;
+	font-size: 16px;
+}
+
+.dropdown:hover .dropdown-menu {
+	display: block;
+}
+
+.dropdown:hover .dropdown-menu a:hover{
+	text-decoration: none;
+}
+
+.form-group {
+	margin-top: 30px;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: rgb(64,64,64);
+    font-size: 18px;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+    color: rgb(119,119,119);
+}
+
+ .navbar-toggle {
+	float: left;
+	margin-left: 15px;
+}
