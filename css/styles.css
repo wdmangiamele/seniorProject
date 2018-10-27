@@ -72,6 +72,36 @@ hr {
     width: 25px;
 }
 
+.legend {
+	list-style: none;
+	float: right;
+	margin-right: 2em;
+}
+
+.legend li {
+	margin-right: 10px;
+}
+
+.legend span {
+	border: 1px solid #ccc;
+	float: left;
+	width: 12px;
+	height: 12px;
+	margin: 2px;
+}
+
+.legend .primary {
+	background-color: #0000ff;
+}
+
+.legend .backup {
+	background-color: #008000;
+}
+
+.legend .nodriver {
+	background-color: #f20000;
+}
+
 .loader {
 	border: 16px solid #f3f3f3;
 	border-radius: 50%;
@@ -158,6 +188,17 @@ hr {
 	float: right;
 	width: 45%;
 	margin-right: 3%;
+}
+
+#container {
+	margin:0 auto;
+	padding-top:20px;
+	width:800px;
+}
+
+#content {
+	border-bottom:1px;
+	padding:20px 0;
 }
 
 #done-word-conf {

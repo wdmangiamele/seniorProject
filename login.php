@@ -23,6 +23,7 @@
 			if($needsNewPass) {
 				$_SESSION['email'] = $_POST['raihn-email'];
 				$_SESSION['role'] = $Users->getUserRole($_POST['raihn-email']);
+                $_SESSION['userID'] = $Users->getUserID($_POST['raihn-email']);
 				$_SESSION['resetPassMsg'] = "<div class='alert alert-warning'>
 												<strong>Warning!</strong> Must reset your password!
 											</div>";
@@ -31,6 +32,7 @@
 				//Sets a session variable to store the user's email
 				$_SESSION['email'] = $_POST['raihn-email'];
 				$_SESSION['role'] = $Users->getUserRole($_POST['raihn-email']);
+				$_SESSION['userID'] = $Users->getUserID($_POST['raihn-email']);
 				header("Location: ./index.php");
 			}
 		}else {

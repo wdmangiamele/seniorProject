@@ -7,7 +7,7 @@
         private $host = "localhost";
         private $db_name = "raihn";
         private $username = "root";
-        private $password = "student";
+        private $password = "yukinositaRed21";
         public $conn;
 
         public function __construct()

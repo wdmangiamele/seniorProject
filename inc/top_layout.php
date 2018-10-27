@@ -14,9 +14,6 @@
 	   
 	<!-- Main custom CSS -->
     <link rel="stylesheet" type="text/css" href="./css/contact.css">
-	    
-	<!-- Main custom CSS -->
-<!--    <link rel="stylesheet" type="text/css" href="./css/demo.css">-->
     
 	<!-- Main custom CSS -->
     <link rel="stylesheet" type="text/css" href="./css/styles.css">
