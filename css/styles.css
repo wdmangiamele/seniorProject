@@ -135,6 +135,11 @@ hr {
 	margin-left: 1%;
 }
 
+#admin-schedule {
+	width: 95%;
+	margin: 0 1%;
+}
+
 #blackout-content {
 	float: left;
 	width: 45%;

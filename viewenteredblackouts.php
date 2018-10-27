@@ -4,7 +4,7 @@
 ?>
 
     <div id="blackouts-per-rotation">
-        <h2 id="blackouts-entered-title">Blackouts Entered Per Congregation</h2>
+        <h4 id="blackouts-entered-title">Blackouts Entered Per Congregation</h4>
         <div class="table-responsive">
         </div>
     </div>

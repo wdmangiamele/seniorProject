@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="./css/contact.css">
 	    
 	<!-- Main custom CSS -->
-    <link rel="stylesheet" type="text/css" href="./css/demo.css">
+<!--    <link rel="stylesheet" type="text/css" href="./css/demo.css">-->
     
 	<!-- Main custom CSS -->
     <link rel="stylesheet" type="text/css" href="./css/styles.css">
@@ -77,9 +77,6 @@
                                 <a class="nav-link" href="./congregationroster.php">Host Congregation Roster</a>
                                 <a class="nav-link" href="./congregationcoordinators.php">Congregation Coordinators</a>
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./inputblackouts.php">Input Blackouts</a>
                         </li>
 			      	<?php endif; ?>
                     <?php /* if logged in as congregation or admin */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Congregation" || $_SESSION['role'] == "Admin")): ?>

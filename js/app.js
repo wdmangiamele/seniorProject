@@ -583,142 +583,146 @@ $(document).ready(function() {
         //Setup the admin congregation schedule
         var getRotationNums = getData({},"inc/Controller/fetchScheduledRotationNums.php");
         $.when(getRotationNums).then(function (rotationNums) {
-            $("#admin-schedule").append($("<p>").text("Select a scheduled rotation to edit"));
-            var selectWithAllSchRots = $("<select>").attr("id","sch-rot-nums-select");
-            selectWithAllSchRots.append(createHeader("Scheduled Rotations"));
-            for(var i = 0; i < rotationNums.length; i++) {
-                var rotationOption = $("<option>").attr("value",rotationNums[i]["rotationNumber"]).text(rotationNums[i]["rotationNumber"]);
-                selectWithAllSchRots.append(rotationOption);
-            }
-            $("#admin-schedule").append(selectWithAllSchRots);
-
-            var getFullSchedule = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Controller/fetchfullschedule.php"),
-                eligibleCongregations = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Controller/fetchEligibleCongregations.php");
-            $.when(getFullSchedule,eligibleCongregations).then(function(fullSchedule, eligibleCongs) {
-                $(".loader").hide();
-
-                //Get all the start dates for each rotation
-                //Helps create "Admin Congregation Schedule" page
-                var startDates = Object.keys(eligibleCongs[0]);
-                startDates = startDates.sort(function (a, b) {
-                    return new Date(a).getTime() - new Date(b).getTime()
-                });
-                var table = $("<table>").addClass("table");
-                table.attr("id","final-cong-schedule");
-
-                var congCount = 0;
-
-                var tableHead = $("<thead>");
-                tableHead.addClass("rotation-head");
-                var tableRow = $("<tr>");
-                var tableHeading1 = $("<th>").attr("scope", "col").addClass("tbl-heading");
-                tableHeading1.text("Start Date");
-                var tableHeading2 = $("<th>").attr("scope", "col").addClass("tbl-heading").attr("id","Rotation-"+rotationNums[0]["rotationNumber"]);
-                tableHeading2.text("Rotation #"+rotationNums[0]["rotationNumber"]);
-                var tableHeading3 = $("<th>").attr("scope", "col").addClass("tbl-heading");
-                tableHeading3.text("Approved Schedule as of:");
-
-                tableRow.append(tableHeading1);
-                tableRow.append(tableHeading2);
-                tableRow.append(tableHeading3);
-                tableHead.append(tableRow);
-
-                table.append(tableHead);
-
-                var tableBody = $("<tbody>");
-                for(var h = 0; h < 13; h++) {
-                    var tableBodyRow = $("<tr>");
-                    tableBodyRow.addClass("scheduled-date");
-
-                    var tableData = $("<td>").addClass("start-date");
-                    if(fullSchedule[0][h]["isFlagged"]) {
-                        if(fullSchedule[0][h]["holiday"] == 1){
-                            var strongTag = $("<strong>");
-                            strongTag.text(fullSchedule[0][h]["startDate"]+" HOLIDAY!");
-
-                            tableData.append($("<img src='img/warningsymbol.svg'/>").addClass("warning-symbol").attr("id",fullSchedule[0][h]["reasonForFlag"]));
-                            tableData.append(strongTag);
-                        }else {
-                            tableData.append($("<img src='img/warningsymbol.svg'/>").addClass("warning-symbol").attr("id",fullSchedule[0][h]["reasonForFlag"]));
-                            tableData.append("  "+fullSchedule[0][h]["startDate"]);
-                        }
-                    }else {
-                        if(fullSchedule[0][h]["holiday"] == 1){
-                            var strongTag = $("<strong>");
-                            strongTag.text(fullSchedule[0][h]["startDate"]+" HOLIDAY!");
-                            tableData.append(strongTag);
-                        }else {
-                            tableData.text(fullSchedule[0][h]["startDate"]);
-                        }
-                    }
-
-                    var tableData2 = $("<td>").addClass("congName").attr("id","cong"+congCount);
-
-                    //Create select option for all the congregations eligible, currently scheduled, and not eligible
-                    var selectOption = $("<select>").addClass("form-control congNames");
-                    selectOption.append(createHeader("Currently Scheduled"));
-
-                    var firstOption = $("<option>").addClass("curr-sch-cong").attr({"selected": "selected","value": fullSchedule[0][h]["congName"]
-                        +","+rotationNums[0]["rotationNumber"]}).text(fullSchedule[0][h]["congName"]);
-                    selectOption.append(firstOption);
-
-                    selectOption.append(createSpaceOption());
-
-                    selectOption.append(createHeader("Eligible Congregations"));
-
-                    for (var k = 0; k < eligibleCongs[0][startDates[h]].length; k++) {
-                        if (eligibleCongs[0][startDates[h]][k]["eligible"] !== "No") {
-                            var eligibleOption = $("<option>").attr("value", eligibleCongs[0][startDates[h]][k]["title"]+","+rotationNums[0]["rotationNumber"]+
-                                ","+fullSchedule[0][h]["startDate"]).text(eligibleCongs[0][startDates[h]][k]["title"]);
-                            selectOption.append(eligibleOption);
-                        }
-                    }
-
-                    selectOption.append(createSpaceOption());
-
-                    var divider = $("<option>").attr("disabled", "disabled");
-                    divider.text("──────────");
-                    selectOption.append(divider);
-
-                    selectOption.append(createSpaceOption());
-
-                    selectOption.append(createHeader("Ineligible Congregations"));
-
-                    for (var k = 0; k < eligibleCongs[0][startDates[h]].length; k++) {
-                        if (eligibleCongs[0][startDates[h]][k]["eligible"] === "No") {
-                            var ineligibleOption = $("<option>").attr("value", eligibleCongs[0][startDates[h]][k]["title"]+","+rotationNums[0]["rotationNumber"]+
-                                ","+fullSchedule[0][h]["startDate"]).text(eligibleCongs[0][startDates[h]][k]["title"]);
-                            selectOption.append(ineligibleOption);
-                        }
-                    }
-
-                    //Append created select option to the row we're on
-                    tableData2.append(selectOption);
-
-                    var tableData3 = $("<td>");
-                    tableData3.text("");
-
-                    tableBodyRow.append(tableData);
-                    tableBodyRow.append(tableData2);
-                    tableBodyRow.append(tableData3);
-
-                    tableBody.append(tableBodyRow);
-                    congCount++;
+            if(rotationNums == null) {
+                $("#admin-schedule").append($("<h4>").text("No Congregation Scheduled"));
+            }else {
+                $("#admin-schedule").append($("<p>").text("Select a scheduled rotation to edit"));
+                var selectWithAllSchRots = $("<select>").attr("id","sch-rot-nums-select");
+                selectWithAllSchRots.append(createHeader("Scheduled Rotations"));
+                for(var i = 0; i < rotationNums.length; i++) {
+                    var rotationOption = $("<option>").attr("value",rotationNums[i]["rotationNumber"]).text(rotationNums[i]["rotationNumber"]);
+                    selectWithAllSchRots.append(rotationOption);
                 }
+                $("#admin-schedule").append(selectWithAllSchRots);
 
-                table.append(tableBody);
+                var getFullSchedule = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Controller/fetchfullschedule.php"),
+                    eligibleCongregations = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Controller/fetchEligibleCongregations.php");
+                $.when(getFullSchedule,eligibleCongregations).then(function(fullSchedule, eligibleCongs) {
+                    $(".loader").hide();
 
-                var rotationSchDiv = $("<div>").attr("id","rotation-sch-div");
-                rotationSchDiv.append(table);
-                $("#admin-schedule").append(rotationSchDiv);
+                    //Get all the start dates for each rotation
+                    //Helps create "Admin Congregation Schedule" page
+                    var startDates = Object.keys(eligibleCongs[0]);
+                    startDates = startDates.sort(function (a, b) {
+                        return new Date(a).getTime() - new Date(b).getTime()
+                    });
+                    var table = $("<table>").addClass("table");
+                    table.attr("id","final-cong-schedule");
 
-                var adminButtons = $("<div>").attr("id","admin-cong-buttons");
-                adminButtons.append($("<button>").attr({"id": "admin-submit", "type": "submit", "data-toggle": "modal", "data-target":"#conf-data-submit"}).addClass("btn btn-primary").text("Submit Changes"));
-                adminButtons.append($("<button>").attr({"id": "admin-finalize", "type": "submit", "data-toggle": "modal", "data-target":"#conf-data-finalize"}).addClass("btn btn-success").text("Finalize Schedule"));
-                $("#admin-schedule").append(adminButtons);
-            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(textStatus);
-            });
+                    var congCount = 0;
+
+                    var tableHead = $("<thead>");
+                    tableHead.addClass("rotation-head");
+                    var tableRow = $("<tr>");
+                    var tableHeading1 = $("<th>").attr("scope", "col").addClass("tbl-heading");
+                    tableHeading1.text("Start Date");
+                    var tableHeading2 = $("<th>").attr("scope", "col").addClass("tbl-heading").attr("id","Rotation-"+rotationNums[0]["rotationNumber"]);
+                    tableHeading2.text("Rotation #"+rotationNums[0]["rotationNumber"]);
+                    var tableHeading3 = $("<th>").attr("scope", "col").addClass("tbl-heading");
+                    tableHeading3.text("Approved Schedule as of:");
+
+                    tableRow.append(tableHeading1);
+                    tableRow.append(tableHeading2);
+                    tableRow.append(tableHeading3);
+                    tableHead.append(tableRow);
+
+                    table.append(tableHead);
+
+                    var tableBody = $("<tbody>");
+                    for(var h = 0; h < 13; h++) {
+                        var tableBodyRow = $("<tr>");
+                        tableBodyRow.addClass("scheduled-date");
+
+                        var tableData = $("<td>").addClass("start-date");
+                        if(fullSchedule[0][h]["isFlagged"]) {
+                            if(fullSchedule[0][h]["holiday"] == 1){
+                                var strongTag = $("<strong>");
+                                strongTag.text(fullSchedule[0][h]["startDate"]+" HOLIDAY!");
+
+                                tableData.append($("<img src='img/warningsymbol.svg'/>").addClass("warning-symbol").attr("id",fullSchedule[0][h]["reasonForFlag"]));
+                                tableData.append(strongTag);
+                            }else {
+                                tableData.append($("<img src='img/warningsymbol.svg'/>").addClass("warning-symbol").attr("id",fullSchedule[0][h]["reasonForFlag"]));
+                                tableData.append("  "+fullSchedule[0][h]["startDate"]);
+                            }
+                        }else {
+                            if(fullSchedule[0][h]["holiday"] == 1){
+                                var strongTag = $("<strong>");
+                                strongTag.text(fullSchedule[0][h]["startDate"]+" HOLIDAY!");
+                                tableData.append(strongTag);
+                            }else {
+                                tableData.text(fullSchedule[0][h]["startDate"]);
+                            }
+                        }
+
+                        var tableData2 = $("<td>").addClass("congName").attr("id","cong"+congCount);
+
+                        //Create select option for all the congregations eligible, currently scheduled, and not eligible
+                        var selectOption = $("<select>").addClass("form-control congNames");
+                        selectOption.append(createHeader("Currently Scheduled"));
+
+                        var firstOption = $("<option>").addClass("curr-sch-cong").attr({"selected": "selected","value": fullSchedule[0][h]["congName"]
+                                +","+rotationNums[0]["rotationNumber"]}).text(fullSchedule[0][h]["congName"]);
+                        selectOption.append(firstOption);
+
+                        selectOption.append(createSpaceOption());
+
+                        selectOption.append(createHeader("Eligible Congregations"));
+
+                        for (var k = 0; k < eligibleCongs[0][startDates[h]].length; k++) {
+                            if (eligibleCongs[0][startDates[h]][k]["eligible"] !== "No") {
+                                var eligibleOption = $("<option>").attr("value", eligibleCongs[0][startDates[h]][k]["title"]+","+rotationNums[0]["rotationNumber"]+
+                                    ","+fullSchedule[0][h]["startDate"]).text(eligibleCongs[0][startDates[h]][k]["title"]);
+                                selectOption.append(eligibleOption);
+                            }
+                        }
+
+                        selectOption.append(createSpaceOption());
+
+                        var divider = $("<option>").attr("disabled", "disabled");
+                        divider.text("──────────");
+                        selectOption.append(divider);
+
+                        selectOption.append(createSpaceOption());
+
+                        selectOption.append(createHeader("Ineligible Congregations"));
+
+                        for (var k = 0; k < eligibleCongs[0][startDates[h]].length; k++) {
+                            if (eligibleCongs[0][startDates[h]][k]["eligible"] === "No") {
+                                var ineligibleOption = $("<option>").attr("value", eligibleCongs[0][startDates[h]][k]["title"]+","+rotationNums[0]["rotationNumber"]+
+                                    ","+fullSchedule[0][h]["startDate"]).text(eligibleCongs[0][startDates[h]][k]["title"]);
+                                selectOption.append(ineligibleOption);
+                            }
+                        }
+
+                        //Append created select option to the row we're on
+                        tableData2.append(selectOption);
+
+                        var tableData3 = $("<td>");
+                        tableData3.text("");
+
+                        tableBodyRow.append(tableData);
+                        tableBodyRow.append(tableData2);
+                        tableBodyRow.append(tableData3);
+
+                        tableBody.append(tableBodyRow);
+                        congCount++;
+                    }
+
+                    table.append(tableBody);
+
+                    var rotationSchDiv = $("<div>").attr("id","rotation-sch-div");
+                    rotationSchDiv.append(table);
+                    $("#admin-schedule").append(rotationSchDiv);
+
+                    var adminButtons = $("<div>").attr("id","admin-cong-buttons");
+                    adminButtons.append($("<button>").attr({"id": "admin-submit", "type": "submit", "data-toggle": "modal", "data-target":"#conf-data-submit"}).addClass("btn btn-primary").text("Submit Changes"));
+                    adminButtons.append($("<button>").attr({"id": "admin-finalize", "type": "submit", "data-toggle": "modal", "data-target":"#conf-data-finalize"}).addClass("btn btn-success").text("Finalize Schedule"));
+                    $("#admin-schedule").append(adminButtons);
+                }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus);
+                });
+            }
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log(textStatus);
         });
