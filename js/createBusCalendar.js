@@ -48,7 +48,7 @@ $(document).ready(function() {
     });
 
     $('#busCalendar').fullCalendar({
-        eventSources : [{url: '../eventSource.php'}],
+        eventSources : [{url: './eventSource.php'}],
         eventOrder: 'color,start', //this doesn't work
         eventClick: function(calEvent, jsEvent, view) {
 
@@ -74,7 +74,7 @@ $(document).ready(function() {
 
             $.ajax({
                 method: "POST",
-                url: "../busbusiness.php",
+                url: "./busbusiness.php",
                 data: {
                     'type': 'manualEdit',
                     'date': date,
@@ -147,7 +147,7 @@ $(document).ready(function() {
 
               $.ajax({
                   method: "POST",
-                  url: "../busbusiness.php",
+                  url: "./busbusiness.php",
                   data: {
                       'type': 'sendToDB',
                       'date': date,
@@ -156,7 +156,7 @@ $(document).ready(function() {
                       'role': role
                   },
                   success: function(data) {
-                      window.location.replace("finalbusschedule.php");
+                      window.location.replace("finalBusSchedule.php");
                   },
                   error: function(XMLHttpRequest, textStatus, errorThrown) {
                       //alert(textStatus);
