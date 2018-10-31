@@ -251,6 +251,10 @@ $(document).ready(function() {
 		}
     });
 
+    $("body").on("click", "#email-icon", function() {
+        console.log($("#sch-finalized-rot").val());
+    });
+
     //Button on "viewenteredblackouts.php" page that refreshes the page
     $("body").on("click", "#refr-table-btn", function() {
         window.location.replace("viewenteredblackouts.php");
@@ -584,7 +588,7 @@ $(document).ready(function() {
         var getRotationNums = getData({},"inc/Controller/fetchScheduledRotationNums.php");
         $.when(getRotationNums).then(function (rotationNums) {
             if(rotationNums == null) {
-                $("#admin-schedule").append($("<h4>").text("No Congregation Scheduled"));
+                $("#admin-schedule").append($("<h4>").text("No Congregations Scheduled"));
             }else {
                 $("#admin-schedule").append($("<p>").text("Select a scheduled rotation to edit"));
                 var selectWithAllSchRots = $("<select>").attr("id","sch-rot-nums-select");
@@ -890,13 +894,16 @@ $(document).ready(function() {
         var finalizedRotNums = getData({},"inc/Controller/fetchfinalizedrotationnums.php");
         $.when(finalizedRotNums).then(function(finalizedRots) {
             $("#finalized-schedule").append($("<p>").text("Select a schedule"));
+            var finalSchTools = $("<div>").attr("id","final-sch-tools");
             var selectWithAllSchRots = $("<select>").attr("id","sch-finalized-rot");
             selectWithAllSchRots.append(createHeader("Scheduled Rotations"));
             for(var i = 0; i < finalizedRots.length; i++) {
                 var rotationOption = $("<option>").attr("value",finalizedRots[i]["rotation_number"]).text(finalizedRots[i]["rotation_number"]);
                 selectWithAllSchRots.append(rotationOption);
             }
-            $("#finalized-schedule").append(selectWithAllSchRots);
+            finalSchTools.append(selectWithAllSchRots);
+            finalSchTools.append($("<img src='img/email-icon.svg' id='email-icon'/>"))
+            $("#finalized-schedule").append(finalSchTools);
 
             var getFullSchedule = getData({rotation_number: finalizedRots[0]["rotation_number"]},"inc/Controller/fetchfinalizedschedules.php");
             $.when(getFullSchedule).then(function(fullSchedule) {
