@@ -33,7 +33,16 @@
 				$_SESSION['email'] = $_POST['raihn-email'];
 				$_SESSION['role'] = $Users->getUserRole($_POST['raihn-email']);
 				$_SESSION['userID'] = $Users->getUserID($_POST['raihn-email']);
-				header("Location: ./index.php");
+
+
+				//if they are a bus driver, send them to input blackouts
+				if($_SESSION['role'] == "Bus Driver"){
+					header("Location: ./inputBusBlackouts.php");
+				}
+				else if($_SESSION['role'] == "Admin"){
+					//if they are an admin, go WHERE?
+				}
+
 			}
 		}else {
 			//Create login error that will be saved as a session variable
