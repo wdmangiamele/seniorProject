@@ -2,7 +2,13 @@ $(document).ready(function() {
 
     var date = "";
 
+
     $('#inputBusCalendar').fullCalendar({
+
+        header: {
+         center: 'title',
+         right : 'prev,today,next'
+         },
 
         dayClick: function(date, jsEvent, view) {
           date = date.format();
@@ -12,7 +18,6 @@ $(document).ready(function() {
           // change the day's background color just for fun
           //$(this).css('background-color', 'red');
         },
-
         eventAfterAllRender: function(view){
             //if(view.name == 'month'){
                 $('.fc-day').each(function(){

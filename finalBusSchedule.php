@@ -1,5 +1,5 @@
 <?php
-    //session_start();
+    session_start();
     require_once("./inc/top_layout.php");
     require_once("Schedule.class.php");
 
@@ -13,10 +13,33 @@
         <li><span class="nodriver"></span>No Driver Available</li>
     </ul>
 
+<?php
 
-    <div id='busCalendar'>
+if ($_SESSION['role'] == 'Admin'){
+
+?>
+
+    <div id='busCalendarAdmin'>
 
     </div>
+
+<?php
+
+}
+else if ($_SESSION['role'] == 'Bus Driver'){
+
+?>
+
+<div id='busCalendarUser'>
+
+</div>
+
+<?php
+}
+ ?>
+
+
+
 
 
 <?php require_once("./inc/bottom_layout.php"); ?>
