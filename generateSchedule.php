@@ -27,17 +27,11 @@
            </select>
         </div>
 
-<!-- onclick="document.location.href='finalBusSchedule.php';" -->
 
-
-        <input id="generateButton"  type='submit' value'submitted' name='Generate Schedule'>Generate Schedule</input>
+        <input id="generateButton"  type='submit' value'submitted' name='generateButton'>Generate Schedule</input>
 
 
     </form>
-
-
-
-
 
 
 

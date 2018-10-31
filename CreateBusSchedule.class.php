@@ -7,9 +7,6 @@
 
         function __construct($month, $year){
 
-
-            var_dump($month);
-
             require_once("Schedule.class.php");
             require_once("./inc/Controller/BusDriver.class.php");
             require_once("./inc/Controller/CalendarBus.class.php");
