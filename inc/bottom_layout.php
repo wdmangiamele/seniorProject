@@ -14,17 +14,20 @@
         <script type="text/javascript" src="./js/fullcalendar.min.js"></script>
 
 		<!-- Custom Javascript File -->
-        <script type="text/javascript" src="./js/createBusCalendar.js"></script>
-		
+        <script type="text/javascript" src="./js/createBusCalendarAdmin.js"></script>
+
+		<!-- Custom Javascript File -->
+		<script type="text/javascript" src="./js/createBusCalendarUser.js"></script>
+
 		<!-- Custom Javascript File -->
 		<script type="text/javascript" src="./js/inputBusBlackouts.js"></script>
-		
+
 		<!-- Custom Javascript File -->
 		<script type="text/javascript" src="./js/jquery.simplemodal.js"></script>
-		
+
 		<!-- Custom Javascript File -->
 		<script type="text/javascript" src="./js/contact.js"></script>
-		
+
 		<!-- Custom Javascript File -->
 		<script type="text/javascript" src="./js/app.js"></script>
 
