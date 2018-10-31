@@ -216,10 +216,25 @@ hr {
 	display: none;
 }
 
+#email-icon {
+	height: 35px;
+	width: 35px;
+	margin-left: 1%;
+}
+
 #error-container {
 	text-align: center;
 	top: 50%;
 	margin-top: 10%;
+}
+
+#final-sch-tools {
+	display: inline;
+}
+
+#finalized-schedule {
+	width: 95%;
+	margin: auto;
 }
 
 #insert-date-form {
