@@ -6,6 +6,8 @@ $month = "";
 $year = "";
 
 
+
+
  if (isset($_POST['generateButton'])){
 
     $month = (int)$_POST['month'];
