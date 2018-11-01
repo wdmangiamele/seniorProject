@@ -14,10 +14,7 @@
         <script type="text/javascript" src="./js/fullcalendar.min.js"></script>
 
 		<!-- Custom Javascript File -->
-        <script type="text/javascript" src="./js/createBusCalendarAdmin.js"></script>
-
-		<!-- Custom Javascript File -->
-		<script type="text/javascript" src="./js/createBusCalendarUser.js"></script>
+        <script type="text/javascript" src="./js/createBusCalendar.js"></script>
 
 		<!-- Custom Javascript File -->
 		<script type="text/javascript" src="./js/inputBusBlackouts.js"></script>
