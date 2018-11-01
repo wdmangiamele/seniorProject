@@ -46,7 +46,7 @@ class LegacyHostBlackout {
 
     /* function to get all the legacy data for one congregation
      * @param $congID - the congregation ID of a certain congregation in MySQL
-     * @return $result - all the legacy data for one congregation
+     * @return $result - all the legacy data for one rotation
      * @return null - return no data if no data successfully fetched
      * */
     function getLegacyDataForOneRotation($rotNum) {

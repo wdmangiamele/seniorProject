@@ -68,7 +68,7 @@ class CongregationCoordinator {
         $sqlQuery = "SELECT coordinatorEmail FROM CONGREGATION_COORDINATOR";
         $result = $this->DB->executeQuery($sqlQuery, $this->Functions->paramsIsZero(), "select");
         if($result) {
-            return $result[0]["coordinatorEmail"];
+            return $result;
         }else {
             return null;
         }

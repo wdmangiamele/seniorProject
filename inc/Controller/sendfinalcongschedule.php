@@ -4,7 +4,7 @@
 
     $rotNum = $_POST['rotation_number'];
 
-    $sendResult = $CongregationSchedule->sendFinalizedSchedule($rotNum);
+    $sendResult = $CongregationSchedule->sendFinalizedCongSchedule($rotNum);
 
     $sendResultArr = array();
     if($sendResult) {

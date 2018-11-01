@@ -24,8 +24,8 @@ class CongregationSchedule {
         $this->Functions = new Functions();
         $this->LegacyHost = new LegacyHostBlackout();
 
-        $this->FinalHostCongSchedule = null;
-        $this->FlaggedHostCongregations = null;
+        /*$this->FinalHostCongSchedule = null;
+        $this->FlaggedHostCongregations = null;*/
     }
 
     function createCompleteSchArray() {
@@ -796,40 +796,59 @@ class CongregationSchedule {
 
     /* function to send emails to every congregation with the finalized schedule
      * @param $rotNum - the finalized rotation number
+     * @return boolean - true or false if the emails were sent
      * */
-    function sendFinalizedSchedule($rotNum) {
-        $schedule = $this->getSchedulePerRotation($rotNum,"startDate");
-        $subject = "Final Schedule for Rotation: $rotNum";
+    function sendFinalizedCongSchedule($rotNum) {
+        $schedule = $this->LegacyHost->getLegacyDataForOneRotation($rotNum);
+        $subject = "Final Schedule for Rotation: $rotNum (RAIHN Scheduler App)";
         $message = "<html>
                         <head>
-                            <title>Final Schedule for Rotation: $rotNum</title>
+                            <title>Final Schedule for Rotation: $rotNum (RAIHN Scheduler App)</title>
+                            <style>
+                                table {
+                                    border-collapse: collapse;
+                                }
+                                
+                                table, td, th {
+                                    border: 1px solid black;
+                                }
+                                
+                                th, td {
+                                    padding: 15px;
+                                    text-align: left;
+                                }
+                                
+                                #email-schedule-headings {
+                                    background-color: #0D6AA8;
+                                    color: white;
+                                }
+                            </style>
                         </head>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Start Date</th>
-                                    <th>Rotation Number: $rotNum</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>";
+                        <body>
+                            <h4>Here is the final schedule for rotation: $rotNum</h4>
+                            <table>
+                                    <tr id='email-schedule-headings'>
+                                        <th>Start Date</th>
+                                        <th>Rotation Number: $rotNum</th>
+                                        <th>Support Congregations</th>
+                                    </tr>";
         for($i = 0; $i < sizeof($schedule); $i++) {
             if($schedule[$i]['holiday'] == 1) {
                 $message .= "<tr>
-                                <td><strong>$schedule[$i]['startDate']</strong></td>
-                                <td><strong>$schedule[$i]['congName']</strong></td>
+                                <td><strong>".$schedule[$i]['startDate']." HOLIDAY!</strong></td>
+                                <td><strong>".$this->Congregation->getCongregationName($schedule[$i]['congID'])."</strong></td>
                                 <td></td>
                             </tr>";
             }else {
                 $message .= "<tr>
-                                <td>$schedule[$i]['startDate']</td>
-                                <td>$schedule[$i]['congName']</td>
+                                <td>".$schedule[$i]['startDate']."</td>
+                                <td>".$this->Congregation->getCongregationName($schedule[$i]['congID'])."</td>
                                 <td></td>
                             </tr>";
             }
         }
-        $message .= "        </tbody>
-                        </table>
+        $message .= "        </table>
+                        </body>
                     </html>";
         $headers  = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
@@ -837,6 +856,7 @@ class CongregationSchedule {
 
         $congregationEmails = $this->CongregationCoordinator->getCoordinatorEmailAll();
         for($i = 0; $i < sizeof($congregationEmails); $i++) {
+            set_time_limit(30);
             $sentMail = mail($congregationEmails[$i]['coordinatorEmail'],$subject,$message,$headers);
             if(!$sentMail){
                 return false;

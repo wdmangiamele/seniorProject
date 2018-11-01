@@ -12,6 +12,7 @@
                     <h4 class="modal-title" id="modalLabel"></h4>
                 </div>
                 <div class="modal-body">
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="send-final-sch-cancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>

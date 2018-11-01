@@ -334,6 +334,11 @@ $(document).ready(function() {
         });
     });
 
+    //Ok button for finalized schedule modal
+    $("body").on("click", "#send-scb-ok-btn", function() {
+        window.location.replace("finalizedschedules.php");
+    });
+
     $("body").on("mouseover", ".warning-symbol", function() {
         console.log($(this).attr("id"));
     });
@@ -521,17 +526,28 @@ $(document).ready(function() {
 	//Cancel button for the send final schedule modal
     $("#send-final-sch-cancel").on("click", function() {
         $(".modal-body").empty();
-        $(".modal-title").empty();
+        $("#modalLabel").css("color","");
     });
 
+    //Send schedule button on finalize schedule modal
     $("#send-final-sch-save").on("click", function() {
-        console.log($("#sch-finalized-rot").val());
-        /*        var sendEmail = postData({rotation_number: $("#sch-finalized-rot").val()}, "inc/Controller/sendfinalcongschedule.php");
+        $(".modal-body").empty();
+        var modalLoader = $("<div>").addClass("modal-loader");
+        $(".modal-body").append(modalLoader);
+        var sendEmail = postData({rotation_number: $("#sch-finalized-rot").val()}, "inc/Controller/sendfinalcongschedule.php");
         $.when(sendEmail).then(function(sendEmailResult) {
-            if(sendEmailResult[0]["sent"]) {
-
+            $(".modal-loader").hide();
+            if(sendEmailResult["sent"]) {
+                $("#modalLabel").text("Success: Schedule Sent!").css("color","#549F93");
+                $(".modal-footer").empty();
+                var okButton = $("<button>").attr({"type":"button","id":"send-scb-ok-btn"}).addClass("btn btn-success").text("Ok");
+                $(".modal-footer").append(okButton);
+            }else {
+                $("#modalLabel").text("Fail: Schedule not sent! Contact Admin!").css("color","#D63230");
             }
-        });*/
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#modalLabel").text("Fail: Schedule not sent! Contact Admin!").css("color","#D63230");
+        });
     });
 
 	//password field show/hide listener
