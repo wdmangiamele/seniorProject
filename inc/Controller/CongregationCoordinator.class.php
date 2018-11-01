@@ -60,6 +60,20 @@ class CongregationCoordinator {
         }
     }//end getCoordinatorEmail
 
+    /* function to get all emails of a congregation coordinator
+     * @return $result - the emails of the coordinators
+     * @return null - return nothing if no data was retrieved
+     * */
+    function getCoordinatorEmailAll() {
+        $sqlQuery = "SELECT coordinatorEmail FROM CONGREGATION_COORDINATOR";
+        $result = $this->DB->executeQuery($sqlQuery, $this->Functions->paramsIsZero(), "select");
+        if($result) {
+            return $result[0]["coordinatorEmail"];
+        }else {
+            return null;
+        }
+    }//end getCoordinatorEmailAll
+
     /* function to get the name of a congregation coordinator
      * @param $congID - the ID of a congregation in MySQL
      * @param $userID - the ID of a user in MySQL

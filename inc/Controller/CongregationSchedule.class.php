@@ -10,6 +10,7 @@ class CongregationSchedule {
     function __construct() {
         require_once(__DIR__."/Congregation.class.php");
         require_once(__DIR__."/CongregationBlackout.class.php");
+        require_once(__DIR__."/CongregationCoordinator.class.php");
         require_once(__DIR__."/DateRange.class.php");
         require_once(__DIR__."/../Data/db.class.php");
         require_once(__DIR__."/Functions.class.php");
@@ -17,6 +18,7 @@ class CongregationSchedule {
 
         $this->Congregation = new Congregation();
         $this->CongregationBlackout = new CongregationBlackout();
+        $this->CongregationCoordinator = new CongregationCoordinator();
         $this->DateRange = new DateRange();
         $this->DB = new Database();
         $this->Functions = new Functions();
@@ -791,6 +793,58 @@ class CongregationSchedule {
             return false;
         }
     }//end scheduledHolidayAYearAgo
+
+    /* function to send emails to every congregation with the finalized schedule
+     * @param $rotNum - the finalized rotation number
+     * */
+    function sendFinalizedSchedule($rotNum) {
+        $schedule = $this->getSchedulePerRotation($rotNum,"startDate");
+        $subject = "Final Schedule for Rotation: $rotNum";
+        $message = "<html>
+                        <head>
+                            <title>Final Schedule for Rotation: $rotNum</title>
+                        </head>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Start Date</th>
+                                    <th>Rotation Number: $rotNum</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>";
+        for($i = 0; $i < sizeof($schedule); $i++) {
+            if($schedule[$i]['holiday'] == 1) {
+                $message .= "<tr>
+                                <td><strong>$schedule[$i]['startDate']</strong></td>
+                                <td><strong>$schedule[$i]['congName']</strong></td>
+                                <td></td>
+                            </tr>";
+            }else {
+                $message .= "<tr>
+                                <td>$schedule[$i]['startDate']</td>
+                                <td>$schedule[$i]['congName']</td>
+                                <td></td>
+                            </tr>";
+            }
+        }
+        $message .= "        </tbody>
+                        </table>
+                    </html>";
+        $headers  = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
+        $headers .= 'From: brypickering@gmail.com' . "\r\n";
+
+        $congregationEmails = $this->CongregationCoordinator->getCoordinatorEmailAll();
+        for($i = 0; $i < sizeof($congregationEmails); $i++) {
+            $sentMail = mail($congregationEmails[$i]['coordinatorEmail'],$subject,$message,$headers);
+            if(!$sentMail){
+                return false;
+            }
+        }
+
+        return true;
+    }//end sendFinalizedSchedule
 
     /* function to update where a congregation is scheduled
      * @param $startDate - the start date you're scheduling the new congregation on

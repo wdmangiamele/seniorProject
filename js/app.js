@@ -251,8 +251,10 @@ $(document).ready(function() {
 		}
     });
 
+    //Send email icon on the finalized schedule page
     $("body").on("click", "#email-icon", function() {
-        console.log($("#sch-finalized-rot").val());
+        $(".modal-title").text("Send Rotation "+$("#sch-finalized-rot").val()+" Schedule?");
+        $(".modal-body").append($("<p>").text("The schedule will be sent to all congregations"));
     });
 
     //Button on "viewenteredblackouts.php" page that refreshes the page
@@ -515,6 +517,22 @@ $(document).ready(function() {
 			$("#prev-btn").css("display","none");
 		}
 	});
+
+	//Cancel button for the send final schedule modal
+    $("#send-final-sch-cancel").on("click", function() {
+        $(".modal-body").empty();
+        $(".modal-title").empty();
+    });
+
+    $("#send-final-sch-save").on("click", function() {
+        console.log($("#sch-finalized-rot").val());
+        /*        var sendEmail = postData({rotation_number: $("#sch-finalized-rot").val()}, "inc/Controller/sendfinalcongschedule.php");
+        $.when(sendEmail).then(function(sendEmailResult) {
+            if(sendEmailResult[0]["sent"]) {
+
+            }
+        });*/
+    });
 
 	//password field show/hide listener
 	$(".pw-toggle-group a").click(function() {
@@ -902,7 +920,7 @@ $(document).ready(function() {
                 selectWithAllSchRots.append(rotationOption);
             }
             finalSchTools.append(selectWithAllSchRots);
-            finalSchTools.append($("<img src='img/email-icon.svg' id='email-icon'/>"))
+            finalSchTools.append($("<img src='img/email-icon.svg' id='email-icon' data-toggle='modal' data-target='#send-final-sch-modal'/>"))
             $("#finalized-schedule").append(finalSchTools);
 
             var getFullSchedule = getData({rotation_number: finalizedRots[0]["rotation_number"]},"inc/Controller/fetchfinalizedschedules.php");
