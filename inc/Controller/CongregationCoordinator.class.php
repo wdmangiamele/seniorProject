@@ -35,7 +35,7 @@ class CongregationCoordinator {
             $bigString .= "<th scope='row'>".($i+1)."</th>";
             $bigString .= "<td>".$this->Functions->testSQLNullValue($result[$i]['coordinatorName'])."</td>";
             $bigString .= "<td>".$this->Functions->testSQLNullValue($result[$i]['coordinatorPhone'])."</td>";
-            $bigString .= "<td>".$this->Functions->testSQLNullValue($result[$i]['coordinatorEmail'])."</td>";
+            $bigString .= "<td id='coordinator-email'>".$this->Functions->testSQLNullValue($result[$i]['coordinatorEmail'])."</td>";
             $bigString .= "</tr>";
         }
         $bigString .= "</tbody>";
@@ -107,6 +107,24 @@ class CongregationCoordinator {
             return null;
         }
     }//end getCoordinatorPhone
+
+    /* function to send email to individual coordinator
+     * @param $to - the email you're sending to
+     * @param $subject - the subject of the email
+     * @param $msg - the actual message
+     * */
+    function sendCoordintatorEmail($to, $subject, $msg) {
+        $headers  = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
+        $headers .= 'From: brypickering@gmail.com' . "\r\n";
+
+        $sentMail = mail($to, $subject, $msg, $headers);
+        if($sentMail) {
+            return true;
+        }else {
+            return false;
+        }
+    }//end sendCoordintatorEmail
 
     /* function to set the email of a congregation coordinator
      * @param $congID - the ID of a congregation in MySQL

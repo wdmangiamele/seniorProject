@@ -95,6 +95,10 @@ $(document).ready(function() {
         window.location.replace("adminCongSchedule.php");
     });
 
+    $("body").on("click", "#email-cong-ok-btn", function() {
+        window.location.replace("congregationcoordinators.php");
+    });
+
     $("body").on("click", "#finalize-ok-btn", function() {
         window.location.replace("adminCongSchedule.php");
     });
@@ -444,6 +448,40 @@ $(document).ready(function() {
             $("#modalLabel").text("Fail: Schedule not made! Contact Admin!").css("color","#D63230");
         });
     });
+
+	$("#coord-email-icon").on("click", function() {
+        var coordinatorEmails = getData({}, "inc/Controller/fetchcoordinatoremails.php");
+        $.when(coordinatorEmails).then(function(emails) {
+            for(var i = 0; i < emails.length; i++) {
+                $("#email-input-field").append($("<option>").attr("value",emails[i]["coordinatorEmail"]).text(emails[i]["coordinatorEmail"]));
+            }
+        });
+    });
+
+	$("#email-cong-cancel").on("click", function() {
+        $("#modalLabel").css("color","");
+    });
+
+	//Send email button for congregation coordinator modal
+	$("#email-cong-save").on("click", function() {
+        var to = $("#email-input-field").val();
+        var subject = $("#email-subject-field").val();
+        var msg = CKEDITOR.instances.editor1.getData();
+
+        var sentEmail = postData({to: to, subject: subject, msg: msg}, "inc/Controller/sendindividualemail.php");
+        $.when(sentEmail).then(function(email) {
+            if(email["sent"]){
+                $("#modalLabel").text("Success: Email Sent!").css("color","#549F93");
+                $(".modal-footer").empty();
+                var okButton = $("<button>").attr({"type":"button","id":"email-cong-ok-btn"}).addClass("btn btn-success").text("Ok");
+                $(".modal-footer").append(okButton);
+            }else {
+                $("#modalLabel").text("Fail: Email Not Sent!").css("color","#D63230");
+            }
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#modalLabel").text("Fail: Email Not Sent!").css("color","#D63230");
+        });
+    });
 	
 	$("#input-data-cancel").on("click", function() {
         $(".modal-body").empty();
@@ -543,7 +581,7 @@ $(document).ready(function() {
                 var okButton = $("<button>").attr({"type":"button","id":"send-scb-ok-btn"}).addClass("btn btn-success").text("Ok");
                 $(".modal-footer").append(okButton);
             }else {
-                $("#modalLabel").text("Fail: Schedule not sent! Contact Admin!").css("color","#D63230");
+                $("#modalLabel").text("Fail: Schedule not sent! (Sent error) Contact Admin!").css("color","#D63230");
             }
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             $("#modalLabel").text("Fail: Schedule not sent! Contact Admin!").css("color","#D63230");

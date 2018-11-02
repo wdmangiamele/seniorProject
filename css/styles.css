@@ -201,6 +201,11 @@ hr {
 	margin-right: 3%;
 }
 
+#congregation-coordinators {
+	width: 95%;
+	margin: auto;
+}
+
 #container {
 	margin:0 auto;
 	padding-top:20px;
@@ -210,6 +215,11 @@ hr {
 #content {
 	border-bottom:1px;
 	padding:20px 0;
+}
+
+#coord-email-icon {
+	height: 25px;
+	width: 25px;
 }
 
 #done-word-conf {
@@ -231,6 +241,16 @@ hr {
 	height: 35px;
 	width: 35px;
 	margin-left: 1%;
+}
+
+#email-input-field {
+	margin-left: 2%;
+	margin-bottom: 2%;
+}
+
+#email-subject-field {
+	margin-left: 2%;
+	margin-bottom: 2%;
 }
 
 #error-container {
