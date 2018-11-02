@@ -22,14 +22,22 @@ $(document).ready(function() {
             //if(view.name == 'month'){
                 $('.fc-day').each(function(){
                     $(this).css('position','relative');
-                    var add_button = '<a class="add_event_label"><div id="container"><div id="content"><div id="contact-form"><input type="button" name="contact" value="Blackout" class="contact demo"/></div></div></div></a>';
-                    $(this).append(add_button);
+                    var add_button = "<div><button id='myButton' onclick='clickme()'>Click me</button></div>";
+                    $(this).prepend(add_button);
+                    $(this).prepend(add_button);
+                    $(this).prepend(add_button);
                 });
             //}
         }
     });
 
 });
+
+function clickme(){
+    console.log('hey');
+    document.getElementById("myButton").style.background='#000f00';
+
+}
 
 
 
