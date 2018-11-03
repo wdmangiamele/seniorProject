@@ -68,9 +68,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="nav-link" href="./finalizedschedules.php">Congregation Schedules</a>
-                        </div>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="nav-link" href="./finalBusSchedule.php">Bus Schedules</a>
+							<a class="nav-link" href="./finalBusSchedule.php">Bus Schedules</a>
                         </div>
                     </li>
 
