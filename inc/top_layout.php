@@ -56,10 +56,12 @@
 				      	<li class="nav-item">
 				        	<a class="nav-link" href="./busdriverroster.php">Bus Driver Roster</a>
 				      	</li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./testBlackoutsDRIVERS.php">Test Blackout Drivers</a>
-                        </li>
 			      	<?php endif; ?>
+					<?php /* if logged in as a bus driver */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Bus Driver")): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./inputBusBlackouts.php">Input Blackouts</a>
+                        </li>
+                    <?php endif; ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Finalized Schedules<b class="caret"></b>
@@ -67,7 +69,11 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="nav-link" href="./finalizedschedules.php">Congregation Schedules</a>
                         </div>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="nav-link" href="./finalBusSchedule.php">Bus Schedules</a>
+                        </div>
                     </li>
+
 			      	<?php /* if logged in as congregation or admin */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Congregation" || $_SESSION['role'] == "Congregation Admin" || $_SESSION['role'] == "Admin" )): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
