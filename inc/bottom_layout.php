@@ -20,15 +20,14 @@
 		<script type="text/javascript" src="./js/inputBusBlackouts.js"></script>
 
 		<!-- Custom Javascript File -->
-		<script type="text/javascript" src="./js/jquery.simplemodal.js"></script>
-
-		<!-- Custom Javascript File -->
 		<script type="text/javascript" src="./js/contact.js"></script>
 
 		<!-- Custom Javascript File -->
 		<script type="text/javascript" src="./js/app.js"></script>
 
 
-
 	</body>
 </html>
+
+
+<!-- BREAKS BUS DRIVER SHIT<script type="text/javascript" src="./js/jquery.simplemodal.js"></script> -->

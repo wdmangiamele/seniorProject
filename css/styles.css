@@ -243,6 +243,12 @@ hr {
 	margin-left: 1%;
 }
 
+#email-bus-icon {
+	height: 35px;
+	width: 35px;
+	margin-left: 1%;
+}
+
 #email-input-field {
 	margin-left: 2%;
 	margin-bottom: 2%;

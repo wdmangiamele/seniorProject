@@ -4,6 +4,10 @@ $(document).ready(function() {
     var timeOfDay = "";
     var role = "";
 
+    //Send email icon on the finalized schedule page
+    $("body").on("click", "#email-icon", function() {
+        $('#send-final-bus-sch-model').show();
+    });
 
 
     $('#generateButton').on("click", function() {

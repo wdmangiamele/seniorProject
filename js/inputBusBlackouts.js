@@ -34,7 +34,7 @@ $(document).ready(function() {
 });
 
 function clickme(){
-    console.log('hey');
+    console.log('hey')
     document.getElementById("myButton").style.background='#000f00';
 
 }
