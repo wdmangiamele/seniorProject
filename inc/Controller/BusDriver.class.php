@@ -69,6 +69,18 @@
 			return $schedule;
 		}
 
+
+		function getScheduleForMonth($month,$year){
+			$sqlQuery = "SELECT * FROM bus_schedule where SUBSTRING(date,1,4) = :year AND SUBSTRING(date,6,2) = :month";
+
+			$params = array(":month" => $month, ":year" => $year);
+
+			$schedule = $this->db->executeQuery($sqlQuery, $params, "select");
+
+			return $schedule;
+		}
+
+
 		function getScheduleForADriver($driverID){
 			$sqlQuery = "SELECT * FROM bus_schedule where driverID = :driverID";
 			$params = array(":driverID" => $driverID);

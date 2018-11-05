@@ -46,7 +46,15 @@
         return null
       }
 
+
+
       function populateTable(month,year) {
+
+        //Db Call here thats what myScheduleObject would be
+
+
+
+
 
         //get schedul for that Month
         var myScheduleObject = [
@@ -123,6 +131,32 @@
     </script>
   </head>
   <body>
+      <?php
+        require_once("./inc/Controller/BusDriver.class.php");
+          $BusDriver = new BusDriver();
+          $schedule = $BusDriver->getScheduleForMonth(10,2018);
+
+
+          foreach ($schedule as $key => $value) {
+              $driverName = $value['driverName'];
+              $date =$value['date'];
+              $timeOf = $value['timeOfDay'];
+              $role = $value['role'];
+
+              
+
+          } //for each
+
+
+
+
+
+          echo "<pre>";
+          print_r($schedule);
+          echo "<pre>";
+       ?>
+
+
     <TABLE ID="calendarTable" BORDER=1 ALIGN="center">
       <TR>
         <TH ID="tableHeader" COLSPAN=7></TH>
