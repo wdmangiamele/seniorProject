@@ -30,4 +30,4 @@
 </html>
 
 
-<!-- BREAKS BUS DRIVER SHIT<script type="text/javascript" src="./js/jquery.simplemodal.js"></script> -->
+<!-- BREAKS BUS DRIVER Input yoinkers <script type="text/javascript" src="./js/jquery.simplemodal.js"></script> -->

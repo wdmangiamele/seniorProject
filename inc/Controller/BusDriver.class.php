@@ -69,6 +69,18 @@
 			return $schedule;
 		}
 
+		function getScheduleForADriver($driverID){
+			$sqlQuery = "SELECT * FROM bus_schedule where driverID = :driverID";
+			$params = array(":driverID" => $driverID);
+
+			$schedule = $this->db->executeQuery($sqlQuery, $params, "select");
+
+			return $schedule;
+		}
+
+
+
+
 		//this function will take in all the parameters to insert into the blackouts table
 		function insertBlackouts($driverID, $date, $timeOfDay){
 
@@ -284,6 +296,23 @@
 			$bigString .= "</table>";
 			echo $bigString;
 		}//end getBusDriverData
+
+
+		function sendFinalizedBusSchedule($month){
+			$headers  = "MIME-Version: 1.0" . "\r\n";
+			$headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
+			$headers .= 'From: tets@gmail.com' . "\r\n";
+			$sentMail = mail("john.hill7724@gmail.com",$month,"test",$headers);
+			if(!$sentMail){
+				return false;
+			}
+
+			return true;
+		}
+
+
+
+
 
 	}//end BusDriver
 ?>

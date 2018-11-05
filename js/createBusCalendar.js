@@ -4,9 +4,59 @@ $(document).ready(function() {
     var timeOfDay = "";
     var role = "";
 
+    //Modular way to post data
+    var postData = function(params, url) {
+        if(params.length == 0) {
+            return $.ajax({
+                type: "post",
+                dataType: 'json',
+                url: url
+            });
+        }else {
+            return $.ajax({
+                type: "post",
+                data: params,
+                dataType: 'json',
+                url: url
+            });
+        }
+    }
+
+    //"Ok" button for the send final bus schedule page
+    $("body").on("click", "#send-bus-sch-ok-btn", function () {
+        window.location.replace("finalBusSchedule.php");
+    });
+
     //Send email icon on the finalized schedule page
-    $("body").on("click", "#email-icon", function() {
-        $('#send-final-bus-sch-model').show();
+    $("#email-bus-icon").on("click", function() {
+        $('#modalBusLabel').text("dkfndkfn");
+    });
+
+    //Cancel button for the send final schedule modal
+    $("#send-bus-final-sch-cancel").on("click", function() {
+        $(".modal-body").empty();
+        $("#modalLabel").css("color","");
+    });
+
+    //Send schedule button on finalize schedule modal
+    $("#send-bus-final-sch-save").on("click", function() {
+        $(".modal-body").empty();
+        var modalLoader = $("<div>").addClass("modal-loader");
+        $(".modal-body").append(modalLoader);
+        var sendEmail = postData({month: "11"}, "inc/Controller/sendfinalbusschedule.php");
+        $.when(sendEmail).then(function(sendEmailResult) {
+            $(".modal-loader").hide();
+            if(sendEmailResult["sent"]) {
+                $("#modalLabel").text("Success: Schedule Sent!").css("color","#549F93");
+                $(".modal-footer").empty();
+                var okButton = $("<button>").attr({"type":"button","id":"send-bus-sch-ok-btn"}).addClass("btn btn-success").text("Ok");
+                $(".modal-footer").append(okButton);
+            }else {
+                $("#modalLabel").text("Fail: Schedule not sent! (Sent error) Contact Admin!").css("color","#D63230");
+            }
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            $("#modalLabel").text("Fail: Schedule not sent! Contact Admin!").css("color","#D63230");
+        });
     });
 
 
@@ -15,10 +65,14 @@ $(document).ready(function() {
         var year = $("#year option:selected").text();
     });
 
+
+
     $('#busCalendarAdmin').fullCalendar({
         eventSources : [{url: './eventSource.php'}],
         eventOrder: 'color,start', //this doesn't work
         eventClick: function(calEvent, jsEvent, view) {
+            console.log(calEvent);
+
 
             date = calEvent.start._i.substring(0,10);
             timeOfDay = calEvent.start._i.substring(11,16);
