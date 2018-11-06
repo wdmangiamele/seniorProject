@@ -29,7 +29,23 @@ $(document).ready(function() {
 
     //Send email icon on the finalized schedule page
     $("#email-bus-icon").on("click", function() {
-        $('#modalBusLabel').text("dkfndkfn");
+        var theMonths = ["January", "February", "March", "April", "May", "June", "July", "August",
+          "September", "October", "November", "December"
+        ];
+        var monthYear = $('div.fc-left').children()[0].outerText;
+        var split = monthYear.split(" ");
+        var month = split[0];
+        var monthNum = "";
+
+        for (i=0; i<theMonths.length; i++){
+            if (theMonths[i] == month){
+                monthNum = i + 1;
+            }
+        }
+
+
+        var year = split[1];
+        $('#modalBusLabel').text("Send Schedule for " + month + " " + year);
     });
 
     //Cancel button for the send final schedule modal
@@ -43,20 +59,23 @@ $(document).ready(function() {
         $(".modal-body").empty();
         var modalLoader = $("<div>").addClass("modal-loader");
         $(".modal-body").append(modalLoader);
-        var sendEmail = postData({month: "11"}, "inc/Controller/sendfinalbusschedule.php");
-        $.when(sendEmail).then(function(sendEmailResult) {
-            $(".modal-loader").hide();
-            if(sendEmailResult["sent"]) {
-                $("#modalLabel").text("Success: Schedule Sent!").css("color","#549F93");
-                $(".modal-footer").empty();
-                var okButton = $("<button>").attr({"type":"button","id":"send-bus-sch-ok-btn"}).addClass("btn btn-success").text("Ok");
-                $(".modal-footer").append(okButton);
-            }else {
-                $("#modalLabel").text("Fail: Schedule not sent! (Sent error) Contact Admin!").css("color","#D63230");
-            }
-        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-            $("#modalLabel").text("Fail: Schedule not sent! Contact Admin!").css("color","#D63230");
-        });
+        window.location.replace("inc/Controller/sendfinalbusschedule.php");
+
+
+        // var sendEmail = postData({htmlSchedule: htmlTable}, "inc/Controller/sendfinalbusschedule.php");
+        // $.when(sendEmail).then(function(sendEmailResult) {
+        //     $(".modal-loader").hide();
+        //     if(sendEmailResult["sent"]) {
+        //         $("#modalLabel").text("Success: Schedule Sent!").css("color","#549F93");
+        //         $(".modal-footer").empty();
+        //         var okButton = $("<button>").attr({"type":"button","id":"send-bus-sch-ok-btn"}).addClass("btn btn-success").text("Ok");
+        //         $(".modal-footer").append(okButton);
+        //     }else {
+        //         $("#modalLabel").text("Fail: Schedule not sent! (Sent error) Contact Admin!").css("color","#D63230");
+        //     }
+        // }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        //     $("#modalLabel").text("Fail: Schedule not sent! Contact Admin!").css("color","#D63230");
+        // });
     });
 
 
@@ -121,7 +140,7 @@ $(document).ready(function() {
       $('#busCalendarUser').fullCalendar({
           eventSources : [{url: './eventSource.php'}],
           eventOrder: 'color,start' //this doesn't work
-    });
+      });
 
       Object.objsize = function(Myobj) {
           var osize = 0, key;
@@ -204,8 +223,6 @@ $(document).ready(function() {
               $(document.getElementById(BstrapModal.Id)).modal('show');
           };
       };
-
-
 
 
 });

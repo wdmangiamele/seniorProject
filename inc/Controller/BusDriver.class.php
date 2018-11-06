@@ -71,7 +71,7 @@
 
 
 		function getScheduleForMonth($month,$year){
-			$sqlQuery = "SELECT * FROM bus_schedule where SUBSTRING(date,1,4) = :year AND SUBSTRING(date,6,2) = :month";
+			$sqlQuery = "SELECT * FROM bus_schedule where SUBSTRING(date,1,4) = :year AND SUBSTRING(date,6,2) = :month order by date, timeOfDay, role DESC";
 
 			$params = array(":month" => $month, ":year" => $year);
 
@@ -310,11 +310,12 @@
 		}//end getBusDriverData
 
 
-		function sendFinalizedBusSchedule($month){
+		function sendFinalizedBusSchedule($monthHTML){
+
 			$headers  = "MIME-Version: 1.0" . "\r\n";
 			$headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
-			$headers .= 'From: tets@gmail.com' . "\r\n";
-			$sentMail = mail("john.hill7724@gmail.com",$month,"test",$headers);
+			$headers .= 'From: test@gmail.com' . "\r\n";
+			$sentMail = mail("john.hill7724@gmail.com","Bus Schedule",$monthHTML,$headers);
 			if(!$sentMail){
 				return false;
 			}
