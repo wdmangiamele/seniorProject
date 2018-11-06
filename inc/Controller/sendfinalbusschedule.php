@@ -142,16 +142,14 @@
         background-color: #4CAF50;
         color: white;
     }
-
-
     </style>
 
   <body>
-    <TABLE ID="calendarTable">
+    <TABLE style="font-family: Arial;border-collapse: collapse; width: 100%;" ID="calendarTable">
       <TR>
-        <TH ID="tableHeader" COLSPAN=7></TH>
+        <TH style="padding-top: 12px; padding-bottom: 12px; background-color: #0D6AA8; color: white;" ID="tableHeader" COLSPAN=7></TH>
       </TR>
-      <TR>
+      <TR style="background-color: #ddd;">
         <TH>Sun</TH>
         <TH>Mon</TH>
         <TH>Tue</TH>
@@ -163,7 +161,7 @@
       <tbody id="tableBody"></tbody>
   </body>
   <script type="text/javascript">
-    populateTable(10,2018)
+    populateTable(11,2018)
     var htmlTable = $('body').html();
 
     $.ajax({
@@ -173,7 +171,7 @@
             'htmlSchedule' : htmlTable
         },
         success: function (response) {
-            //window.location.replace("../../finalBusSchedule.php");
+            window.location.replace("../../finalBusSchedule.php");
             //service.php response
             console.log(response);
         },
