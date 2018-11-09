@@ -280,7 +280,7 @@
 		 * echos back a formatted HTML Bootstrap table of the MySQL return results
 		 */
 		function getBusDriverData() {
-			$sqlQuery = "SELECT * FROM BUS_DRIVER WHERE driverID <> '-1'";
+			$sqlQuery = "SELECT * FROM bus_driver WHERE driverID <> '-1'";
 			$data = $this->db->executeQuery($sqlQuery, $this->Functions->paramsIsZero(), "select");
 			$bigString = "<table class='table'>";
 				$bigString .= "<thead>";

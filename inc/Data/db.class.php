@@ -6,8 +6,8 @@
         // specify your own database credentials
         private $host = "localhost";
         private $db_name = "raihn";
-        private $username = "root";
-        private $password = "student";
+        private $username = "bxp9452";
+        private $password = "citrinebryan";
         public $conn;
 
         public function __construct()
