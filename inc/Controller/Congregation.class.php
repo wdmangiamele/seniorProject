@@ -116,7 +116,7 @@
 		 * echos back a formatted HTML Bootstrap table of the MySQL return results
 		 */
 		function getHostCongregationRoster() {
-			$sqlQuery = "SELECT * FROM CONGREGATION";
+			$sqlQuery = "SELECT * FROM congregation";
             $result = $this->DB->executeQuery($sqlQuery, $this->Functions->paramsIsZero(), "select");
 			$bigString = "<table class='table'>";
 				$bigString .= "<thead>";

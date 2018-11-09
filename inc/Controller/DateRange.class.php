@@ -119,7 +119,7 @@ class DateRange {
      * @return $result[0]['MAX(rotation_number)'] - the maximum rotation number
      */
     function getMaximumRotationNumber() {
-        $sqlQuery = "SELECT MAX(rotation_number) FROM DATE_RANGE";
+        $sqlQuery = "SELECT MAX(rotation_number) FROM date_range";
         $result = $this->DB->executeQuery($sqlQuery, $this->Functions->paramsIsZero(), "select");
         if($result[0]['MAX(rotation_number)']) {
             return $result[0]['MAX(rotation_number)'];
@@ -141,7 +141,7 @@ class DateRange {
      * @return $result[0]['MIN(rotation_number)'] - the minimum rotation number
      */
     function getMinimumRotationNumber() {
-        $sqlQuery = "SELECT MIN(rotation_number) FROM DATE_RANGE";
+        $sqlQuery = "SELECT MIN(rotation_number) FROM date_range";
         $result = $this->DB->executeQuery($sqlQuery, $this->Functions->paramsIsZero(), "select");
         if($result[0]['MIN(rotation_number)']) {
             return $result[0]['MIN(rotation_number)'];
@@ -231,7 +231,7 @@ class DateRange {
      * @return null - returns nothing if no data was retrieved
      * */
     function getTotalNumberOfRotations() {
-        $sqlQuery = "SELECT DISTINCT rotation_number FROM DATE_RANGE";
+        $sqlQuery = "SELECT DISTINCT rotation_number FROM date_range";
         $result = $this->DB->executeQuery($sqlQuery, $this->Functions->paramsIsZero(), "select");
         if($result) {
             return sizeof($result);
@@ -334,12 +334,12 @@ class DateRange {
     }
 
     function insertCalendarEvent($blackoutWeekNumArray) {
-        $selectQuery = "SELECT congID FROM CONGREGATION_COORDINATOR WHERE coordinatorEmail = :coorEmail";
+        $selectQuery = "SELECT congID FROM congregation_coordinator WHERE coordinatorEmail = :coorEmail";
         $params = array(':coorEmail' => $_SESSION['email']);
         $result = $this->DB->executeQuery($selectQuery, $params, "select");
 
         /*for($i = 0; $i < sizeof($blackoutWeekNumArray); $i++ ){*/
-        $insertQuery = "INSERT INTO CONGREGATION_BLACKOUT (congID, weekNumber, startDate) VALUES (:congID, :weekNum, :startDate)";
+        $insertQuery = "INSERT INTO congregation_blackout (congID, weekNumber, startDate) VALUES (:congID, :weekNum, :startDate)";
         $params2 = array(':congID' => $result[0]['congID'], ':weekNum' => $blackoutWeekNumArray[0], ':startDate' => '2018-01-08');
         $result = $this->DB->executeQuery($insertQuery, $params2, "insert");
         if($result == 0) {
@@ -416,7 +416,7 @@ class DateRange {
      * @return $result - all the blackout week choices from the date range table
      */
     function showBlackoutWeeks() {
-        $sqlQuery = "SELECT * FROM DATE_RANGE WHERE NOT weekNumber = :weekNumber ORDER BY rotation_number";
+        $sqlQuery = "SELECT * FROM date_range WHERE NOT weekNumber = :weekNumber ORDER BY rotation_number";
         $params = array(':weekNumber' => 0);
         $result = $this->DB->executeQuery($sqlQuery, $params, "select");
         return $result;

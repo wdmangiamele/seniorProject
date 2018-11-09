@@ -17,7 +17,7 @@
 			$hashedPass = hash('sha256', ($newPass.$salt));
 			$userID = $this->getUserID($email);
 
-			$sqlQuery = "UPDATE USERS SET password = :pass, salt = :salt WHERE userID = :userID";
+			$sqlQuery = "UPDATE users SET password = :pass, salt = :salt WHERE userID = :userID";
 			$params = array(':pass' => $hashedPass, ':salt' => $salt, ':userID' => $userID);
 			$result = $this->DB->executeQuery($sqlQuery, $params, "update");
 			if($result > 0) {
@@ -42,7 +42,7 @@
 		 * @return $result[0]['userID'] - the user ID from MySQL
 		 */
 		function getUserID($email) {
-			$sqlQuery = "SELECT userID FROM USERS WHERE email = :email";
+			$sqlQuery = "SELECT userID FROM users WHERE email = :email";
 			$params = array(':email' => $email);
             $result = $this->DB->executeQuery($sqlQuery, $params, "select");
 			if($result[0]['userID']){
@@ -57,7 +57,7 @@
 		 * @return $result[0]['userType'] - the user role from MySQL
 		 */
 		function getUserRole($email) {
-			$sqlQuery = "SELECT userType FROM USERS WHERE email = :email";
+			$sqlQuery = "SELECT userType FROM users WHERE email = :email";
 			$params = array(':email' => $email);
             $result = $this->DB->executeQuery($sqlQuery, $params, "select");
 			if($result[0]['userType']){
@@ -71,7 +71,7 @@
 		 * @param $email - the user's email to help find the salt for the password
 		 */
 		function needsNewPass($email) {
-			$sqlQuery = "SELECT salt FROM USERS WHERE email = :email";
+			$sqlQuery = "SELECT salt FROM users WHERE email = :email";
 			$params = array(':email' => $email);
             $result = $this->DB->executeQuery($sqlQuery, $params, "select");
 			if(is_null($result[0]["salt"])) {
@@ -120,7 +120,7 @@
 		 * @return bool - returns either true or false if the credentials are correct
 		 */
 		function verifyCredentials($email, $pass) {
-			$sqlQuery = "SELECT email, password, salt FROM USERS WHERE email = :email";
+			$sqlQuery = "SELECT email, password, salt FROM users WHERE email = :email";
 			$params = array(':email' => $email);
             $result = $this->DB->executeQuery($sqlQuery, $params, "select");
 			if(is_null($result[0]["email"])) {
@@ -158,7 +158,7 @@
          * @return boolean - returns either true or false if the email is correct
          */
         function verifyEmail($email) {
-		    $sqlQuery = "SELECT email FROM USERS WHERE email = :email";
+		    $sqlQuery = "SELECT email FROM users WHERE email = :email";
 		    $params = array(":email" => $email);
             $result = $this->DB->executeQuery($sqlQuery, $params, "select");
 		    if(is_null($result[0]['email'])) {
