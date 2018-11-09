@@ -18,7 +18,7 @@ class CongregationCoordinator {
      * @return $bigString - a formatted HTML Bootstrap table of the MySQL return results
      */
     function getCongregationCoordinators() {
-        $sqlQuery = "SELECT * FROM CONGREGATION_COORDINATOR";
+        $sqlQuery = "SELECT * FROM congregation_coordinator";
         $result = $this->DB->executeQuery($sqlQuery, $this->Functions->paramsIsZero(), "select");
         $bigString = "<table class='table'>";
         $bigString .= "<thead>";
