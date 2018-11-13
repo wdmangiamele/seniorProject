@@ -8,5 +8,5 @@
 	$_SESSION['loginMsg'] = "<div class='alert alert-success'>
 								Successfully logged out!
 							</div>";
-	header("Location: ./login.php");
+	header("Location: ./index.php");
 ?>

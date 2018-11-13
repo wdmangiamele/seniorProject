@@ -23,21 +23,19 @@
 </head>
 <body>
 	<div id="title-section">
-		<a href="./index.php">
-			<div id="logo">
-				<div id="logo-img">
-					<img src="./img/RAIHNlogo.PNG"  alt="RAIHN logo"/>
-				</div>
-				<div id="logo-text">
-					<div id="logo-text-pt1">
-						<h1>RAIHN</h1>
-					</div>
-					<div id="logo-text-pt2">
-						<span id="scheduler-font">Scheduler App</span>
-					</div>
-				</div>
-			</div>
-		</a>
+        <div id="logo">
+            <div id="logo-img">
+                <img src="./img/RAIHNlogo.PNG"  alt="RAIHN logo"/>
+            </div>
+            <div id="logo-text">
+                <div id="logo-text-pt1">
+                    <h1>RAIHN</h1>
+                </div>
+                <div id="logo-text-pt2">
+                    <span id="scheduler-font">Scheduler App</span>
+                </div>
+            </div>
+        </div>
 	</div>
 	<nav class="navbar navbar-default custom-bg">
 		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -48,9 +46,6 @@
 		</button>
 	  	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	    	<ul class="nav navbar-nav">
-		      	<li class="nav-item">
-		        	<a class="nav-link" href="./index.php">Home</span></a>
-		      	</li>
 		      	<?php /* if logged in */ if(isset($_SESSION['email'])): ?>
 		      		<?php /* if logged in as bus driver or admin */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Bus Driver" || $_SESSION['role'] == "Bus Driver Admin" || $_SESSION['role'] == "Admin")): ?>
 				      	<li class="nav-item">
@@ -95,7 +90,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="nav-link" href="./adminCongSchedule.php">Scheduled Rotations</a>
-                                <a class="nav-link" href="./viewenteredblackouts.php">Blackouts Entered</a>
+                                <a class="nav-link" href="./enteredblackoutsCongregation.php">Blackouts Entered</a>
                             </div>
                         </li>
                     <?php endif; ?>
@@ -112,7 +107,7 @@
 			      	</li>
 		      	<?php else: ?>
 		      	<li class="nav-item">
-		        	<a class="nav-link" href="./login.php">Login</a>
+		        	<a class="nav-link" href="./index.php">Login</a>
 		      	</li>
 		      	<?php endif; ?>
 			</ul>
