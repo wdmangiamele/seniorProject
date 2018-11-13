@@ -36,13 +36,17 @@
 
 
 				//if they are a bus driver, send them to input blackouts
-				if($_SESSION['role'] == "Bus Driver"){
+				if($_SESSION['role'] == "Bus Driver") {
 					header("Location: ./inputBusBlackouts.php");
+				}elseif($_SESSION['role'] == "Congregation") {
+                    header("Location: ./inputblackouts.php");
+                }elseif ($_SESSION['role'] == "Bus Driver Admin") {
+                    header("Location: ./inputBusBlackouts.php");
+                }elseif($_SESSION['role'] == "Congregation Admin") {
+                    header("Location: ./enteredblackoutsCongregation.php");
+                }elseif($_SESSION['role'] == "Admin") {
+                    header("Location: ./index.php");
 				}
-				else if($_SESSION['role'] == "Admin"){
-					//if they are an admin, go WHERE?
-				}
-
 			}
 		}else {
 			//Create login error that will be saved as a session variable
