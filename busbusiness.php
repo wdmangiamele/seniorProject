@@ -75,6 +75,15 @@ if (isset($_POST['type'])){
              $driverID = $result[0]['driverID'];
 
              $db->editSchedule($driverID, $driverName, $date, $timeOfDay, $role);
+        case 'inputBlackouts':
+            
+            $db = new BusDriver();
+        
+            $date = $_POST['date'];
+            $timeOfDay = $_POST['timeOfDay'];
+            $driverID = $db->getBusDriverID($_SESSION['userID']);
+
+            $db->insertBlackouts($driverID, $date, $timeOfDay);
 
     }
 
