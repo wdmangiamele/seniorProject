@@ -195,21 +195,21 @@ class Schedule{
                 // print_r($this->numberOfDrivers);
 
 
-                foreach ($drivingLimits as $key => $value){
+              //  foreach ($drivingLimits as $key => $value){
                     //is the driver's driving limit 0? If so they can't drive
-                    if($key == $currentDriverToSchedule){
-                      if($value==0){
+                  //  if($key == $currentDriverToSchedule){
+                      if($drivingLimits[$currentDriverToSchedule]==0){
                          $currentDriverIndex++;
                          if ($currentDriverIndex == $this->numberOfDrivers){
                              $currentDriverIndex = 0;
                          }
                          goto top; // stops here
                       }else{
-                        $drivingLimits[$key]--;
+                        $drivingLimits[$currentDriverToSchedule]--;
                       }
-                    }
+                  //  }
 
-                }
+                //  }
                 $draftSchedule[$monthOutline[$i]] = [($currentDriverToSchedule), $monthOutline[$i], $this->getDriverName($currentDriverToSchedule, $driverNames)];
                 if ($currentDriverIndex == $this->numberOfDrivers){
                     $currentDriverIndex = 0;
