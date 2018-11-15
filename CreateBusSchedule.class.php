@@ -17,9 +17,7 @@
             $bus->clearTable("bus_driver");
 
             $numberOfDrivers = $bus->getNumberOfBusDrivers();
-
-            //testing for Sept, 2018
-
+            
             $schedule = new Schedule($month, $year,$numberOfDrivers);
 
 
