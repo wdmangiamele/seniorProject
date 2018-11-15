@@ -6,6 +6,18 @@
    $date = "";
    $timeOfDay = "";
 
+   $db = new BusDriver();
+
+
+ if (isset($_POST['submitLimits'])){
+
+    $dayLimit = $_POST['drivingLimits'];
+    $driverID = $db->getBusDriverID($_SESSION['userID']);
+
+    $result = $db->updateDriverLimits($driverID, $dayLimit);
+}
+
+
 
 
 if (isset($_POST['type'])){
@@ -13,7 +25,7 @@ if (isset($_POST['type'])){
 
        case 'manualEdit':
 
-             $db = new BusDriver();
+          //   $db = new BusDriver();
 
              $date = $_POST['date'];
              $timeOfDay = $_POST['timeOfDay'];
@@ -76,9 +88,9 @@ if (isset($_POST['type'])){
 
              $db->editSchedule($driverID, $driverName, $date, $timeOfDay, $role);
         case 'inputBlackouts':
-            
+
             $db = new BusDriver();
-        
+
             $date = $_POST['date'];
             $timeOfDay = $_POST['timeOfDay'];
             $driverID = $db->getBusDriverID($_SESSION['userID']);

@@ -11,10 +11,10 @@
 
     <!-- Minified FullCalendar CSS -->
     <link rel="stylesheet" type="text/css" href="./css/fullcalendar.min.css">
-	   
+
 	<!-- Main custom CSS -->
     <link rel="stylesheet" type="text/css" href="./css/contact.css">
-    
+
 	<!-- Main custom CSS -->
     <link rel="stylesheet" type="text/css" href="./css/styles.css">
 
@@ -51,6 +51,9 @@
 				      	<li class="nav-item">
 				        	<a class="nav-link" href="./busdriverroster.php">Bus Driver Roster</a>
 				      	</li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./generateSchedule.php">Generate Schedule</a>
+                        </li>
 			      	<?php endif; ?>
 					<?php /* if logged in as a bus driver */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Bus Driver")): ?>
                         <li class="nav-item">

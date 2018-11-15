@@ -58,7 +58,8 @@ class Schedule{
     return $array;
   }
 
-  function createDraftSchedule($mostBlackouts, $driverNames,$blackouts, $primarySchedule){
+  function createDraftSchedule($mostBlackouts, $driverNames,$blackouts, $primarySchedule,$drivingLimits){
+
 
 
     $currentDriverIndex = 0;
@@ -125,12 +126,12 @@ class Schedule{
             // echo "<br>";
 
             if($currentBlackoutDay == $currentSlot) {
-                // echo "don't schedule";
+                // echo "don't schedule ".$unavailableDrivers . "for slot ". $currentSlot;
                 // echo "<br>";
                 $unavailableDrivers++;
-
                 if($unavailableDrivers == $this->numberOfDrivers){
-                    $draftSchedule[$monthOutline[$i]] = "NO DRIVER AVAILABLE";
+                      // echo "GOT HERE NO DRIVER " .$currentSlot . "<br/>";
+                    $draftSchedule[$monthOutline[$i]] = [-1,$monthOutline[$i],"NO DRIVER AVAILABLE"];
                     $unavailableDrivers = 0;
                     $scheduleBoolean = false;
                     break;
@@ -163,6 +164,7 @@ class Schedule{
                     }
                     goto top; // stops here
                 }
+                //THIS SCHEDULES BACKUP drivers
                 // When the primary driver isn't the same as the backup driver, valid to schedule
                 else{
                     // echo "currentDriverISTHISKID: " .$currentDriverToSchedule;
@@ -183,19 +185,42 @@ class Schedule{
                 } //end of else
             } //end of if
 
+            //THIS SCHEDUES PRIMARY drivers
             else{ //WHEN primarySchedule is not defined
+
+                // echo "<pre>";
+                // print_r($drivingLimits);
+                // echo "<pre>";
+                // print_r($currentDriverIndex);
+                // print_r($this->numberOfDrivers);
+
+
+                foreach ($drivingLimits as $key => $value){
+                    //is the driver's driving limit 0? If so they can't drive
+                    if($key == $currentDriverToSchedule){
+                      if($value==0){
+                         $currentDriverIndex++;
+                         if ($currentDriverIndex == $this->numberOfDrivers){
+                             $currentDriverIndex = 0;
+                         }
+                         goto top; // stops here
+                      }else{
+                        $drivingLimits[$key]--;
+                      }
+                    }
+
+                }
                 $draftSchedule[$monthOutline[$i]] = [($currentDriverToSchedule), $monthOutline[$i], $this->getDriverName($currentDriverToSchedule, $driverNames)];
-                $currentDriverIndex++;
                 if ($currentDriverIndex == $this->numberOfDrivers){
                     $currentDriverIndex = 0;
                 }
+                else{
+                    $currentDriverIndex++;
+                }
                 $unavailableDrivers = 0;
-                //need to increment $drivingLimitsCount for the driver that just got scheduled
 
-                //$drivingLimitsCount[$currentDriverToSchedule]+=1;
-                //print_r($drivingLimitsCount[$currentDriverToSchedule]);
-            } //end of else
 
+              }
 
             if ($currentDriverIndex == $this->numberOfDrivers){
                 $currentDriverIndex = 0;
@@ -209,7 +234,6 @@ class Schedule{
     return $draftSchedule;
 
   } //end of function create draft schedule
-
 
 } //end of class schedule
 

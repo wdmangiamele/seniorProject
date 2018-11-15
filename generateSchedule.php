@@ -1,10 +1,8 @@
 <?php
-    //session_start();
+    session_start();
     require_once("./inc/top_layout.php");
     require_once("Schedule.class.php");
 
-    //start the session
-    session_start();
 
     if ($_SESSION['role'] == 'Admin'){
 

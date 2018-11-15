@@ -10,6 +10,7 @@
 			$this->Functions = new Functions();
 		}
 
+
 			/* function to grab the bus driver data from MySQL
 	 * echos back a formatted HTML Bootstrap table of the MySQL return results
 	 */
@@ -163,7 +164,6 @@
 			$data = $this->db->executeQuery($sql, $this->Functions->paramsIsZero(), "select");
 
 			return $data;
-
 		}
 
 		function getNumberOfBusDrivers(){
@@ -212,6 +212,22 @@
 		}
 
 
+
+
+		function updateDriverLimits($driverID, $dayLimit){
+			// $sql = "UPDATE bus_driver SET (drivingLimit = :drivingLimit) WHERE (driverID = :driverID)" ;
+			//
+			// $params = array(':drivingLimit' => $dayLimit, ':driverID'=>$driverID);
+			//
+			// $drivers = $this->db->executeUpdate($sql, $params);
+
+			$count = $this->db->executeUpdate('UPDATE bus_driver SET drivingLimit = ? WHERE (driverID = ?)', array($dayLimit, $driverID));
+
+
+			return $count;
+		}
+
+
 		function editSchedule($driverID, $driverName, $date, $timeOfDay, $role){
 
 			//first need to delete the current record
@@ -245,7 +261,7 @@
 
 
 		function clearTable($tableName){
-			$sql = "DELETE FROM ". $tableName;
+			$sql = "DELETE FROM bus_driver";
 
 			$result = $this->db->executeQuery($sql, $this->Functions->paramsIsZero(), "DELETE");
 
@@ -284,6 +300,7 @@
 			$bigString .= "</table>";
 			echo $bigString;
 		}//end getBusDriverData
+
 
 	}//end BusDriver
 ?>

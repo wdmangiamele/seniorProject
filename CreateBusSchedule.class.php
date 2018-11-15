@@ -13,6 +13,9 @@
 
             $bus = new BusDriver();
 
+
+            $bus->clearTable("bus_driver");
+
             $numberOfDrivers = $bus->getNumberOfBusDrivers();
 
             //testing for Sept, 2018
@@ -30,19 +33,39 @@
             //Array ( [0] => Array ( [driverID] => 1 [name] => John ) [1] => Array ( [driverID] => 2 [name] => Bill )
             $driverNames = $bus->getAllDriverNames();
 
-            $drivingLimits = $bus->getDriverLimits();
+              $drivingLimits = $bus->getDriverLimits();
+
+              $newDrivingLimits=array();
+
+
+              foreach ($drivingLimits as $drivers){
+                $driverID="";
+                $driverLimit=0;
+                foreach ($drivers as $key => $value){
+
+                      if($key=="driverID"){
+                        $driverID = $value;
+                      }
+                      if($key=="drivingLimit"){
+                        $drivingLimits = $value;
+                      }
+                  }
+                  $newDrivingLimits[$driverID] = $drivingLimits;
+              }
+
+
 
             //primary schedule
-            $result = $schedule->createDraftSchedule($mostBlackouts, $driverNames, $blackouts, "");
+            $primarySchedule = $schedule->createDraftSchedule($mostBlackouts, $driverNames, $blackouts, "", $newDrivingLimits);
 
             // echo "<pre>";
-            // print_r($result);
+            // print_r($primarySchedule);
             // echo "<pre>";
 
             //backup schedule
-            $calendarWithBackups = $schedule->createDraftSchedule($mostBlackouts, $driverNames, $blackouts, $result);
+            $calendarWithBackups = $schedule->createDraftSchedule($mostBlackouts, $driverNames, $blackouts, $primarySchedule,$newDrivingLimits);
 
-            $fullScheduleArray = array_merge_recursive($result, $calendarWithBackups);
+            $fullScheduleArray = array_merge_recursive($primarySchedule, $calendarWithBackups);
 
 
             $calendarBus = new CalendarBus();
@@ -51,7 +74,7 @@
             // print_r($fullScheduleArray);
             // echo "<pre>";
 
-            $bus->clearTable("bus_driver");
+
 
             $bus->insertSchedule($fullScheduleArray);
 

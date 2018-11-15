@@ -8,5 +8,10 @@
 
     $schedule = $BusDriver->getScheduleForMonth($month, $year);
 
+
+    // echo "<pre>";
+    // print_r($schedule);
+    // echo "<pre>";
+
     echo json_encode($schedule);
 ?>
