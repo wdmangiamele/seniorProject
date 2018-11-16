@@ -9,7 +9,7 @@
 class RotationDate {
     function __construct() {
         require_once(__DIR__."/../../Data/db.class.php");
-         
+
         $this->DB = new Database();
         $this->Functions = new Functions();
     }
