@@ -1,5 +1,5 @@
 <?php
-    require_once(__DIR__."./CongregationBlackout.class.php");
+    require_once(__DIR__."./../../Business/Congregation/CongregationBlackout.class.php");
     $CongregationBlackout = new CongregationBlackout();
 
     $congBlackouts = $_POST['congBlackoutData'];

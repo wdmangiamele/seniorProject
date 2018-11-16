@@ -1,7 +1,7 @@
 <?php
-    require_once(__DIR__."/CongregationBlackout.class.php");
-    require_once(__DIR__."/CongregationSchedule.class.php");
-    require_once(__DIR__."/Congregation.class.php");
+    require_once(__DIR__."/../../Business/Congregation/CongregationBlackout.class.php");
+    require_once(__DIR__."/../../Business/Congregation/CongregationSchedule.class.php");
+    require_once(__DIR__."/../../Business/Congregation/Congregation.class.php");
     $CongregationBlackout = new CongregationBlackout();
     $CongregationSchedule = new CongregationSchedule();
     $Congregation = new Congregation();

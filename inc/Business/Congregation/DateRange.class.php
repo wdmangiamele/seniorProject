@@ -8,8 +8,8 @@
 
 class DateRange {
     function __construct() {
-        require_once(__DIR__."/../Data/db.class.php");
-        require_once(__DIR__."/Functions.class.php");
+        require_once(__DIR__."/../../Data/db.class.php");
+        require_once(__DIR__."/../Functions.class.php");
         require_once(__DIR__."/RotationDate.class.php");
         $this->DB = new Database();
         $this->Functions = new Functions();

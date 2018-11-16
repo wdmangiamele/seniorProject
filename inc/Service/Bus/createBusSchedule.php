@@ -1,5 +1,5 @@
 <?php
-require("./CreateBusSchedule.class.php");
+require(__DIR__."/../../Business/Bus/CreateBusSchedule.class.php");
 
 
 $month = "";

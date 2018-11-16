@@ -3,9 +3,9 @@
 		private $db;
 
 		function __construct() {
-			require_once(__DIR__."/../Data/db.class.php");
-			require_once('CalendarBus.class.php');
-			require_once(__DIR__."/Functions.class.php");
+            require_once(__DIR__."/../../Data/db.class.php");
+            require_once(__DIR__.'/CalendarBus.class.php');
+            require_once(__DIR__."/../Functions.class.php");
 			$this->db = new Database();
 			$this->Functions = new Functions();
 		}

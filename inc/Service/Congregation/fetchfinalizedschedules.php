@@ -1,6 +1,6 @@
 <?php
-    require_once(__DIR__."/Congregation.class.php");
-    require_once(__DIR__."/LegacyHostBlackout.class.php");
+    require_once(__DIR__."/../../Business/Congregation/Congregation.class.php");
+    require_once(__DIR__."/../../Business/Congregation/LegacyHostBlackout.class.php");
     $LegacyHostBlackout  = new LegacyHostBlackout();
     $Congregation = new Congregation();
 

@@ -119,9 +119,9 @@ $(document).ready(function() {
 
         $(".loader").show();
 
-        var getSelectedRot = postData({rotation_number: $(this).val()},"inc/Controller/fetchselectedrotation.php"),
-            getFullSchedule = postData({rotation_number: $(this).val()},"inc/Controller/fetchfullschedule.php"),
-            eligibleCongregations = postData({rotation_number: $(this).val()},"inc/Controller/fetchEligibleCongregations.php");
+        var getSelectedRot = postData({rotation_number: $(this).val()},"inc/Service/Congregation/fetchselectedrotation.php"),
+            getFullSchedule = postData({rotation_number: $(this).val()},"inc/Service/Congregation/fetchfullschedule.php"),
+            eligibleCongregations = postData({rotation_number: $(this).val()},"inc/Service/Congregation/fetchEligibleCongregations.php");
         $.when(getSelectedRot,getFullSchedule,eligibleCongregations).then(function(selectedRot, fullSchedule, eligibleCongs) {
             $(".loader").hide();
             //Get all the start dates for each rotation
@@ -275,8 +275,8 @@ $(document).ready(function() {
     $("body").on("change", "#sch-finalized-rot", function() {
         $("#finalized-sch-div").empty();
         //Get the finalized schedules
-        var getFullSchedule = getData({rotation_number: $(this).val()},"inc/Controller/fetchfinalizedschedules.php"),
-            getSelectedRot = postData({rotation_number: $(this).val()},"inc/Controller/fetchselectedrotation.php");
+        var getFullSchedule = getData({rotation_number: $(this).val()},"inc/Service/Congregation/fetchfinalizedschedules.php"),
+            getSelectedRot = postData({rotation_number: $(this).val()},"inc/Service/Congregation/fetchselectedrotation.php");
         $.when(getFullSchedule, getSelectedRot).then(function(fullSchedule, selectedRot) {
             $(".loader").hide();
 
@@ -365,7 +365,7 @@ $(document).ready(function() {
     $("#conf-finalize").on("click", function() {
         var spanTag = $(".finalized-title").children("span");
         var rotNum = spanTag.eq(0).attr("id").split("-");
-        var finalizeResult = postData({rotation_number: rotNum[1]},"inc/Controller/finalizeschedule.php");
+        var finalizeResult = postData({rotation_number: rotNum[1]},"inc/Service/Congregation/finalizeschedule.php");
         $.when(finalizeResult).then(function(result) {
             $("#finalizeLabel").text("Success: Schedule Finalized").css("color","#549F93");
             $(".modal-footer").empty();
@@ -390,7 +390,7 @@ $(document).ready(function() {
             updatedCong.rotation = updatedRotations.eq(i).text();
             updatedCongData.push(updatedCong);
         }
-        var updateData = postData({updatedData: updatedCongData},"inc/Controller/updateCongSch.php")
+        var updateData = postData({updatedData: updatedCongData},"inc/Service/Congregation/updateCongSch.php")
         $.when(updateData).then(function(updateDataResult) {
             $("#modalLabel").text("Success: Changes Made!").css("color","#549F93");
             $(".modal-footer").empty();
@@ -438,7 +438,7 @@ $(document).ready(function() {
 	$("#conf-sch-yes").on("click", function() {
         var titleText = $(".modal-title").text().split(" ");
         var rotNum = titleText[2].split("?");
-        var scheduleRotations = postData({rotation_number: rotNum[0]}, "inc/Controller/schedulecongregations.php");
+        var scheduleRotations = postData({rotation_number: rotNum[0]}, "inc/Service/Congregation/schedulecongregations.php");
         $.when(scheduleRotations).then(function(scheduledResult) {
             $("#modalLabel").text("Success: Rotation Scheduled!").css("color","#549F93");
             $(".modal-footer").empty();
@@ -450,7 +450,7 @@ $(document).ready(function() {
     });
 
 	$("#coord-email-icon").on("click", function() {
-        var coordinatorEmails = getData({}, "inc/Controller/fetchcoordinatoremails.php");
+        var coordinatorEmails = getData({}, "inc/Service/Congregation/fetchcoordinatoremails.php");
         $.when(coordinatorEmails).then(function(emails) {
             for(var i = 0; i < emails.length; i++) {
                 $("#email-input-field").append($("<option>").attr("value",emails[i]["coordinatorEmail"]).text(emails[i]["coordinatorEmail"]));
@@ -468,7 +468,7 @@ $(document).ready(function() {
         var subject = $("#email-subject-field").val();
         var msg = CKEDITOR.instances.editor1.getData();
 
-        var sentEmail = postData({to: to, subject: subject, msg: msg}, "inc/Controller/sendindividualemail.php");
+        var sentEmail = postData({to: to, subject: subject, msg: msg}, "inc/Service/Congregation/sendindividualemail.php");
         $.when(sentEmail).then(function(email) {
             if(email["sent"]){
                 $("#modalLabel").text("Success: Email Sent!").css("color","#549F93");
@@ -494,7 +494,7 @@ $(document).ready(function() {
             congBlackouts.push($(this).val());
         });
         var currUserEmail = $("#curr-user").text();
-        var insertResult = postData({congBlackoutData: congBlackouts, email: currUserEmail}, "inc/Controller/insertcongblackoutdata.php");
+        var insertResult = postData({congBlackoutData: congBlackouts, email: currUserEmail}, "inc/Service/Congregation/insertcongblackoutdata.php");
         $.when(insertResult).then(function(congInsertResult) {
             $("#modalLabel").text("Success: Blackouts Entered!").css("color","#549F93");
             $(".modal-footer").empty();
@@ -572,7 +572,7 @@ $(document).ready(function() {
         $(".modal-body").empty();
         var modalLoader = $("<div>").addClass("modal-loader");
         $(".modal-body").append(modalLoader);
-        var sendEmail = postData({rotation_number: $("#sch-finalized-rot").val()}, "inc/Controller/sendfinalcongschedule.php");
+        var sendEmail = postData({rotation_number: $("#sch-finalized-rot").val()}, "inc/Service/Congregation/sendfinalcongschedule.php");
         $.when(sendEmail).then(function(sendEmailResult) {
             $(".modal-loader").hide();
             if(sendEmailResult["sent"]) {
@@ -642,7 +642,7 @@ $(document).ready(function() {
     }
 
 	//Fetch the dates for congregations to input their blackouts on
-	var blackoutWeekDates = getData({},"inc/Controller/fetchblackoutweeks.php");
+	var blackoutWeekDates = getData({},"inc/Service/Congregation/fetchblackoutweeks.php");
 	$.when(blackoutWeekDates).then(function(blackoutWeeks) {
 		blackoutWeekDates = blackoutWeeks;
         displayBlackoutRanges(blackoutWeeks);
@@ -657,7 +657,7 @@ $(document).ready(function() {
 	//FUNCTIONS
     function adminRotSchedules() {
         //Setup the admin congregation schedule
-        var getRotationNums = getData({},"inc/Controller/fetchScheduledRotationNums.php");
+        var getRotationNums = getData({},"inc/Service/Congregation/fetchScheduledRotationNums.php");
         $.when(getRotationNums).then(function (rotationNums) {
             if(rotationNums == null) {
                 $("#admin-schedule").append($("<h4>").text("No Congregations Scheduled"));
@@ -671,8 +671,8 @@ $(document).ready(function() {
                 }
                 $("#admin-schedule").append(selectWithAllSchRots);
 
-                var getFullSchedule = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Controller/fetchfullschedule.php"),
-                    eligibleCongregations = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Controller/fetchEligibleCongregations.php");
+                var getFullSchedule = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Service/Congregation/fetchfullschedule.php"),
+                    eligibleCongregations = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Service/Congregation/fetchEligibleCongregations.php");
                 $.when(getFullSchedule,eligibleCongregations).then(function(fullSchedule, eligibleCongs) {
                     $(".loader").hide();
 
@@ -809,7 +809,7 @@ $(document).ready(function() {
         var parentDiv = $(".table-responsive");
 
         //Get all the rotations
-        var getRotations = getData({},"inc/Controller/fetchrotations.php");
+        var getRotations = getData({},"inc/Service/Congregation/fetchrotations.php");
         $.when(getRotations).then(function(rotations) {
             var table = $("<table>").addClass("table").attr("id","congs-entered-blackouts");
             var tableHeads = $("<thead>");
@@ -817,10 +817,10 @@ $(document).ready(function() {
             tableRowForHeads.append($("<th>").attr("scope","col"));
             tableRowForHeads.append($("<th>").attr("scope","col").text("Rotation Number"));
 
-            var getCongregations = getData({},"inc/Controller/fetchcongregations.php");
+            var getCongregations = getData({},"inc/Service/Congregation/fetchcongregations.php");
             $.when(getCongregations).then(function(congregations) {
 
-                var getCongBlackouts = getData({},"inc/Controller/fetchcongblackouts.php");
+                var getCongBlackouts = getData({},"inc/Service/Congregation/fetchcongblackouts.php");
                 $.when(getCongBlackouts).then(function(allCongBlackouts) {
                     $(".loader").hide();
                     for(var i = 0; i < congregations.length; i++) {
@@ -963,7 +963,7 @@ $(document).ready(function() {
 
     function getFinalizedSchedules() {
         //Get all the finalized schedules
-        var finalizedRotNums = getData({},"inc/Controller/fetchfinalizedrotationnums.php");
+        var finalizedRotNums = getData({},"inc/Service/Congregation/fetchfinalizedrotationnums.php");
         $.when(finalizedRotNums).then(function(finalizedRots) {
             $("#finalized-schedule").append($("<p>").text("Select a schedule"));
             var finalSchTools = $("<div>").attr("id","final-sch-tools");
@@ -977,7 +977,7 @@ $(document).ready(function() {
             finalSchTools.append($("<img src='img/email-icon.svg' id='email-icon' data-toggle='modal' data-target='#send-final-sch-modal'/>"))
             $("#finalized-schedule").append(finalSchTools);
 
-            var getFullSchedule = getData({rotation_number: finalizedRots[0]["rotation_number"]},"inc/Controller/fetchfinalizedschedules.php");
+            var getFullSchedule = getData({rotation_number: finalizedRots[0]["rotation_number"]},"inc/Service/Congregation/fetchfinalizedschedules.php");
             $.when(getFullSchedule).then(function(fullSchedule) {
                 $(".loader").hide();
 

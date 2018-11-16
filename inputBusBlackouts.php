@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	require_once("./inc/top_layout.php");
-    require_once("Schedule.class.php");
+    require_once("./inc/Business/Bus/Schedule.class.php");
 ?>
 
 <form action="busbusiness.php" method="POST">

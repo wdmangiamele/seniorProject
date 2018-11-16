@@ -1,7 +1,7 @@
 <?php
 	session_start();
     require_once("./inc/top_layout.php");
-	require_once(__DIR__."/inc/Controller/CongregationCoordinator.class.php");
+	require_once(__DIR__."/inc/Business/Congregation/CongregationCoordinator.class.php");
 
 	$CongregationCoordinator = new CongregationCoordinator();
 ?>

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: brypi
- * Date: 9/19/2018
- * Time: 8:26 PM
- */
 
 class Functions {
     function __construct() {

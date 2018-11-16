@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	require_once("./inc/top_layout.php");
-    require_once(__DIR__."/inc/Controller/Users.class.php");
+    require_once(__DIR__."/inc/Business/Users.class.php");
 
     $Users = new Users();
 
@@ -11,36 +11,24 @@
 		unset($_SESSION['resetPassMsg']);
 	}
 
-	//Checks to see if there's a password error message present
-	if(isset($_SESSION['pwdMsg'])) {
-		//Set the current password error variable equal to its corresponding sessions variable
-		$pwdMsg = $_SESSION['pwdMsg'];
-
-		//Unset or remove the value of the session variable
-		unset($_SESSION['pwdMsg']);
-	}
-
 	//If the create password button is submitted
 	if(isset($_POST['pass-submit'])) {
 		$result = $Users->verifyCredentials($_SESSION['email'], $_POST['curr-password']);
 		if($result == true) {
 			$updtPwdResult = $Users->changePassword($_POST['new-password'], $_SESSION['email']);
 			if($updtPwdResult == true) {
-				$_SESSION['pwdMsg'] = "<div class='alert alert-success'>
+                $pwdMsg = "<div class='alert alert-success'>
 										  <strong>Success!</strong> Password set!
 										</div>";
-				header("Location: setuppassword.php");
 			}else {
-				$_SESSION['pwdMsg'] = "<div class='alert alert-danger'>
+                $pwdMsg = "<div class='alert alert-danger'>
 											<strong>Error!</strong> Trouble setting password. Please contact admin!
 										</div>";
-				header("Location: setuppassword.php");
 			}
 		}else {
-			$_SESSION['pwdMsg'] = "<div class='alert alert-danger'>
+            $pwdMsg = "<div class='alert alert-danger'>
 										<strong>Error!</strong> Incorrect current password!
 									</div>";
-			header("Location: setuppassword.php");
 		}
 	}
 ?>
@@ -54,7 +42,7 @@
 			echo $resetPassMsg;
 		}
 	?>
-	<form method="post" id="login-form" action="setuppassword.php">
+	<form method="post" id="login-form"" action="setuppassword.php">
 		<div class="form-group row">
 			<label for="raihn-password" class="col-sm-2 col-form-label">Current Password</label>
 			<div class="col-sm-10">

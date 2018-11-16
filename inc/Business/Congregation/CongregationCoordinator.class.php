@@ -8,8 +8,8 @@
 
 class CongregationCoordinator {
     function __construct() {
-        require_once(__DIR__."/../Data/db.class.php");
-        require_once(__DIR__."/Functions.class.php");
+        require_once(__DIR__."/../../Data/db.class.php");
+        require_once(__DIR__."/../Functions.class.php");
         $this->DB = new Database();
         $this->Functions = new Functions();
     }
@@ -50,7 +50,7 @@ class CongregationCoordinator {
      * @return null - return nothing if no data was retrieved
      * */
     function getCoordinatorEmail($congID, $userID) {
-        $sqlQuery = "SELECT coordinatorEmail FROM CONGREGATION_COORDINATOR WHERE congID = :congID AND userID = :userID";
+        $sqlQuery = "SELECT coordinatorEmail FROM congregation_coordinator WHERE congID = :congID AND userID = :userID";
         $params = array(":congID" => $congID, ":userID" => $userID);
         $result = $this->DB->executeQuery($sqlQuery, $params, "select");
         if($result) {
@@ -65,7 +65,7 @@ class CongregationCoordinator {
      * @return null - return nothing if no data was retrieved
      * */
     function getCoordinatorEmailAll() {
-        $sqlQuery = "SELECT coordinatorEmail FROM CONGREGATION_COORDINATOR";
+        $sqlQuery = "SELECT coordinatorEmail FROM congregation_coordinator";
         $result = $this->DB->executeQuery($sqlQuery, $this->Functions->paramsIsZero(), "select");
         if($result) {
             return $result;
@@ -81,7 +81,7 @@ class CongregationCoordinator {
      * @return null - return nothing if no data was retrieved
      * */
     function getCoordinatorName($congID, $userID) {
-        $sqlQuery = "SELECT coordinatorName FROM CONGREGATION_COORDINATOR WHERE congID = :congID AND userID = :userID";
+        $sqlQuery = "SELECT coordinatorName FROM congregation_coordinator WHERE congID = :congID AND userID = :userID";
         $params = array(":congID" => $congID, ":userID" => $userID);
         $result = $this->DB->executeQuery($sqlQuery, $params, "select");
         if($result) {
@@ -98,7 +98,7 @@ class CongregationCoordinator {
      * @return null - return nothing if no data was retrieved
      * */
     function getCoordinatorPhone($congID, $userID) {
-        $sqlQuery = "SELECT coordinatorPhone FROM CONGREGATION_COORDINATOR WHERE congID = :congID AND userID = :userID";
+        $sqlQuery = "SELECT coordinatorPhone FROM congregation_coordinator WHERE congID = :congID AND userID = :userID";
         $params = array(":congID" => $congID, ":userID" => $userID);
         $result = $this->DB->executeQuery($sqlQuery, $params, "select");
         if($result) {
@@ -133,7 +133,7 @@ class CongregationCoordinator {
      * @return boolean - return true or false depending on if the value was successfully set
      * */
     function setCoordinatorEmail($congID, $userID, $email) {
-        $sqlQuery = "UPDATE CONGREGATION_COORDINATOR SET coordinatorEmail = :email WHERE congID = :congID AND userID = :userID";
+        $sqlQuery = "UPDATE congregation_coordinator SET coordinatorEmail = :email WHERE congID = :congID AND userID = :userID";
         $params = array(":email" => $email, ":congID" => $congID, ":userID" => $userID);
         $result = $this->DB->executeQuery($sqlQuery, $params, "update");
         if($result > 0) {
@@ -150,7 +150,7 @@ class CongregationCoordinator {
       * @return boolean - return true or false depending on if the value was successfully set
       * */
     function setCoordinatorName($congID, $userID, $name) {
-        $sqlQuery = "UPDATE CONGREGATION_COORDINATOR SET coordinatorName = :name WHERE congID = :congID AND userID = :userID";
+        $sqlQuery = "UPDATE congregation_coordinator SET coordinatorName = :name WHERE congID = :congID AND userID = :userID";
         $params = array(":name" => $name, ":congID" => $congID, ":userID" => $userID);
         $result = $this->DB->executeQuery($sqlQuery, $params, "update");
         if($result > 0) {
@@ -167,7 +167,7 @@ class CongregationCoordinator {
      * @return boolean - return true or false depending on if the value was successfully set
      * */
     function setCoordinatorPhone($congID, $userID, $phoneNum) {
-        $sqlQuery = "UPDATE CONGREGATION_COORDINATOR SET coordinatorPhone = :phone WHERE congID = :congID AND userID = :userID";
+        $sqlQuery = "UPDATE congregation_coordinator SET coordinatorPhone = :phone WHERE congID = :congID AND userID = :userID";
         $params = array(":phone" => $phoneNum, ":congID" => $congID, ":userID" => $userID);
         $result = $this->DB->executeQuery($sqlQuery, $params, "select");
         if($result > 0) {

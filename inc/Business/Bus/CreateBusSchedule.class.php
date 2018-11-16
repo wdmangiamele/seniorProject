@@ -7,9 +7,9 @@
 
         function __construct($month, $year){
 
-            require_once("Schedule.class.php");
-            require_once("./inc/Controller/BusDriver.class.php");
-            require_once("./inc/Controller/CalendarBus.class.php");
+            require_once(__DIR__."/Schedule.class.php");
+            require_once(__DIR__."/BusDriver.class.php");
+            require_once(__DIR__."/CalendarBus.class.php");
 
             $bus = new BusDriver();
 

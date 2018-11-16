@@ -12,8 +12,8 @@ class CongregationSchedule {
         require_once(__DIR__."/CongregationBlackout.class.php");
         require_once(__DIR__."/CongregationCoordinator.class.php");
         require_once(__DIR__."/DateRange.class.php");
-        require_once(__DIR__."/../Data/db.class.php");
-        require_once(__DIR__."/Functions.class.php");
+        require_once(__DIR__."/../../Data/db.class.php");
+        require_once(__DIR__."/../Functions.class.php");
         require_once(__DIR__."/LegacyHostBlackout.class.php");
 
         $this->Congregation = new Congregation();

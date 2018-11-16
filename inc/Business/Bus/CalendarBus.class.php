@@ -6,8 +6,8 @@ private $bus;
 
 
   function __construct() {
-    require_once("./inc/Controller/BusDriver.class.php");
-    require_once("./inc/Controller/CalendarBus.class.php");
+    require_once(__DIR__."/BusDriver.class.php");
+    require_once(__DIR__."/CalendarBus.class.php");
 
     $this->bus = new BusDriver();
 

@@ -16,7 +16,7 @@ jQuery(function ($) {
 				e.preventDefault();
 
 				// load the contact form using ajax
-				$.get("contact.php", function(data){
+				$.get("inc/Business/Bus/contact.php", function(data){
 					// create a modal dialog with the data
 					$(data).modal({
 						closeHTML: "<a href='#' title='Close' class='modal-close'>x</a>",
@@ -78,7 +78,7 @@ jQuery(function ($) {
 					}, function () {
 						$('#contact-container .contact-loading').fadeIn(200, function () {
 							$.ajax({
-								url: 'contact.php',
+								url: 'inc/Business/Bus/contact.php',
 								data: {
 									'am': $('#amCheck').is(':checked'),
 									'pm': $('#pmCheck').is(':checked'),

@@ -1,7 +1,7 @@
 <?php
 
 
-require_once("BusDriver.class.php");
+require_once(__DIR__."/../../Business/Bus/BusDriver.class.php");
 
 $htmlBusSchedule = $_POST['htmlSchedule'];
 

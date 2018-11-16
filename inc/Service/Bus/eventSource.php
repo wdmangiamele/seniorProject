@@ -1,7 +1,7 @@
 <?php
 
 
-require_once("./inc/Controller/CalendarBus.class.php");
+require_once(__DIR__."/../../Business/Bus/CalendarBus.class.php");
 
 $CalendarBus = new CalendarBus();
 

@@ -1,8 +1,8 @@
 <?php
-    require_once(__DIR__."/CongregationBlackout.class.php");
-    require_once(__DIR__."/Congregation.class.php");
-    require_once(__DIR__."/DateRange.class.php");
-    require_once(__DIR__."/Functions.class.php");
+    require_once(__DIR__."/../../Business/Congregation/CongregationBlackout.class.php");
+    require_once(__DIR__."/../../Business/Congregation/Congregation.class.php");
+    require_once(__DIR__."/../../Business/Congregation/DateRange.class.php");
+    require_once(__DIR__."/../../Business/Functions.class.php");
     $CongregationBlackout = new CongregationBlackout();
     $Congregation = new Congregation();
     $DateRange = new DateRange();

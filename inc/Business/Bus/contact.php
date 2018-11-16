@@ -2,7 +2,7 @@
 
 session_start();
 
-require_once("inc/Controller/BusDriver.class.php");
+require_once(__DIR__."/BusDriver.class.php");
 
 /*
  * SimpleModal Contact Form

@@ -59,7 +59,7 @@ $(document).ready(function() {
         $(".modal-body").empty();
         var modalLoader = $("<div>").addClass("modal-loader");
         $(".modal-body").append(modalLoader);
-        window.location.replace("inc/Controller/sendfinalbusschedule.php");
+        window.location.replace("inc/Service/Bus/sendfinalbusschedule.php");
 
 
         // var sendEmail = postData({htmlSchedule: htmlTable}, "inc/Controller/sendfinalbusschedule.php");
@@ -87,7 +87,7 @@ $(document).ready(function() {
 
 
     $('#busCalendarAdmin').fullCalendar({
-        eventSources : [{url: './eventSource.php'}],
+        eventSources : [{url: 'inc/Service/Bus/eventSource.php'}],
         eventOrder: 'color,start', //this doesn't work
         eventClick: function(calEvent, jsEvent, view) {
             console.log(calEvent);
@@ -115,7 +115,7 @@ $(document).ready(function() {
 
             $.ajax({
                 method: "POST",
-                url: "./busbusiness.php",
+                url: "inc/Service/Bus/busbusiness.php",
                 data: {
                     'type': 'manualEdit',
                     'date': date,
@@ -138,7 +138,7 @@ $(document).ready(function() {
       });
 
       $('#busCalendarUser').fullCalendar({
-          eventSources : [{url: './eventSource.php'}],
+          eventSources : [{url: 'inc/Service/Bus/eventSource.php'}],
           eventOrder: 'color,start' //this doesn't work
       });
 
@@ -192,7 +192,7 @@ $(document).ready(function() {
 
               $.ajax({
                   method: "POST",
-                  url: "./busbusiness.php",
+                  url: "inc/Service/Bus/busbusiness.php",
                   data: {
                       'type': 'sendToDB',
                       'date': date,
