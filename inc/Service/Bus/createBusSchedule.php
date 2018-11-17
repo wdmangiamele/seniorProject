@@ -15,7 +15,7 @@ $year = "";
 
     $CreateBusSchedule = new CreateBusSchedule($month, $year);
 
-    header('Location: finalBusSchedule.php');
+    header('Location: ../../../finalBusSchedule.php');
 
 }
 

@@ -3,9 +3,10 @@
 		private $db;
 
 		function __construct() {
-            require_once(__DIR__."/../../Data/db.class.php");
+         require_once(__DIR__."/../../Data/db.class.php");
 			require_once(__DIR__.'/CalendarBus.class.php');
-            require_once(__DIR__."/../Functions.class.php");
+			require_once(__DIR__."/../Functions.class.php");
+
 			$this->db = new Database();
 			$this->Functions = new Functions();
 		}
@@ -32,6 +33,22 @@
 			return $data;
 
 		}//end getBusDriverData
+
+		function updateDriverLimits($driverID, $dayLimit){
+			$sql = "UPDATE bus_driver SET (drivingLimit = :drivingLimit) WHERE (driverID = :driverID)";
+			
+			$params= array(":drivingLimit" => $dayLimit, ":driverID" => $driverID);
+			
+			$result = $this->db-executeQuery($sql, $params, "update");
+
+			if($result > 0) {
+				return true;
+			}else {
+				return false;
+			}
+
+
+		}
 
 
 

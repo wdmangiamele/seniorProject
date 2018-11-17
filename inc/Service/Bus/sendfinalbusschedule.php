@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     <title>RAIHN Scheduler</title>
-    <script type="text/javascript" src="../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript">
        function getFirstDay(theYear, theMonth) {
          var firstDate = new Date(theYear, theMonth, 1);
@@ -171,7 +171,7 @@
             'htmlSchedule' : htmlTable
         },
         success: function (response) {
-            window.location.replace("../../finalBusSchedule.php");
+            window.location.replace("../../../finalBusSchedule.php");
             //service.php response
             console.log(response);
         },

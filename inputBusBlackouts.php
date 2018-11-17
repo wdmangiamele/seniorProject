@@ -4,7 +4,7 @@
     require_once("./inc/Business/Bus/Schedule.class.php");
 ?>
 
-<form action="busbusiness.php" method="POST">
+<form action="./inc/Service/bus/busbusiness.php" method="POST">
   <select name="drivingLimits">
 	<option value="0">0</option>
     <option value="1">1</option>

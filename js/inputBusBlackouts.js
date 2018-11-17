@@ -62,14 +62,14 @@ function getBlackouts(){
 
             $.ajax({
                 method: "POST",
-                url: "./busbusiness.php",
+                url: "./inc/Service/Bus/busbusiness.php",
                 data: {
                     'type': 'inputBlackouts',
                     'date': date,
                     'timeOfDay' : timeOfDay
                 },
                 success: function(data) {
-                   
+                   //console.log(data);
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     alert(textStatus);

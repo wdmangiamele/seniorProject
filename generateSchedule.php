@@ -9,7 +9,7 @@
 ?>
 
 
-        <form action="createBusSchedule.php" method="post">
+        <form action="./inc/Service/Bus/createBusSchedule.php" method="post">
 
            <select name="year" id="year"></select>
 
