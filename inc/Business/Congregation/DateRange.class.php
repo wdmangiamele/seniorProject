@@ -416,7 +416,7 @@ class DateRange {
      * @return $result - all the blackout week choices from the date range table
      */
     function showBlackoutWeeks() {
-        $sqlQuery = "SELECT * FROM date_range WHERE NOT weekNumber = :weekNumber ORDER BY rotation_number";
+        $sqlQuery = "SELECT * FROM date_range WHERE NOT weekNumber = :weekNumber ORDER BY rotation_number, startDate asc";
         $params = array(':weekNumber' => 0);
         $result = $this->DB->executeQuery($sqlQuery, $params, "select");
         return $result;
