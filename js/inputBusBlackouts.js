@@ -3,6 +3,17 @@ $(document).ready(function() {
     var date = "";
 
 
+    //need to get there current driving limit from the db
+    
+
+
+
+
+    $('#drivingLimits').val(20);
+
+
+
+
     $('#inputBusCalendar').fullCalendar({
 
         header: {
@@ -40,7 +51,6 @@ function clickme(button){
     button.style.background='#ff0000';
 
     //console.log(button.style);
-
 }
 
 
@@ -69,6 +79,7 @@ function getBlackouts(){
                     'timeOfDay' : timeOfDay
                 },
                 success: function(data) {
+                   alert("Blackouts Submitted Successfully");
                    //console.log(data);
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -78,8 +89,6 @@ function getBlackouts(){
 
         }
     });
-
-    alert('Blackouts successfully submitted');
     
 
 

@@ -35,11 +35,11 @@
 		}//end getBusDriverData
 
 		function updateDriverLimits($driverID, $dayLimit){
-			$sql = "UPDATE bus_driver SET (drivingLimit = :drivingLimit) WHERE (driverID = :driverID)";
+			$sql = "UPDATE bus_driver SET drivingLimit = :drivingLimit WHERE (driverID = :driverID)";
 			
 			$params= array(":drivingLimit" => $dayLimit, ":driverID" => $driverID);
 			
-			$result = $this->db-executeQuery($sql, $params, "update");
+			$result = $this->db->executeQuery($sql, $params, "update");
 
 			if($result > 0) {
 				return true;

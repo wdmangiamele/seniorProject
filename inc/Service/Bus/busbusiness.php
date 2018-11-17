@@ -15,6 +15,9 @@
     $driverID = $db->getBusDriverID($_SESSION['userID']);
 
     $result = $db->updateDriverLimits($driverID, $dayLimit);
+
+    header('Location: ../../../inputBusBlackouts.php'); 
+
 }
 
 

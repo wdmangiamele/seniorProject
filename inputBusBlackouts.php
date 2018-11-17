@@ -5,7 +5,7 @@
 ?>
 
 <form action="./inc/Service/bus/busbusiness.php" method="POST">
-  <select name="drivingLimits">
+  <select id="drivingLimits" name="drivingLimits">
 	<option value="0">0</option>
     <option value="1">1</option>
     <option value="2">2</option>
@@ -28,7 +28,7 @@
     <option value="19">19</option>
     <option value="20">20</option>
   </select>
-  <input type="submit" name="submitLimits" value="Submit Driving Limits">
+  <input type="submit" onclick="alert('succesfuuly updated driving limits');" name="submitLimits" value="Update Monthly Driving Limits">
 </form>
 
 <div id='inputBusCalendar'>
