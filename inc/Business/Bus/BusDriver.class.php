@@ -255,6 +255,8 @@
 
 		function editSchedule($driverID, $driverName, $date, $timeOfDay, $role){
 
+
+			
 			//first need to delete the current record
 			$sql = "DELETE FROM bus_schedule WHERE (date = :date) AND (role = :role) AND (timeOfDay = :timeOfDay)";
 

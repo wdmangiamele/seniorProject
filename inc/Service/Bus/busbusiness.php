@@ -67,17 +67,30 @@ if (isset($_POST['type'])){
                  $possibleDrivers[0]= '1';
              }
 
-             //get driver names
+             //get possible driver names
              foreach($possibleDrivers as $value){
              //get driver name based on $values
                  $name = $db->getADriverName($value);
                  $driverNames[] = $name;
              }
 
+             //get driver names
+             foreach($allDrivers as $value){
+                //get driver name based on $values
+                $name = $db->getADriverName($value);
+                $allDriverNames[] = $name;
+            }
 
-             echo json_encode($driverNames);
+             if (sizeof($possibleDrivers) == 0){
+                 echo json_encode($allDriverNames);
+                 break;
+             }
+             else{
+                echo json_encode($driverNames);
+                break;
+             }
 
-             break;
+
          case 'sendToDB':
              $db = new BusDriver();
              $driverName = $_POST['driver'];
