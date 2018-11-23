@@ -255,15 +255,11 @@
 
 		function editSchedule($driverID, $driverName, $date, $timeOfDay, $role){
 
-
-			
 			//first need to delete the current record
 			$sql = "DELETE FROM bus_schedule WHERE (date = :date) AND (role = :role) AND (timeOfDay = :timeOfDay)";
 
 			$params = array(':date' => $date, ':role'=>$role, ':timeOfDay'=>$timeOfDay);
 			$result = $this->db->executeQuery($sql, $params, "DELETE");
-
-
 
 			//then insert the new record
 			$sqlQuery = "INSERT INTO bus_schedule VALUES (:driverID, :driverName, :date, :timeOfDay, :role, :congID)";
@@ -280,9 +276,7 @@
 			}
 			//$cb = new CalendarBus();
 
-
 			//$cb->scheduleDrivers();
-
 		}
 
 

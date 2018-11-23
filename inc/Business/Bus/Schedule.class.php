@@ -136,7 +136,7 @@ class Schedule{
                     $unavailableDrivers++;
                     if($unavailableDrivers == $this->numberOfDrivers){
                         // echo "GOT HERE NO DRIVER " .$currentSlot . "<br/>";
-                        $draftSchedule[$monthOutline[$i]] = [-1,$monthOutline[$i],"NO DRIVER AVAILABLE"];
+                        $draftSchedule[$monthOutline[$i]] = [-1,$monthOutline[$i],"NO PRIMARY DRIVER AVAILABLE"];
                         $unavailableDrivers = 0;
                         $scheduleBoolean = false;
                         break;
@@ -160,8 +160,10 @@ class Schedule{
                 // echo " schedule them";
                 // echo "<br>";
 
+                //primary schedule is defined 
                 if($primarySchedule != ""){
-                    //when primary = backup
+                    
+                    //when primary driver already scheduled is equal to the driver to schedule, can't schedule as the backup
                     if($primarySchedule[$monthOutline[$i]][0] == $currentDriverToSchedule){
                         $currentDriverIndex++;
                         if ($currentDriverIndex == $this->numberOfDrivers){
@@ -174,14 +176,22 @@ class Schedule{
                     else{
                         // echo "currentDriverISTHISKID: " .$currentDriverToSchedule;
                         // echo ("blackout day we are checkin:   ". $currentBlackoutDay);
-                        $draftSchedule[$monthOutline[$i]] = [($currentDriverToSchedule), $monthOutline[$i], $this->getDriverName($currentDriverToSchedule, $driverNames)];
-                        $currentDriverIndex++;
-                        if ($currentDriverIndex == $this->numberOfDrivers){
-                            $currentDriverIndex = 0;
+
+                        //if the primary driver is NO DRIVER AVAILABLE, then make the backup driver also NO DRIVER AVAILABLE
+                        if ($primarySchedule[$monthOutline[$i]][0] == -1){
+                            $draftSchedule[$monthOutline[$i]] = [-1,$monthOutline[$i],"NO BACKUP DRIVER AVAILABLE"];
                         }
+                        else{
+                            $draftSchedule[$monthOutline[$i]] = [($currentDriverToSchedule), $monthOutline[$i], $this->getDriverName($currentDriverToSchedule, $driverNames)];
+                            $currentDriverIndex++;
+                            if ($currentDriverIndex == $this->numberOfDrivers){
+                                $currentDriverIndex = 0;
+                            }
+    
+                            $unavailableDrivers = 0;
 
-                        $unavailableDrivers = 0;
-
+                        }
+                        
                         //need to increment $drivingLimitsCount for the driver that just got scheduled
                         //$drivingLimitsCount[$currentDriverToSchedule]+=1;
 
@@ -251,7 +261,7 @@ class Schedule{
         
         //this means that all the drivinglimits are 0, so we know there is NO DRIVER AVAILABLE don't need to go through all the logic 
         else{
-            $draftSchedule[$monthOutline[$i]] = [-1,$monthOutline[$i],"NO DRIVER AVAILABLE"];
+            $draftSchedule[$monthOutline[$i]] = [-1,$monthOutline[$i],"NO PRIMARY DRIVER AVAILABLE"];
 
 
         }

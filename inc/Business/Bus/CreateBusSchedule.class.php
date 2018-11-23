@@ -14,7 +14,7 @@
             $bus = new BusDriver();
 
 
-            $bus->clearTable("bus_driver");
+            $bus->clearTable("bus_schedule");
 
             $numberOfDrivers = $bus->getNumberOfBusDrivers();
             
