@@ -281,10 +281,13 @@
 
 
 
-		function clearTable($tableName){
-			$sql = "DELETE FROM ". $tableName;
+		function clearTable($tableName, $month, $year){
 
-			$result = $this->db->executeQuery($sql, $this->Functions->paramsIsZero(), "DELETE");
+			$sql = "DELETE FROM $tableName where SUBSTRING(date,1,4) = :year AND SUBSTRING(date,6,2) = :month";
+
+			$params = array(":month" => $month, ":year" => $year);
+
+			$result = $this->db->executeQuery($sql, $params, "DELETE");
 
 			return $tableName;
 		}

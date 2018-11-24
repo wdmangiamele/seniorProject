@@ -13,8 +13,8 @@
 
             $bus = new BusDriver();
 
-
-            $bus->clearTable("bus_schedule");
+            //clear the table in the database for this specific month and year 
+            $bus->clearTable("bus_schedule", $month, $year);
 
             $numberOfDrivers = $bus->getNumberOfBusDrivers();
             
