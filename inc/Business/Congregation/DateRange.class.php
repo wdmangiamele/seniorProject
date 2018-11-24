@@ -11,9 +11,11 @@ class DateRange {
         require_once(__DIR__."/../../Data/db.class.php");
         require_once(__DIR__."/../Functions.class.php");
         require_once(__DIR__."/RotationDate.class.php");
+        require_once(__DIR__."/RotationScheduleStatus.class.php");
         $this->DB = new Database();
         $this->Functions = new Functions();
         $this->RotationDate = new RotationDate();
+        $this->RotationScheduleStatus = new RotationScheduleStatus();
     }
 
     /* function to if a date range has a holiday in it for a given year
@@ -404,8 +406,13 @@ class DateRange {
             $nxtRotationNumber++;
             $x++;
         }
-        $this->RotationDate->insertRotationNum();
-        if($insertDataMsg == "Error") {
+        //Insert data to rotation date
+        $insertRotationNumStatus = $this->RotationDate->insertRotationNum();
+
+        //Insert data to rotation schedule status
+        $insertRotationSchStatus = $this->RotationScheduleStatus->insertRotationStatus();
+
+        if($insertDataMsg == "Error" || $insertRotationNumStatus == false || $insertRotationSchStatus == false) {
             return false;
         }else {
             return true;
@@ -413,14 +420,37 @@ class DateRange {
     }//end insertDateRange
 
     /* function that prints out the black out weeks for each rotation number
+     * @param $rotsArr - an array containing any rotations finalized or scheduled
      * @return $result - all the blackout week choices from the date range table
+     * @return null - return null if no results were found
      */
-    function showBlackoutWeeks() {
-        $sqlQuery = "SELECT * FROM date_range WHERE NOT weekNumber = :weekNumber ORDER BY rotation_number, startDate asc";
-        $params = array(':weekNumber' => 0);
-        $result = $this->DB->executeQuery($sqlQuery, $params, "select");
-        return $result;
-    }
+    function showBlackoutWeeks($rotsArr) {
+        //If there are no 'scheduled' or 'finalized' rotations, get all rotations
+        if(sizeof($rotsArr) == 0) {
+            $sqlQuery = "SELECT * FROM date_range WHERE NOT weekNumber = :weekNumber ORDER BY rotation_number, startDate asc";
+            $params = array(':weekNumber' => 0);
+            $result = $this->DB->executeQuery($sqlQuery, $params, "select");
+            if($result) {
+                return $result;
+            }else {
+                return null;
+            }
+        }else{
+            $params = array(":weekNumber" => 0);
+            $sqlQuery = "SELECT * FROM date_range WHERE NOT weekNumber = :weekNumber";
+            for($i = 0; $i < sizeof($rotsArr); $i++) {
+                $sqlQuery .= " AND NOT rotation_number = :rotNum$i";
+                $params[":rotNum$i"] = $rotsArr[$i];
+            }
+            $sqlQuery .= " ORDER BY rotation_number, startDate asc";
+            $result = $this->DB->executeQuery($sqlQuery, $params, "select");
+            if($result) {
+                return $result;
+            }else {
+                return null;
+            }
+        }
+    }//end showBlackoutWeeks
 
     function validateDate($date, $format) {
         $d = DateTime::createFromFormat($format, $date);

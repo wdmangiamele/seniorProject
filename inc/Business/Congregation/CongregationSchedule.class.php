@@ -88,6 +88,12 @@ class CongregationSchedule {
                     return false;
                 }
             }
+            $sqlQuery = "DELETE FROM congregation_schedule WHERE rotationNumber = :rotNum";
+            $params = array(":rotNum" => $rotNum);
+            $result = $this->DB->executeQuery($sqlQuery, $params, "delete");
+            if($result <= 0) {
+                return false;
+            }
         }else {
             return false;
         }
@@ -382,6 +388,9 @@ class CongregationSchedule {
      * @param $startDate - the start date of the week the congregation is scheduled for
      * @param $weekNumber - the rotation week number that congregation is scheduled for
      * @param $rotationNumber - the rotation number of the week the congregation is scheduled for
+     * @param $holiday - a 1 or 0 telling if week is a holiday week
+     * @param $isFlagged - indicating if week should be flagged
+     * @param $reasonForFlag - the reasoning behind flagging a week
      * @return boolean - return true or false depending on if the data was inserted
      * */
     function insertNewScheduledCong($congID, $startDate, $weekNumber, $rotationNumber, $holiday, $isFlagged, $reasonForFlag) {
@@ -408,23 +417,8 @@ class CongregationSchedule {
         }
     }//end insertNewScheduledCong
 
-    //Fifth, start at the first week, looking first at the congregation who has the most blacked out weeks
-    //Compare the week they're about to be scheduled for to the last week they were scheduled
-    //Make sure that the week they're about to be scheduled for is at least 10 weeks apart from the last time they were scheduled
-    //If the week is scheduled at least 10 weeks apart:
-    //If there's a holiday for that week:
-    //Check if the congregation did the holiday last
-    //If the congregation hasn't already done the holiday:
-    //insert the holiday into the Congregation table for the respective congregation
-    //Else:
-    //don't schedule the congregation
-    //Else:
-    //Schedule the congregation
-    //Else: return false
-
-    //Then go to the next most blacked out congregation
-
     /* function to actually schedule congregations to the database
+     * @param $rotNum - the rotation to be scheduled
      * @return bool - return true or false if the congregations were successfully inserted
      * */
     function scheduleCongregations($rotNum){

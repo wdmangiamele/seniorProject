@@ -47,30 +47,10 @@
 	  	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	    	<ul class="nav navbar-nav">
 		      	<?php /* if logged in */ if(isset($_SESSION['email'])): ?>
-		      		<?php /* if logged in as bus driver or admin */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Bus Driver" || $_SESSION['role'] == "Bus Driver Admin" || $_SESSION['role'] == "Admin")): ?>
+		      		<?php /* if logged in as bus driver or admin */ if(isset($_SESSION['role'])): ?>
 				      	<li class="nav-item">
 				        	<a class="nav-link" href="./busdriverroster.php">Bus Driver Roster</a>
 				      	</li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./generateSchedule.php">Generate Schedule</a>
-                        </li>
-			      	<?php endif; ?>
-					<?php /* if logged in as a bus driver */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Bus Driver")): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./inputBusBlackouts.php">Input Blackouts</a>
-                        </li>
-                    <?php endif; ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Finalized Schedules<b class="caret"></b>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="nav-link" href="./finalizedschedules.php">Congregation Schedules</a>
-							<a class="nav-link" href="./finalBusSchedule.php">Bus Schedules</a>
-                        </div>
-                    </li>
-
-			      	<?php /* if logged in as congregation or admin */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Congregation" || $_SESSION['role'] == "Congregation Admin" || $_SESSION['role'] == "Admin" )): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Congregation Rosters<b class="caret"></b>
@@ -80,13 +60,27 @@
                                 <a class="nav-link" href="./congregationcoordinators.php">Congregation Coordinators</a>
                             </div>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Finalized Schedules<b class="caret"></b>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="nav-link" href="./finalizedschedules.php">Congregation Schedules</a>
+                                <a class="nav-link" href="./finalBusSchedule.php">Bus Schedules</a>
+                            </div>
+                        </li>
 			      	<?php endif; ?>
-                    <?php /* if logged in as congregation or admin */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Congregation" || $_SESSION['role'] == "Admin")): ?>
+					<?php /* if logged in as a bus driver */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Bus Driver")): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./inputBusBlackouts.php">Input Blackouts</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php /* if logged in as congregation or admin */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Congregation")): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="./inputblackouts.php">Input Blackouts</a>
                         </li>
                     <?php endif; ?>
-                    <?php /* if logged in as congregation admin or admin */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Congregation Admin" || $_SESSION['role'] == "Admin")): ?>
+                    <?php /* if logged in as congregation admin or admin */ if(isset($_SESSION['role']) && ($_SESSION['role'] == "Congregation Admin")): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Admin Tools<b class="caret"></b>
@@ -94,6 +88,15 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="nav-link" href="./adminCongSchedule.php">Scheduled Rotations</a>
                                 <a class="nav-link" href="./enteredblackoutsCongregation.php">Blackouts Entered</a>
+                            </div>
+                        </li>
+                    <?php elseif(isset($_SESSION['role']) && ($_SESSION['role'] == "Bus Driver Admin")): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Admin Tools<b class="caret"></b>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="nav-link" href="./generateSchedule.php">Generate Schedule</a>
                             </div>
                         </li>
                     <?php endif; ?>

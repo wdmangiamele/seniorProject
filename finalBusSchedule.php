@@ -1,7 +1,11 @@
 <?php
     session_start();
-    require_once("./inc/top_layout.php");
+    if(!isset($_SESSION['userID']) || !isset($_SESSION['role'])) {
+        $_SESSION['appErrMsg'] = 'Login Error';
+        header('Location: error.php');
+    }
 
+    require_once("./inc/top_layout.php");
 ?>
 
 
@@ -14,7 +18,7 @@
 
 <?php
 
-if ($_SESSION['role'] == 'Admin'){
+if ($_SESSION['role'] == 'Bus Driver Admin'){
 
 ?>
 

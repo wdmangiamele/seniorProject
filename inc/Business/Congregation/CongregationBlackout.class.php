@@ -186,6 +186,23 @@ class CongregationBlackout {
         }
     }//end getCongBlackoutsByStartDate
 
+    /* function that fetches blackouts by congID and rotation number
+     * @param $congID - the congregation ID
+     * @param $rotNum - the rotation number
+     * @return $result - congregation blackouts for a congregation
+     * @return null - return no data if no data successfully fetched
+     * */
+    function getCongBlackoutsByCongIDAndRotNum($congID, $rotNum) {
+        $sqlQuery = "SELECT * FROM congregation_blackout WHERE congID = :congID AND rotation_number = :rotNum";
+        $params = array(":congID" => $congID, ":rotNum" => $rotNum);
+        $result = $this->DB->executeQuery($sqlQuery, $params, "select");
+        if($result) {
+            return $result;
+        }else {
+            return null;
+        }
+    }//end getCongBlackoutsByCongIDAndRotNum
+
     //Second, loop through all congregations with their blackout dates and
     //count out each date that's blacked out
 
@@ -267,6 +284,33 @@ class CongregationBlackout {
         $result = $this->DB->executeQuery($sqlQuery, $params, "select");
 
         if($result){
+            //Check to see if blackouts already exists for a congregation
+            //If so delete the existing blackouts
+
+            //This if handles if the congregation chose "No Blackouts"
+            //Incoming data for no blackouts will look like: 1970-01-01-53
+            if(strlen($blackoutWeek[0]) > 10) {
+                $rotNum = substr($blackoutWeek[0], 11);
+                $sqlQueryCongBlackouts = "SELECT * FROM congregation_blackout WHERE congID = :congID AND rotation_number = :rotNum";
+                $params = array(":congID" => $result[0]['congID'], ":rotNum" => $rotNum);
+                $resultBlackouts = $this->DB->executeQuery($sqlQueryCongBlackouts, $params, "select");
+                if($resultBlackouts) {
+                    $sqlQueryDelete = "DELETE FROM congregation_blackout WHERE congID = :congID AND rotation_number = :rotNum";
+                    $params = array(":congID" => $result[0]['congID'], ":rotNum" => $rotNum);
+                    $resultDelete = $this->DB->executeQuery($sqlQueryDelete, $params, "delete");
+                }
+            }else {
+                $rotNum = $this->DateRange->getRotationNumber($blackoutWeek[0]);
+                $sqlQueryCongBlackouts = "SELECT * FROM congregation_blackout WHERE congID = :congID AND rotation_number = :rotNum";
+                $params = array(":congID" => $result[0]['congID'], ":rotNum" => $rotNum);
+                $resultBlackouts = $this->DB->executeQuery($sqlQueryCongBlackouts, $params, "select");
+                if($resultBlackouts) {
+                    $sqlQueryDelete = "DELETE FROM congregation_blackout WHERE congID = :congID AND rotation_number = :rotNum";
+                    $params = array(":congID" => $result[0]['congID'], ":rotNum" => $rotNum);
+                    $resultDelete = $this->DB->executeQuery($sqlQueryDelete, $params, "delete");
+                }
+            }
+
             for($i = 0; $i < sizeof($blackoutWeek); $i++) {
                 //This if handles if the congregation chose "No Blackouts"
                 //Incoming data for no blackouts will look like: 1970-01-01-53

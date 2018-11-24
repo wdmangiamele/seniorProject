@@ -1,17 +1,22 @@
 <?php
 	session_start();
+    if(!isset($_SESSION['userID']) || !isset($_SESSION['role'])) {
+        $_SESSION['appErrMsg'] = 'Login Error';
+        header('Location: error.php');
+    }elseif($_SESSION['role'] != 'Congregation') {
+        $_SESSION['appErrMsg'] = 'Permission Error';
+        header('Location: error.php');
+    }
+
 	require_once("./inc/top_layout.php");
     require_once(__DIR__."/inc/Business/Congregation/DateRange.class.php");
+    require_once(__DIR__."/inc/Business/Congregation/RotationScheduleStatus.class.php");
 
     $DateRange = new DateRange();
+    $RotationScheduleStatus = new RotationScheduleStatus();
 
-	$initialRotation = $DateRange->getMinimumRotationNumber();
-?>
-
-<?php
-	if(isset($insertResult)) {
-		echo $insertResult;
-	}
+	$rotations = $RotationScheduleStatus->getNonScheduledFinalizedRotations();
+	$initialRotation = $rotations[0]['rotation_number'];
 ?>
 <!-- Blackout content-->
 <div id="blackout-content">

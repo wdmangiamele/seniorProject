@@ -9,6 +9,8 @@
 		}
 
 		/* function to change the password of the respective user
+		 * @param $newPass - the new desired password
+		 * @param $email - the email of the user
 		 * @return boolean - boolean showing if password was successfully changed
 		 */
 		function changePassword($newPass, $email) {
@@ -17,8 +19,8 @@
 			$hashedPass = hash('sha256', ($newPass.$salt));
 			$userID = $this->getUserID($email);
 
-			$sqlQuery = "UPDATE users SET password = :pass, salt = :salt WHERE userID = :userID";
-			$params = array(':pass' => $hashedPass, ':salt' => $salt, ':userID' => $userID);
+			$sqlQuery = "UPDATE users SET password = :pass, salt = :salt, isNewUser = :isNewUser WHERE userID = :userID";
+			$params = array(':pass' => $hashedPass, ':salt' => $salt, ':userID' => $userID, ':isNewUser' => 'No');
 			$result = $this->DB->executeQuery($sqlQuery, $params, "update");
 			if($result > 0) {
 				return true;
@@ -71,10 +73,10 @@
 		 * @param $email - the user's email to help find the salt for the password
 		 */
 		function needsNewPass($email) {
-			$sqlQuery = "SELECT salt FROM users WHERE email = :email";
+			$sqlQuery = "SELECT isNewUser FROM users WHERE email = :email";
 			$params = array(':email' => $email);
             $result = $this->DB->executeQuery($sqlQuery, $params, "select");
-			if(is_null($result[0]["salt"])) {
+			if($result[0]["isNewUser"] == 'Yes') {
 				return true;
 			}else {
 				return false;
@@ -85,10 +87,10 @@
 		 * @param $email - the email of the user who needs their password reset
 		 * @return boolean - returns true or false based upon if the email was sent
 		 * */
-        function sendResetPassEmail($email) {
+        function sendResetPassEmail($email, $token) {
             $to = $email;
             $subject   = 'Forgotten Password Reset - Raihn Scheduler App';
-            $resetlink = 'http://localhost:8012/RAIHN/forgotpassword.php?state=pass&email='.$email;
+            $resetlink = 'http://localhost:8012/seniorProjectOther/seniorProject/forgotpassword.php?state=pass&tok='.$token;
             $message   = '<html>
 										<head>
 											<title>Forgotten Password For Sports Agent Directory</title>

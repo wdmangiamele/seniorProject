@@ -1,9 +1,19 @@
 <?php
     session_start();
+    if(!isset($_SESSION['userID']) || !isset($_SESSION['role'])) {
+        $_SESSION['appErrMsg'] = 'Login Error';
+        header('Location: error.php');
+    }
+
     require_once("./inc/top_layout.php");
 ?>
     <div id="finalized-schedule">
-
+        <div id="final-sch-tools">
+            <span id="dummy-span"></span>
+            <?php if($_SESSION['role'] == "Congregation Admin"): ?>
+            <img src='img/email-icon.svg' id='email-icon' data-toggle='modal' data-target='#send-final-sch-modal'/>
+            <?php endif; ?>
+        </div>
     </div>
     <div class="modal fade" id="send-final-sch-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog" role="document">

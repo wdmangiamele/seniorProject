@@ -1,9 +1,31 @@
 <?php
     session_start();
-    require_once("./inc/top_layout.php");
     require_once(__DIR__."/inc/Business/Users.class.php");
+    require_once(__DIR__."/inc/Business/ForgotPasswordToken.class.php");
 
     $Users = new Users();
+    $ForgotPasswordToken = new ForgotPasswordToken();
+
+    //Check to see if token is set
+    if($_GET['state'] == 'pass' && (!isset($_GET['tok']))) {
+        $_SESSION['appErrMsg'] = 'Permission Error';
+        header('Location: error.php');
+    }
+
+    //Checks if token in URL has already been used
+    if(isset($_GET['tok'])) {
+        //Check if token is has already been used
+        $isUsed = $ForgotPasswordToken->getTokenUsage($_GET['tok']);
+        if($isUsed == 'Yes') {
+            $_SESSION['appErrMsg'] = 'Permission Error';
+            header('Location: error.php');
+        }elseif(is_null($isUsed)) {
+            $_SESSION['appErrMsg'] = 'Admin Error';
+            header('Location: error.php');
+        }
+    }
+
+    require_once("./inc/top_layout.php");
 
     //Checks to see if there's a reset error message present
     if(isset($_SESSION['resetMsg'])) {
@@ -27,10 +49,16 @@
     if(isset($_POST['email-sub-btn'])) {
         //Verify the email
         if($Users->verifyEmail($_POST['raihn-email'])) {
-            if($Users->sendResetPassEmail($_POST['raihn-email'])){
-                $_SESSION['resetMsg'] = '<div class="alert alert-msg alert-success text-center">Password reset link has been sent to: ' .$email. '</div>';
-                header("Location: forgotpassword.php?state=email");
-            }else{
+            $token = $ForgotPasswordToken->createForgotPasswordToken($_POST['raihn-email']);
+            if(!is_null($token)) {
+                if($Users->sendResetPassEmail($_POST['raihn-email'], $token)){
+                    $_SESSION['resetMsg'] = '<div class="alert alert-msg alert-success text-center">Password reset link has been sent to: ' .$_POST['raihn-email']. '</div>';
+                    header("Location: forgotpassword.php?state=email");
+                }else{
+                    $_SESSION['resetMsg'] = '<div class="alert alert-msg alert-danger text-center">Error: Reset failed, please try again later</div>';
+                    header("Location: forgotpassword.php?state=email");
+                }
+            }else {
                 $_SESSION['resetMsg'] = '<div class="alert alert-msg alert-danger text-center">Error: Reset failed, please try again later</div>';
                 header("Location: forgotpassword.php?state=email");
             }
@@ -41,21 +69,42 @@
     }
 
     if(isset($_POST['pass-submit'])) {
-        if($Users->changePassword($_POST['new-password'], $_GET['email'])) {
-            $_SESSION['pwdMsg'] = "<div class='alert alert-success'>
-										  <strong>Success!</strong> Password set!
-										</div>";
-            //header("Location: forgotpassword.php?state=pass");
+        //Check if token is set as variable in URL
+        if(isset($_GET['tok'])) {
+            $token = $_GET['tok'];
+
+            $email = $ForgotPasswordToken->getEmail($token);
+            $changePassRes = $Users->changePassword($_POST['new-password'], $email);
+            if($changePassRes) {
+                $updatedToken = $ForgotPasswordToken->updateIsUsedToken($token);
+                if($updatedToken) {
+                    $_SESSION['loginMsg'] = "<div class='alert alert-success'>
+                                              <strong>Success!</strong> Password set!
+                                            </div>";
+                    header("Location: index.php");
+                }else {
+                    $_SESSION['pwdMsg'] = "<div class='alert alert-danger'>
+                                        <strong>Error!</strong> Trouble setting password. Please contact admin!
+                                    </div>";
+                    header("Location: forgotpassword.php?state=pass&token=".$token);
+                }
+            }else {
+                $_SESSION['pwdMsg'] = "<div class='alert alert-danger'>
+                                        <strong>Error!</strong> Trouble setting password. Please contact admin!
+                                    </div>";
+                header("Location: forgotpassword.php?state=pass&token=".$token);
+            }
+
         }else {
             $_SESSION['pwdMsg'] = "<div class='alert alert-danger'>
 											<strong>Error!</strong> Trouble setting password. Please contact admin!
 										</div>";
-            //header("Location: forgotpassword.php?state=pass");
+            header("Location: forgotpassword.php?state=email");
         }
     }
 ?>
     <?php
-        if(isset($pswMsg)) {
+        if(isset($pwdMsg)) {
             echo $pwdMsg;
         }
         if(isset($resetMsg)) {
@@ -78,7 +127,7 @@
                 </div>
             </form>
         <?php elseif ($_GET['state'] == 'pass'): ?>
-            <form method="post" class="forgot-submit" action="forgotpassword.php">
+            <form method="post" class="forgot-submit">
                 <div class="form-group row">
                     <label for="new-password" class="col-sm-2 col-form-label">New Password</label>
                     <div class="col-sm-10">

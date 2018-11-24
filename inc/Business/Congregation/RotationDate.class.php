@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: brypi
- * Date: 9/18/2018
- * Time: 11:45 AM
- */
 
 class RotationDate {
     function __construct() {

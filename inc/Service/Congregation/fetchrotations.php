@@ -1,7 +1,7 @@
 <?php
-    require_once(__DIR__."/../../Business/Congregation/DateRange.class.php");
-    $DateRange = new DateRange();
+    require_once(__DIR__."/../../Business/Congregation/RotationScheduleStatus.class.php");
+    $RotationScheduleStatus = new RotationScheduleStatus();
 
-    $dateRanges = $DateRange->getDistinctRotationNums();
+    $rotations = $RotationScheduleStatus->getNonScheduledFinalizedRotations();
 
-    echo json_encode($dateRanges);
+    echo json_encode($rotations);

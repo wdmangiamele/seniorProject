@@ -1,4 +1,6 @@
 <?php
+    /* file to insert congregation blackouts to congregation_blackout table
+     * */
     require_once(__DIR__."./../../Business/Congregation/CongregationBlackout.class.php");
     $CongregationBlackout = new CongregationBlackout();
 

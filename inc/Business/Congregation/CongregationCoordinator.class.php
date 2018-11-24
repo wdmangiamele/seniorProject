@@ -14,6 +14,22 @@ class CongregationCoordinator {
         $this->Functions = new Functions();
     }
 
+    /* function to get the congID value by using congregation coordinator email
+     * @param $congEmail - the email of the congregation coordinator
+     * @return $result - the congID
+     * @return null - return nothing if no congID was found
+     */
+    function getCongIDByEmail($coordEmail) {
+        $sqlQuery = "SELECT congID FROM congregation_coordinator WHERE coordinatorEmail = :coordEmail";
+        $params = array(":coordEmail" => $coordEmail);
+        $result = $this->DB->executeQuery($sqlQuery, $params, "select");
+        if($result) {
+            return $result[0]['congID'];
+        }else {
+            return null;
+        }
+    }//end getCongIDByEmail
+
     /* function to grab all congregation coordinators from MySQL
      * @return $bigString - a formatted HTML Bootstrap table of the MySQL return results
      */

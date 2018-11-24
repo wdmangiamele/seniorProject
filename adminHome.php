@@ -1,5 +1,13 @@
 <?php
     session_start();
+    if(!isset($_SESSION['userID']) || !isset($_SESSION['role'])) {
+        $_SESSION['appErrMsg'] = 'Login Error';
+        header('Location: error.php');
+    }elseif($_SESSION['role'] != 'Admin') {
+        $_SESSION['appErrMsg'] = 'Permission Error';
+        header('Location: error.php');
+    }
+
     require_once('./inc/top_layout.php');
 ?>
 

@@ -181,10 +181,24 @@ hr {
 	margin: 0 1%;
 }
 
+#back-to-login a {
+	text-decoration: none;
+	color: #a94442;
+}
+
+#back-to-login a:hover {
+	font-weight: bold;
+}
+
 #blackout-content {
 	float: left;
 	width: 45%;
 	margin-left: 3%;
+}
+
+#blackouts-inputted-msg {
+	color: #549F93;
+	font-weight: bold;
 }
 
 #blackouts-per-rotation {

@@ -2,8 +2,10 @@ $(document).ready(function() {
 	//Global Variables
 	var blackoutWeekDates;
 
+	//jQuery UI tooltip for flagged scheduled congregations
     $('[data-toggle="tooltip"]').tooltip();
 
+    //"Enter blackouts" button for inputblackouts.php
     $("#blackoutSubmit").on("click", function() {
 	    if($(".blackoutWeek:checked").length > 0) {
             $(".blackoutWeek:checked").each(function(i) {
@@ -67,6 +69,7 @@ $(document).ready(function() {
         }
 	});
 
+	//Finalize schedule button for adminCongSchedule.php
     $("body").on("click", "#admin-finalize", function() {
         //Getting the rotation number
         var rotNum = $(".tbl-heading").eq(1).attr("id").split("-");
@@ -85,8 +88,17 @@ $(document).ready(function() {
         }
     });
 
-    //On selection of one of the check marks for the host congregation blackouts
+    //On selection of one of the check marks for the input congregation blackouts
     $("body").on("change", ".blackoutWeek", function() {
+        if($(this).is(':checked')) {
+            if($(this).val() !== ('1970-01-01-'+$("#rot-number").text())) {
+                $(".blackoutWeek").eq(13).prop('checked', false);
+            }else {
+                for(var i = 0; i < 13; i++) {
+                    $(".blackoutWeek").eq(i).prop('checked', false);
+                }
+            }
+        }
         $('#calendar').fullCalendar('gotoDate', this.value);
     });
 
@@ -95,6 +107,7 @@ $(document).ready(function() {
         window.location.replace("adminCongSchedule.php");
     });
 
+    //Ok button once user gets confirmation that email has been sent
     $("body").on("click", "#email-cong-ok-btn", function() {
         window.location.replace("congregationcoordinators.php");
     });
@@ -103,13 +116,21 @@ $(document).ready(function() {
         window.location.replace("adminCongSchedule.php");
     });
 
+    //Ok button for input blackouts page (inputblackouts.php)
     $("body").on("click", "#input-ok-btn", function() {
         window.location.replace("inputblackouts.php");
     });
 
     $("body").on("click", ".schedule-button", function() {
-        var rotNum = $(this).attr("id").split("-");
-        $(".modal-title").text("Schedule rotation "+rotNum[1]+"?");
+        var lowestRotation = $(".rotation-number").eq(0).text();
+        var currentRotationClicked = $(this).attr('id').split('-')[1];
+        if(lowestRotation !== currentRotationClicked) {
+            $("#conf-sch-yes").hide();
+            $(".modal-title").text("Please schedule rotation "+lowestRotation+" first");
+        }else {
+            var rotNum = $(this).attr("id").split("-");
+            $(".modal-title").text("Schedule rotation "+rotNum[1]+"?");
+        }
     });
 
     //Select option for Scheduled Rotations page
@@ -266,9 +287,9 @@ $(document).ready(function() {
         window.location.replace("viewenteredblackouts.php");
     });
 
-    //"Ok" button on the modal for the "viewenteredblackouts.php" page
+    //"Ok" button on the modal for the "enteredblackoutsCongregation.php" page
     $("body").on("click", "#sch-ok-btn", function() {
-        window.location.replace("viewenteredblackouts.php");
+        window.location.replace("adminCongSchedule.php");
     });
 
     //Select option for the finalized congregation schedule page
@@ -357,11 +378,15 @@ $(document).ready(function() {
         $("#modalLabel").css("color","");
 	});
 
+    //Cancel button for adminCongSchedule.php modal
     $("#conf-data-cancel-finalize").on("click", function() {
+        $("#finalizeLabel").empty();
         $(".modal-body").empty();
         $("#finalizeLabel").css("color","");
     });
 
+    //Finalize button for adminCongSchedule.php modal
+    //Will send schedule to database to be finalized
     $("#conf-finalize").on("click", function() {
         var spanTag = $(".finalized-title").children("span");
         var rotNum = spanTag.eq(0).attr("id").split("-");
@@ -431,19 +456,28 @@ $(document).ready(function() {
 		}
 	});
 
+	//Cancel button for modal on enteredblackoutsCongregation.php
 	$("#conf-sch-cancel").on("click", function() {
         $("#modalLabel").css("color","");
+        $("#conf-sch-yes").show();
     });
 
+	//"conf" --> "confirm"
+    //Confirm button for modal on enteredblackoutsCongregation.php
+    //Runs algorithm on particular rotation schedule
 	$("#conf-sch-yes").on("click", function() {
         var titleText = $(".modal-title").text().split(" ");
         var rotNum = titleText[2].split("?");
         var scheduleRotations = postData({rotation_number: rotNum[0]}, "inc/Service/Congregation/schedulecongregations.php");
         $.when(scheduleRotations).then(function(scheduledResult) {
-            $("#modalLabel").text("Success: Rotation Scheduled!").css("color","#549F93");
-            $(".modal-footer").empty();
-            var okButton = $("<button>").attr({"type":"button","id":"sch-ok-btn"}).addClass("btn btn-success").text("Ok");
-            $(".modal-footer").append(okButton);
+            if(scheduledResult) {
+                $("#modalLabel").text("Success: Rotation Scheduled!").css("color","#549F93");
+                $(".modal-footer").empty();
+                var okButton = $("<button>").attr({"type":"button","id":"sch-ok-btn"}).addClass("btn btn-success").text("Ok");
+                $(".modal-footer").append(okButton);
+            }else {
+                $("#modalLabel").text("Fail: Schedule not made! Contact Admin!").css("color","#D63230");
+            }
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             $("#modalLabel").text("Fail: Schedule not made! Contact Admin!").css("color","#D63230");
         });
@@ -529,9 +563,10 @@ $(document).ready(function() {
 		}
 	});
 
-	//Changes the rotation number on modal
-	//Dynamically changes 13 week date ranges on modal
+	//Changes the rotation number
+	//Dynamically changes 13 week date ranges on inputblackouts.php
 	$("#nxt-btn").click(function() {
+
 		$("#prev-btn").css("display","inline");
 		var rotNumber = parseInt($("#rot-number").text());
 		$("#rot-number").text(rotNumber+1);
@@ -540,15 +575,24 @@ $(document).ready(function() {
 		$(".blackout-checkboxes").empty();
 		displayBlackoutRanges(dateRanges);
 
+		//Remove "blackouts already inputted" message
+        $("#blackouts-inputted-msg").remove();
+
+		var userEmail = $("#curr-user").text();
+		var updatedRotNum = $("#rot-number").text();
+        checkSelectedBlackoutsForRotation(userEmail, updatedRotNum);
+
+		//If the user has reached the last rotation number available to schedule, hide the next button
 		if(parseInt($("#rot-number").text()) == getMaxRotationNumber()){
 			$("#nxt-btn").css("display","none");
 		}
 	});
 
-	//Changes the rotation number on modal
-	//Dynamically changes 13 week date ranges on modal
+	//Changes the rotation number
+	//Dynamically changes 13 week date ranges on inputblackouts.php
 	$("#prev-btn").click(function() {
-		$("#nxt-btn").css("display","inline");
+
+        $("#nxt-btn").css("display","inline");
 		var rotNumber = parseInt($("#rot-number").text());
 		$("#rot-number").text(rotNumber-1);
 
@@ -556,6 +600,14 @@ $(document).ready(function() {
 		$(".blackout-checkboxes").empty();
 		displayBlackoutRanges(dateRanges);
 
+        //Remove "blackouts already inputted" message
+        $("#blackouts-inputted-msg").remove();
+
+        var userEmail = $("#curr-user").text();
+        var updatedRotNum = $("#rot-number").text();
+        checkSelectedBlackoutsForRotation(userEmail, updatedRotNum);
+
+        //If the user has reached the first rotation number available to schedule, hide the prev button
 		if(parseInt($("#rot-number").text()) == getMinRotationNumber()){
 			$("#prev-btn").css("display","none");
 		}
@@ -642,19 +694,27 @@ $(document).ready(function() {
     }
 
 	//Fetch the dates for congregations to input their blackouts on
+    //Done on page load
 	var blackoutWeekDates = getData({},"inc/Service/Congregation/fetchblackoutweeks.php");
 	$.when(blackoutWeekDates).then(function(blackoutWeeks) {
+	    //Create global variable blackoutWeekDates to use for later
 		blackoutWeekDates = blackoutWeeks;
         displayBlackoutRanges(blackoutWeeks);
 	}).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus);
     });
 
+	//Functions executed on load
     adminRotSchedules();
     createCongBlackoutsEnteredTable();
     getFinalizedSchedules();
 
+    var userEmail = $("#curr-user").text();
+    var rotNum = $("#rot-number").text();
+    checkSelectedBlackoutsForRotation(userEmail, rotNum);
+
 	//FUNCTIONS
+    //Helps create admin page where congregation admin can edit scheduled rotations
     function adminRotSchedules() {
         //Setup the admin congregation schedule
         var getRotationNums = getData({},"inc/Service/Congregation/fetchScheduledRotationNums.php");
@@ -665,14 +725,14 @@ $(document).ready(function() {
                 $("#admin-schedule").append($("<p>").text("Select a scheduled rotation to edit"));
                 var selectWithAllSchRots = $("<select>").attr("id","sch-rot-nums-select");
                 selectWithAllSchRots.append(createHeader("Scheduled Rotations"));
-                for(var i = 0; i < rotationNums.length; i++) {
+                for(var i = (rotationNums.length - 1); i >= 0; i--) {
                     var rotationOption = $("<option>").attr("value",rotationNums[i]["rotationNumber"]).text(rotationNums[i]["rotationNumber"]);
                     selectWithAllSchRots.append(rotationOption);
                 }
                 $("#admin-schedule").append(selectWithAllSchRots);
 
-                var getFullSchedule = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Service/Congregation/fetchfullschedule.php"),
-                    eligibleCongregations = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Service/Congregation/fetchEligibleCongregations.php");
+                var getFullSchedule = postData({rotation_number: rotationNums[rotationNums.length - 1]["rotationNumber"]},"inc/Service/Congregation/fetchfullschedule.php"),
+                    eligibleCongregations = postData({rotation_number: rotationNums[rotationNums.length - 1]["rotationNumber"]},"inc/Service/Congregation/fetchEligibleCongregations.php");
                 $.when(getFullSchedule,eligibleCongregations).then(function(fullSchedule, eligibleCongs) {
                     $(".loader").hide();
 
@@ -692,8 +752,8 @@ $(document).ready(function() {
                     var tableRow = $("<tr>");
                     var tableHeading1 = $("<th>").attr("scope", "col").addClass("tbl-heading");
                     tableHeading1.text("Start Date");
-                    var tableHeading2 = $("<th>").attr("scope", "col").addClass("tbl-heading").attr("id","Rotation-"+rotationNums[0]["rotationNumber"]);
-                    tableHeading2.text("Rotation #"+rotationNums[0]["rotationNumber"]);
+                    var tableHeading2 = $("<th>").attr("scope", "col").addClass("tbl-heading").attr("id","Rotation-"+rotationNums[rotationNums.length - 1]["rotationNumber"]);
+                    tableHeading2.text("Rotation #"+rotationNums[rotationNums.length - 1]["rotationNumber"]);
                     var tableHeading3 = $("<th>").attr("scope", "col").addClass("tbl-heading");
                     tableHeading3.text("Approved Schedule as of:");
 
@@ -802,7 +862,31 @@ $(document).ready(function() {
         }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
             console.log(textStatus);
         });
-    }
+    }//end adminRotSchedules
+
+    //Get all selected blackout weeks for a rotation
+    function checkSelectedBlackoutsForRotation(congEmail, rotNum) {
+        var selectedBlackouts = getData({congEmail: congEmail, rotation_number: rotNum}, 'inc/Service/Congregation/fetchselectedblackoutweeks.php');
+        $.when(selectedBlackouts).then(function(blackouts) {
+            if(blackouts) {
+                var blackoutsSelectArr = [];
+                for(var i = 0; i < blackouts.length; i++) {
+                    blackoutsSelectArr.push(blackouts[i]['startDate']);
+                }
+
+                var blackoutWeekOptions = $(".blackoutWeek");
+                for(var i = 0; i < blackoutWeekOptions.length; i++) {
+                    if(jQuery.inArray(blackoutWeekOptions.eq(i).val(), blackoutsSelectArr) !== -1) {
+                        blackoutWeekOptions.eq(i).prop('checked', true);
+                    }
+                }
+
+                $(".blackout-header").append($("<p>").attr("id","blackouts-inputted-msg").text("Blackouts inputted for this rotation"))
+            }
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(textStatus);
+        });
+    }//end getSelectBlackoutsForRotation
 
     //Creates table for the "Blackouts Entered" page
     function createCongBlackoutsEnteredTable() {
@@ -811,15 +895,18 @@ $(document).ready(function() {
         //Get all the rotations
         var getRotations = getData({},"inc/Service/Congregation/fetchrotations.php");
         $.when(getRotations).then(function(rotations) {
+            //Create bootstrap table
             var table = $("<table>").addClass("table").attr("id","congs-entered-blackouts");
             var tableHeads = $("<thead>");
             var tableRowForHeads = $("<tr>");
             tableRowForHeads.append($("<th>").attr("scope","col"));
             tableRowForHeads.append($("<th>").attr("scope","col").text("Rotation Number"));
 
+            //Fetch all the congregations
             var getCongregations = getData({},"inc/Service/Congregation/fetchcongregations.php");
             $.when(getCongregations).then(function(congregations) {
 
+                //Fetch all the blackouts entered by each congregation per rotation
                 var getCongBlackouts = getData({},"inc/Service/Congregation/fetchcongblackouts.php");
                 $.when(getCongBlackouts).then(function(allCongBlackouts) {
                     $(".loader").hide();
@@ -833,12 +920,15 @@ $(document).ready(function() {
                     for(var i = 0; i < rotations.length; i++) {
                         var tableRow = $("<tr>").addClass("blackouts-per-rot");
 
+                        //Add schedule button to table
                         var scheduleButton = $("<button>").addClass("btn btn-primary schedule-button").prop("disabled",true).attr({"id":"btn-"+rotations[i]["rotation_number"],"data-toggle": "modal", "data-target":"#conf-sch-submit"}).text("Schedule");
                         tableRow.append(scheduleButton);
 
+                        //Add the rotation number
                         var rotationTableHead = $("<th>").attr("scope","row").addClass("rotation-number").text(rotations[i]["rotation_number"]);
                         tableRow.append(rotationTableHead);
 
+                        //Add green checkmark or red 'X' depending on if congregation entered blackouts for a rotation
                         for(var j = 0; j < allCongBlackouts[rotations[i]["rotation_number"]].length; j++) {
                             if(allCongBlackouts[rotations[i]["rotation_number"]][j]["enteredBlackouts"] === "Yes") {
                                 var tableData = $("<td>").append($("<img src='img/greencheckmark.svg'/>").attr({"alt":"Green Checkmark", "id":"check-"+allCongBlackouts[rotations[i]["rotation_number"]][j]["congName"]+"-"+rotations[i]["rotation_number"]}).addClass("green-checkmark"));
@@ -854,6 +944,8 @@ $(document).ready(function() {
                     table.append(tableBody);
                     parentDiv.append(table);
 
+                    //Check to see if 'schedule' button should be enabled
+                    //Only enabled if all congregations have entered blackouts for a rotation
                     for (var k = 0; k < rotations.length; k++) {
                         var buttonInRow = $("#btn-"+rotations[k]["rotation_number"]);
                         var numberOfCheckmarks = buttonInRow.siblings("td").children(".green-checkmark").length;
@@ -862,6 +954,7 @@ $(document).ready(function() {
                         }
                      }
 
+                     //Create refresh button with a div holding the button
                     var adminBlackoutsEntered = $("<div>").attr("id","admin-blackouts-entered-buttons");
                     adminBlackoutsEntered.append($("<button>").attr("id","refr-table-btn").addClass("btn btn-primary").text("Refresh Table"));
                     $("#blackouts-per-rotation").append(adminBlackoutsEntered);
@@ -872,6 +965,8 @@ $(document).ready(function() {
         });
     }//end createCongBlackoutsEnteredTable
 
+    //Creates an array of date ranges for a rotation
+    //Used for inputblackouts.php
 	function createCustomDateRangeArray() {
 		var firstIndex = getCurrRotationsFirstWeek();
 		var lastIndex = firstIndex + 12;
@@ -882,14 +977,18 @@ $(document).ready(function() {
 		return dateRanges;
 	}//end createCustomDateRangeArray
 
+    //Creates a header for select option menu forms
 	function createHeader(text) {
 		return $("<option>").attr("disabled", "disabled").text(text);
 	}//end createHeader
 
+    //Creates a blank space option for select option menu forms
 	function createSpaceOption() {
         return $("<option>").attr("disabled", "disabled").text("");
 	}//end createSpaceOption
 
+    //Display all the blackout weeks for each rotation
+    //Used on inputblackouts.php for congregation users
 	function displayBlackoutRanges(data) {
 		for(var i = 0; i <= 12; i++) {
 			if(data[i]['holiday'] == 1) {
@@ -949,6 +1048,7 @@ $(document).ready(function() {
 		}
 	}//end displayBlackoutRanges
 
+    //Used to help find what, in blackoutWeekDates array, index is the first week of a specific rotation
 	function getCurrRotationsFirstWeek() {
 		var rotNumber = parseInt($("#rot-number").text());
 		var indexOfFirstWeek;
@@ -961,21 +1061,26 @@ $(document).ready(function() {
 		return indexOfFirstWeek;
 	}//end getCurrRotationsFirstWeek
 
+    //Get all the finalized schedules from legacy_host_blackout table in MySQL
     function getFinalizedSchedules() {
         //Get all the finalized schedules
         var finalizedRotNums = getData({},"inc/Service/Congregation/fetchfinalizedrotationnums.php");
         $.when(finalizedRotNums).then(function(finalizedRots) {
-            $("#finalized-schedule").append($("<p>").text("Select a schedule"));
-            var finalSchTools = $("<div>").attr("id","final-sch-tools");
+            var selectASchText = $("<p>").text("Select a schedule");
+            selectASchText.insertBefore("#final-sch-tools");
+
+            var finalSchTools = $("#final-sch-tools");
             var selectWithAllSchRots = $("<select>").attr("id","sch-finalized-rot");
             selectWithAllSchRots.append(createHeader("Scheduled Rotations"));
             for(var i = 0; i < finalizedRots.length; i++) {
                 var rotationOption = $("<option>").attr("value",finalizedRots[i]["rotation_number"]).text(finalizedRots[i]["rotation_number"]);
                 selectWithAllSchRots.append(rotationOption);
             }
-            finalSchTools.append(selectWithAllSchRots);
-            finalSchTools.append($("<img src='img/email-icon.svg' id='email-icon' data-toggle='modal' data-target='#send-final-sch-modal'/>"))
-            $("#finalized-schedule").append(finalSchTools);
+
+            //Select option added just before dummy span tag
+            //Need a dummy span tag in order to place just before the email SVG icon
+            //Email SVG icon is surrounded by PHP tags
+            selectWithAllSchRots.insertBefore("#dummy-span");
 
             var getFullSchedule = getData({rotation_number: finalizedRots[0]["rotation_number"]},"inc/Service/Congregation/fetchfinalizedschedules.php");
             $.when(getFullSchedule).then(function(fullSchedule) {
