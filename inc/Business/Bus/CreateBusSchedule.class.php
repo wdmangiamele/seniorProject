@@ -13,8 +13,8 @@
 
             $bus = new BusDriver();
 
-
-            $bus->clearTable("bus_driver");
+            //clear the table in the database for this specific month and year 
+            $bus->clearTable("bus_schedule", $month, $year);
 
             $numberOfDrivers = $bus->getNumberOfBusDrivers();
             
@@ -31,25 +31,25 @@
             //Array ( [0] => Array ( [driverID] => 1 [name] => John ) [1] => Array ( [driverID] => 2 [name] => Bill )
             $driverNames = $bus->getAllDriverNames();
 
-              $drivingLimits = $bus->getDriverLimits();
+            $drivingLimits = $bus->getDriverLimits();
 
-              $newDrivingLimits=array();
+            $newDrivingLimits=array();
 
 
-              foreach ($drivingLimits as $drivers){
+            foreach ($drivingLimits as $drivers){
                 $driverID="";
                 $driverLimit=0;
                 foreach ($drivers as $key => $value){
 
-                      if($key=="driverID"){
+                    if($key=="driverID"){
                         $driverID = $value;
-                      }
-                      if($key=="drivingLimit"){
+                    }
+                    if($key=="drivingLimit"){
                         $drivingLimits = $value;
-                      }
-                  }
-                  $newDrivingLimits[$driverID] = $drivingLimits;
-              }
+                    }
+                }
+                $newDrivingLimits[$driverID] = $drivingLimits;
+            }
 
 
 
@@ -57,7 +57,7 @@
             $primarySchedule = $schedule->createDraftSchedule($mostBlackouts, $driverNames, $blackouts, "", $newDrivingLimits);
 
             // echo "<pre>";
-            // print_r($primarySchedule);
+            // print_r($driverNames);
             // echo "<pre>";
 
             //backup schedule

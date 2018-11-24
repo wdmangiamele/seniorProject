@@ -52,9 +52,13 @@ private $bus;
             //printf("BACKUPGUY" . $backupDriverName);
 
           //if not available, make red
-          if ($driverName == "NO DRIVER AVAILABLE"){
-              $color =  "#f20000";
+          if ($driverName == "NO PRIMARY DRIVER AVAILABLE"){
+            $color =  "#f20000";
           }
+          else if ($driverName == "NO BACKUP DRIVER AVAILABLE"){
+            $color =  "#f20000";
+          }
+          
 
           $driver = array(
               "title" => $driverName,

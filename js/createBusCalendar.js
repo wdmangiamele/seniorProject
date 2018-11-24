@@ -97,12 +97,19 @@ $(document).ready(function() {
             timeOfDay = calEvent.start._i.substring(11,16);
             var color = calEvent.color;
 
+            console.log(color);
 
             //primary driver
             if(color == '#0000ff'){
                 role = 'Primary';
             }
             else if (color == '#008000'){
+                role = 'Backup';
+            }
+            else if (color == "#f20000" && calEvent.title == "NO PRIMARY DRIVER AVAILABLE"){
+                role = 'Primary';
+            }
+            else if (color == "#f20000" && calEvent.title == "NO BACKUP DRIVER AVAILABLE"){
                 role = 'Backup';
             }
 
