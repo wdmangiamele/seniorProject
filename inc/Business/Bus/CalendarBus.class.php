@@ -44,27 +44,34 @@ private $bus;
 
           if ($value['role'] == 'Primary'){
               $color = "#0000ff";
+              $borderColor = "#0000ff";
           }
           else if ($value['role'] == 'Backup'){
               $color = "#008000";
+              $borderColor = "#008000";
           }
 
             //printf("BACKUPGUY" . $backupDriverName);
 
           //if not available, make red
-          if ($driverName == "NO PRIMARY DRIVER AVAILABLE"){
-            $color =  "#f20000";
+          if ($driverName == "NO DRIVER AVAILABLE"){
+            $borderColor =  "#f20000";
           }
-          else if ($driverName == "NO BACKUP DRIVER AVAILABLE"){
-            $color =  "#f20000";
-          }
+        //   else if ($driverName == "NO BACKUP DRIVER AVAILABLE"){
+        //     $color =  "#f20000";
+        //   }
+
+        
+
           
 
           $driver = array(
               "title" => $driverName,
               "start" => $date . $realTime,
               "end" => $date . $realTime,
-              "color"=> $color
+              "color"=> $color,
+              "borderColor"=>$borderColor
+
           );
 
           array_push($finalBusDriverScheduleArr, $driver);
