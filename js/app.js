@@ -284,7 +284,7 @@ $(document).ready(function() {
 
     //Button on "viewenteredblackouts.php" page that refreshes the page
     $("body").on("click", "#refr-table-btn", function() {
-        window.location.replace("viewenteredblackouts.php");
+        window.location.replace("enteredblackoutsCongregation.php");
     });
 
     //"Ok" button on the modal for the "enteredblackoutsCongregation.php" page
