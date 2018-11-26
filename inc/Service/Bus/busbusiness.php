@@ -113,6 +113,7 @@ if (isset($_POST['type'])){
             $driverID = $db->getBusDriverID($_SESSION['userID']);
 
             $db->insertBlackouts($driverID, $date, $timeOfDay);
+        
 
     }
 

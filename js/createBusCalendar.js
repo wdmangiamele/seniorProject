@@ -3,6 +3,9 @@ $(document).ready(function() {
     var date = "";
     var timeOfDay = "";
     var role = "";
+    var month;
+    var monthNum;
+    var year;
 
     //Modular way to post data
     var postData = function(params, url) {
@@ -34,8 +37,7 @@ $(document).ready(function() {
         ];
         var monthYear = $('div.fc-left').children()[0].outerText;
         var split = monthYear.split(" ");
-        var month = split[0];
-        var monthNum = "";
+        month = split[0];
 
         for (i=0; i<theMonths.length; i++){
             if (theMonths[i] == month){
@@ -43,8 +45,7 @@ $(document).ready(function() {
             }
         }
 
-
-        var year = split[1];
+        year = split[1];
         $('#modalBusLabel').text("Send Schedule for " + month + " " + year);
     });
 
@@ -59,7 +60,28 @@ $(document).ready(function() {
         $(".modal-body").empty();
         var modalLoader = $("<div>").addClass("modal-loader");
         $(".modal-body").append(modalLoader);
-        window.location.replace("inc/Service/Bus/sendfinalbusschedule.php");
+        window.location.replace("inc/Service/Bus/sendfinalbusschedule.php?month="+monthNum+"&year="+year);
+
+        //post month and year to url 
+        // console.log(monthNum);
+        // console.log(year);
+
+
+        // $.ajax({
+        //     method: "POST",
+        //     url: "inc/Service/Bus/busbusiness.php",
+        //     data: {
+        //         'type': 'sendEmail',
+        //         'date': date,
+        //         'timeOfDay' : timeOfDay
+        //     },
+        //     success: function(data) {
+        //         createSelectMenu(data);
+        //     },
+        //     error: function(XMLHttpRequest, textStatus, errorThrown) {
+        //         //alert(textStatus);
+        //     }
+        // });
 
 
         // var sendEmail = postData({htmlSchedule: htmlTable}, "inc/Controller/sendfinalbusschedule.php");

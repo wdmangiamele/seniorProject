@@ -48,7 +48,7 @@
 
        function populateTable(month, year) {
          <?php
-               $schedule = $BusDriver->getScheduleForMonth(10,2018);
+          $schedule = $BusDriver->getScheduleForMonth(month, year);
          ?>;
 
          var schedule = <?php echo json_encode($schedule); ?>;
@@ -161,7 +161,9 @@
       <tbody id="tableBody"></tbody>
   </body>
   <script type="text/javascript">
-    populateTable(11,2018)
+    
+    populateTable(<?php echo $_GET['month']?>,<?php echo $_GET['year']?>);
+    
     var htmlTable = $('body').html();
 
     $.ajax({

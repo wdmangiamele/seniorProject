@@ -54,7 +54,7 @@
      <?php
          require_once(__DIR__."/../../Business/Bus/BusDriver.class.php");
           $BusDriver = new BusDriver();
-           $schedule = $BusDriver->getScheduleForMonth(10,2018);
+           $schedule = $BusDriver->getScheduleForMonth(11,2018);
     ?>;
 
      var schedule = <?php echo json_encode($schedule); ?>;
@@ -143,7 +143,7 @@
       <TBODY ID="tableBody"></TBODY>
       <TR>
     <script type="text/javascript">
-      populateTable(10,2018)
+      populateTable(11,2018)
     </script>
 
   </body>
