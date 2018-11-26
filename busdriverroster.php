@@ -12,17 +12,7 @@
 
 <?php
 	$busDriver = new BusDriver();
-
-	//Gets the data for all the bus drivers
-	
-	// $busDriver->getBusDriverData();
-	// echo "<pre>";
-	// print_r($busDriver->getScheduleForADriver(1));
-	// echo "<pre>";
-
-
-
-
+    $busDriver->getBusDriverData();
 ?>
 
 <?php require_once("./inc/bottom_layout.php"); ?>
