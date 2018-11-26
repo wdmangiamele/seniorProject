@@ -36,7 +36,7 @@
             </div>
 
 
-            <input id="generateButton"  type='submit' value'submitted' name='generateButton'>Generate Schedule</input>
+            <input id="generateButton"  type="submit" value="Generate Schedule" name="generateButton"></input>
 
 
         </form>

@@ -103,15 +103,11 @@ $(document).ready(function() {
             if(color == '#0000ff'){
                 role = 'Primary';
             }
+            //backup driver
             else if (color == '#008000'){
                 role = 'Backup';
             }
-            else if (color == "#f20000" && calEvent.title == "NO PRIMARY DRIVER AVAILABLE"){
-                role = 'Primary';
-            }
-            else if (color == "#f20000" && calEvent.title == "NO BACKUP DRIVER AVAILABLE"){
-                role = 'Backup';
-            }
+
 
             if (timeOfDay == '09:00'){
                 timeOfDay = 'AM';
