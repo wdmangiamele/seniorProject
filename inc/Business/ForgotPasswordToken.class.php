@@ -7,7 +7,7 @@ class ForgotPasswordToken {
         require_once(__DIR__."/Functions.class.php");
         $this->DB = new Database();
         $this->Functions = new Functions();
-    }
+    }//end ForgotPasswordToken constructor
 
     /* function to create token for forgot password table
      * @param $email - the correct user role

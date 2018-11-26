@@ -23,11 +23,12 @@ class CongregationSchedule {
         $this->DB = new Database();
         $this->Functions = new Functions();
         $this->LegacyHost = new LegacyHostBlackout();
+    }//end CongregationSchedule constructor
 
-        /*$this->FinalHostCongSchedule = null;
-        $this->FlaggedHostCongregations = null;*/
-    }
-
+    /* function to turn all of the rotation schedules into an associative array
+     * @return $fullCongSch - return all rotation schedules as an associative array if there are no flags
+     * @return $dates - return rotation schedules as a new associative array; new array has flagging considered
+     * */
     function createCompleteSchArray() {
         $flaggedCongregations = $this->getFlaggedCongregations();
         $fullCongSch = $this->getFullScheduleInArrayForm();
@@ -56,7 +57,7 @@ class CongregationSchedule {
             }
             return $dates;
         }
-    }
+    }//end createCompleteSchArray
 
     /* function to delete a data from the congregation_schedule in the SQL table
      * @return boolean - return true or false if the data was successfully deleted
@@ -216,6 +217,9 @@ class CongregationSchedule {
         }
     }//end getFullSchedule
 
+    /* function to turn all of the rotation schedules into an associative array
+     * @return $finalHostCongScheduleArr - all of the rotation schedules as an associative array
+     * */
     function getFullScheduleInArrayForm() {
         $fullSchedule = $this->getFullSchedule();
 
@@ -282,6 +286,9 @@ class CongregationSchedule {
     }//end getRotationNumber
 
     /* function to get the scheduled congregation names per rotation
+     * @param $rotationNum - the desired rotation number
+     * @return $schCongNames - return array of congregation names
+     * @return null - return nothing if no data was found
      * */
     function getScheduledCongsPerRotation($rotationNum) {
         $sqlQuery = "SELECT congID FROM congregation_schedule WHERE rotationNumber = :rotNum";
@@ -362,7 +369,7 @@ class CongregationSchedule {
         }else {
             return null;
         }
-    }//end getStartDatesNoParams
+    }//end getStartDates
 
     /* function to get the week number of a congregation in the congregation schedule
      * @param $congID - the congregation ID of a certain congregation in MySQL
@@ -571,7 +578,6 @@ class CongregationSchedule {
 
         //Find all the start dates that weren't scheduled
         $scheduled = true;
-//        for($i = 0; $i < sizeof($numOfRotations); $i++) {
 
             //Get the start dates for each rotation, use for comparisons sake
 //            $startDates = $this->DateRange->getStartDateBasedRotWithoutZero($numOfRotations[$i]['rotation_number']);
@@ -628,7 +634,6 @@ class CongregationSchedule {
                     }
                 }
             }
-//        }
 
         //Schedule congregations with flags if there are any
         return $this->scheduleFlaggedCongregations($rotNum);
@@ -721,6 +726,11 @@ class CongregationSchedule {
         return $scheduled;
     }//end scheduleFlaggedCongregations
 
+    /* function to check if a scheduled congregation is at least 10 weeks apart
+     * @param $congID - the congregation ID
+     * @param $startDate - the date which the congregation is going to be scheduled for
+     * @return boolean - return true or false depending if the congregation is at least 10 weeks apart
+     * */
     function scheduledAtLeast10WeeksApart($congID, $startDate) {
         //Test to see if the congregation was scheduled within a 10 week span of the date we're trying to schedule
         $scheduledAtLeast10Apart = true;
@@ -746,6 +756,12 @@ class CongregationSchedule {
         return $scheduledAtLeast10Apart;
     }//end scheduledAtLeast10WeeksApart
 
+    /* function to check if a scheduled congregation is scheduled on a holiday that they didn't do a year ago
+     * @param $year - the year of the holiday that they're going to be scheduled for
+     * @param $startDate - the date of the holiday week
+     * @param $congID - the congregation ID
+     * @return boolean - return true or false depending on if the congregation did the holiday a year ago
+     * */
     function scheduledHolidayAYearAgo($year, $startDate, $congID) {
         //First, identify which holiday it is
         $holidayName = $this->DateRange->identifyHoliday($year, $startDate);

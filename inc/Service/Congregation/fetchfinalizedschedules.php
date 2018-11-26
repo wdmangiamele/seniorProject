@@ -6,8 +6,10 @@
 
     $rotNum = $_GET['rotation_number'];
 
+    //Based on the rotation number, get the schedule
     $legacyData = $LegacyHostBlackout->getLegacyDataForOneRotation($rotNum);
 
+    //Use returned data to create JSON data
     $fullSchedulePerRotation = array();
     for($i = 0; $i < sizeof($legacyData); $i++) {
         $tempArr = array(

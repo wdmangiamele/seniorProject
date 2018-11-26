@@ -6,7 +6,7 @@ class RotationDate {
 
         $this->DB = new Database();
         $this->Functions = new Functions();
-    }
+    }//end RotationDate constructor
 
     /* function to insert rotation numbers with start and end dates
      * @return $insertResult - either true or false depending on if the data was successfully inserted

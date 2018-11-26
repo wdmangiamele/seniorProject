@@ -16,7 +16,7 @@ class DateRange {
         $this->Functions = new Functions();
         $this->RotationDate = new RotationDate();
         $this->RotationScheduleStatus = new RotationScheduleStatus();
-    }
+    }//end DateRange constructor
 
     /* function to if a date range has a holiday in it for a given year
      * @param $year - year that has the date range that is being tested
@@ -333,21 +333,20 @@ class DateRange {
                 return $holiday;
             }
         }
-    }
+    }//end identifyHoliday
 
     function insertCalendarEvent($blackoutWeekNumArray) {
         $selectQuery = "SELECT congID FROM congregation_coordinator WHERE coordinatorEmail = :coorEmail";
         $params = array(':coorEmail' => $_SESSION['email']);
         $result = $this->DB->executeQuery($selectQuery, $params, "select");
 
-        /*for($i = 0; $i < sizeof($blackoutWeekNumArray); $i++ ){*/
         $insertQuery = "INSERT INTO congregation_blackout (congID, weekNumber, startDate) VALUES (:congID, :weekNum, :startDate)";
         $params2 = array(':congID' => $result[0]['congID'], ':weekNum' => $blackoutWeekNumArray[0], ':startDate' => '2018-01-08');
         $result = $this->DB->executeQuery($insertQuery, $params2, "insert");
         if($result == 0) {
             return $params2;
         }
-        /*}*/
+
         return true;
     }//end insertCalendarEvent
 
@@ -452,6 +451,10 @@ class DateRange {
         }
     }//end showBlackoutWeeks
 
+    /* function to check if a date is in the correct format
+     * @param $date - the desired date to check
+     * @param $format - the format that the date is supposed to be in
+     * */
     function validateDate($date, $format) {
         $d = DateTime::createFromFormat($format, $date);
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits, changing the comparison from == to === fixes the issue.

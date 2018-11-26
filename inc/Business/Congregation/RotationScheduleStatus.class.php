@@ -13,7 +13,8 @@ class RotationScheduleStatus {
 
         $this->DB = new Database();
         $this->Functions = new Functions();
-    }
+    }//end RotationScheduleStatus constructor
+
     /* function to get any rotations not scheduled or finalized
      * @return $result - any non finalized or scheduled rotations
      * @return null - return nothing if no rotations were found

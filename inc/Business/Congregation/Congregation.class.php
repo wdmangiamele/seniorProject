@@ -6,7 +6,7 @@
             require_once(__DIR__."/../Functions.class.php");
 			$this->DB = new Database();
 			$this->Functions = new Functions();
-		}
+		}//end Congregation constructor
 
         /* function to get all the congregation names
          * @return $result - MySQL data holding all the congregation names

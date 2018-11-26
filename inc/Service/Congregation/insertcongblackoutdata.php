@@ -7,7 +7,10 @@
     $congBlackouts = $_POST['congBlackoutData'];
     $email = $_POST['email'];
 
+    //Insert congregation's blackouts based on their email
     $insertResult = $CongregationBlackout->insertBlackout($congBlackouts,$email);
+
+    //Create JSON data based on if their blackouts were successfully inserted
     if($insertResult) {
         $insertResult = array(
             "result" => $insertResult

@@ -33,6 +33,7 @@ $(document).ready(function() {
         }
     });
 
+    //Button for updating schedules on the adminCongSchedule.php page
 	$("body").on("click", "#admin-submit", function() {
 		var editedDivs = $("tr").filter(function() {
             var editedColor = $(this).css("background-color");
@@ -112,6 +113,7 @@ $(document).ready(function() {
         window.location.replace("congregationcoordinators.php");
     });
 
+    //Ok button for modal on adminCongSchedule.php page once scheduled has been finalized
     $("body").on("click", "#finalize-ok-btn", function() {
         window.location.replace("adminCongSchedule.php");
     });
@@ -121,6 +123,7 @@ $(document).ready(function() {
         window.location.replace("inputblackouts.php");
     });
 
+    //Schedule button for enteredblackoutsCongregation.php page
     $("body").on("click", ".schedule-button", function() {
         var lowestRotation = $(".rotation-number").eq(0).text();
         var currentRotationClicked = $(this).attr('id').split('-')[1];
@@ -364,6 +367,7 @@ $(document).ready(function() {
         window.location.replace("finalizedschedules.php");
     });
 
+    //Tool tip for flagged congregations on adminCongSchedule.php page
     $("body").on("mouseover", ".warning-symbol", function() {
         console.log($(this).attr("id"));
     });
@@ -373,12 +377,13 @@ $(document).ready(function() {
 
     });
 
+    //Cancel button for adminCongSchedule.php make updates modal
     $("#conf-data-cancel").on("click", function() {
         $(".modal-body").empty();
         $("#modalLabel").css("color","");
 	});
 
-    //Cancel button for adminCongSchedule.php modal
+    //Cancel button for adminCongSchedule.php finalize modal
     $("#conf-data-cancel-finalize").on("click", function() {
         $("#finalizeLabel").empty();
         $(".modal-body").empty();
@@ -483,6 +488,8 @@ $(document).ready(function() {
         });
     });
 
+	//Email icon for congregationcoordinators.php page
+    //Load select option with all congregation coordinator emails
 	$("#coord-email-icon").on("click", function() {
         var coordinatorEmails = getData({}, "inc/Service/Congregation/fetchcoordinatoremails.php");
         $.when(coordinatorEmails).then(function(emails) {
@@ -492,6 +499,7 @@ $(document).ready(function() {
         });
     });
 
+	//Cancel button for congregationcoordinators.php page
 	$("#email-cong-cancel").on("click", function() {
         $("#modalLabel").css("color","");
     });
@@ -516,12 +524,14 @@ $(document).ready(function() {
             $("#modalLabel").text("Fail: Email Not Sent!").css("color","#D63230");
         });
     });
-	
+
+	//Cancel button for inputblackotus.php modal
 	$("#input-data-cancel").on("click", function() {
         $(".modal-body").empty();
         $("#modalLabel").css("color","");
     });
 
+	//Enter blackouts button for inputblackouts.php modal
     $("#input-data-save").on("click", function() {
         var congBlackouts = [];
         $(".blackoutWeek:checked").each(function(i) {
@@ -917,7 +927,16 @@ $(document).ready(function() {
                     table.append(tableHeads);
 
                     var tableBody = $("<tbody>");
-                    for(var i = 0; i < rotations.length; i++) {
+
+                    //forLoopLength used to show maximum amount of rotations shown on the blackouts entered paged for
+                    //congregation admins
+                    var forLoopLength = 0;
+                    if(rotations.length < 10) {
+                        forLoopLength = rotations.length;
+                    }else {
+                        forLoopLength = 10;
+                    }
+                    for(var i = 0; i < forLoopLength; i++) {
                         var tableRow = $("<tr>").addClass("blackouts-per-rot");
 
                         //Add schedule button to table

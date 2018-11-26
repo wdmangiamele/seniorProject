@@ -12,7 +12,7 @@ class CongregationCoordinator {
         require_once(__DIR__."/../Functions.class.php");
         $this->DB = new Database();
         $this->Functions = new Functions();
-    }
+    }//end CongregationCoordinator constructor
 
     /* function to get the congID value by using congregation coordinator email
      * @param $congEmail - the email of the congregation coordinator

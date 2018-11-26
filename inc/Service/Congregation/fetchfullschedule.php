@@ -8,8 +8,10 @@
 
     $rotationNum = $_POST['rotation_number'];
 
+    //Based on the rotation number, get the schedule
     $fullSchedule = $CongregationSchedule->getSchedulePerRotation($rotationNum, "startDate");
 
+    //Use returned data to create JSON data
     $fullSchedulePerRotation = array();
     for($i = 0; $i < sizeof($fullSchedule); $i++) {
         $tempArr = array(

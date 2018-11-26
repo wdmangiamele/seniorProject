@@ -2,9 +2,12 @@
 
 class Functions {
     function __construct() {
+    }//end Functions constructor
 
-    }
-
+    /* function to add seven days to specific date
+     * @param $date - the desired date
+     * @return $newDate - the new date with an added seven days
+     * */
     function addSevenDays($date) {
         $newDate = date("Y-m-d", strtotime("+7 days", strtotime($date)));
         return $newDate;

@@ -12,7 +12,7 @@ class LegacyHostBlackout {
         require_once(__DIR__."/../Functions.class.php");
         $this->DB = new Database();
         $this->Functions = new Functions();
-    }
+    }//end LegacyHostBlackout constructor
 
     /* function to get all the legacy data
      * @return $result - all the legacy data
@@ -44,8 +44,8 @@ class LegacyHostBlackout {
         }
     }//end getLegacyDataForOneCong
 
-    /* function to get all the legacy data for one congregation
-     * @param $congID - the congregation ID of a certain congregation in MySQL
+    /* function to get all the legacy data for one rotation
+     * @param $rotNum - the desired rotation number
      * @return $result - all the legacy data for one rotation
      * @return null - return no data if no data successfully fetched
      * */
@@ -58,9 +58,9 @@ class LegacyHostBlackout {
         }else {
             return null;
         }
-    }//end getLegacyDataForOneCong
+    }//end getLegacyDataForOneRotation
 
-    /* function to get distinct rotation nums
+    /* function to get distinct rotation numbers
      * @return $result - all the distinct rotation nums
      * @return null - return no data if no data successfully fetched
      * */

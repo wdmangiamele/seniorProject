@@ -4,8 +4,10 @@
 
     $rotNum = $_POST['rotation_number'];
 
+    //Send finalized rotation schedule to all congregations via email
     $sendResult = $CongregationSchedule->sendFinalizedCongSchedule($rotNum);
 
+    //Create JSON data based on if the email was successfully sent
     $sendResultArr = array();
     if($sendResult) {
         $sendResultArr = array(

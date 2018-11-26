@@ -6,8 +6,10 @@
 
     $rotNum = $_POST['rotation_number'];
 
+    //Using the rotation number, schedule the rotation
     $scheduledResult = $CongregationSchedule->scheduleCongregations($rotNum);
 
+    //Update the rotation schedule's status to "Scheduled"
     if($scheduledResult) {
         $scheduledResult = $RotationScheduleStatus->updateRotationStatus($rotNum, "Scheduled");
     }

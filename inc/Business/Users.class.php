@@ -1,12 +1,11 @@
 <?php
 	class Users {
-
 		function __construct() {
             require_once(__DIR__."/../Data/db.class.php");
             require_once(__DIR__."/Functions.class.php");
             $this->DB = new Database();
             $this->Functions = new Functions();
-		}
+		}//end Users constructor
 
 		/* function to change the password of the respective user
 		 * @param $newPass - the new desired password
@@ -30,15 +29,6 @@
 
 		}//end changePassword
 
-        /* function to check the user role see if it's correctly able to see a page
-         * @param $correctUserRole - the correct user role
-         * @param $currUserRole - the current role of the user
-         * @return boolean - boolean showing user is correct
-         */
-		function checkIncorrectUserRole($correctUserRole, $currUserRole) {
-
-		}//end checkIncorrectUserRole
-
 		/* function to get the user ID from MySQL
 		 * @param $email - email of the user
 		 * @return $result[0]['userID'] - the user ID from MySQL
@@ -52,7 +42,7 @@
 			}else {
 				return null;
 			}
-		}
+		}//end getUserID
 
 		/* function to get the user role from MySQL
 		 * @param $email - email of the user
@@ -81,7 +71,7 @@
 			}else {
 				return false;
 			}
-		}//end checkIfNewUser
+		}//end needsNewPass
 
 		/* function that will send a reset password email
 		 * @param $email - the email of the user who needs their password reset

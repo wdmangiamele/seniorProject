@@ -12,7 +12,6 @@
     $congIDs = $Congregation->getCongregationID();
 
     $congEligibleList = array();
-//    for($i = 0; $i < sizeof($rotations); $i++) {
     $startDates = $CongregationSchedule->getStartDatesByRotation($rotationNum);
     for($h = 0; $h < sizeof($startDates); $h++) {
         $blackouts = $CongregationBlackout->getCongBlackoutsByStartDate($startDates[$h]["startDate"]);
@@ -58,5 +57,4 @@
             }
         }
     }
-//    }
     echo json_encode($congEligibleList);

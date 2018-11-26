@@ -14,7 +14,7 @@ class CongregationBlackout {
         $this->DateRange = new DateRange();
         $this->DB = new Database();
         $this->Functions = new Functions();
-    }
+    }//end CongregationBlackout constructor
 
     /* function that counts the number entries for each entry of a specified column in MySQL
      * @param $array - the array of data from MySQL
@@ -52,8 +52,6 @@ class CongregationBlackout {
         return $countedArray;
     }//end countValues
 
-    //Forth, check to see if more than 5 host congregations have a week blacked out
-    //Schedule that week first
     /* function that checks to see if a blackout week has more than 5 congregations blacking it out
      * @return $datesMoreThanFive - array holding start dates for blackout weeks with more than 5 congregations blacking it out
      * */
@@ -64,12 +62,16 @@ class CongregationBlackout {
         return $sortedDates;
     }//end dateBlackoutCount
 
+    /* function that checks to see if a blackout week has more than 5 congregations blacking it out
+     * does it for one rotation
+     * @return $sortedDates - array holding start dates for blackout weeks with more than 5 congregations blacking it out
+     * */
     function dateBlackoutCountForOneRotation($rotNum) {
         $result = $this->getCongBlackoutsByRotationWithBlackouts($rotNum,"startDate");
         $countedBlackedOutDates = $this->countValues($result,$result[0]["startDate"],"startDate", "count");
         $sortedDates = $this->Functions->sortArray($countedBlackedOutDates,"startDate","count");
         return $sortedDates;
-    }//end dateBlackoutCount
+    }//end dateBlackoutCountForOneRotation
 
     /* function that gets blackout weeks for one congregation
      * @param $id - the id of congregation
@@ -87,7 +89,6 @@ class CongregationBlackout {
         }
     }//end getBlackoutsForOneCongregation
 
-    //First, grab congregations and their blackout dates
     /* function that fetches all data from congregation_blackouts
      * @param $orderByVar - variable used to help order the incoming select query
      * @return $result - if data was successfully fetched return the data
@@ -103,7 +104,7 @@ class CongregationBlackout {
         }
     }//end getCongBlackouts
 
-    /* function that fetches all data from congregation_blackouts
+    /* function that fetches all data from congregation_blackouts where the congregations have blackouts
      * @param $orderByVar - variable used to help order the incoming select query
      * @return $result - if data was successfully fetched return the data
      * @return null - return no data if no data successfully fetched
@@ -119,7 +120,7 @@ class CongregationBlackout {
         }
     }//end getCongBlackoutsWithBlackouts
 
-    /* function that fetches all data from congregation_blackouts
+    /* function that fetches data from congregation_blackouts for a single rotation
      * @param $rotNum - the desired rotation number to get blackouts for
      * @param $orderByVar - variable used to help order the incoming select query
      * @return $result - if data was successfully fetched return the data
@@ -151,7 +152,7 @@ class CongregationBlackout {
         }else {
             return null;
         }
-    }//end getCongBlackoutsByRotation
+    }//end getCongBlackoutsDistinctCongIDByRotation
 
     /* function that fetches blackout dates that aren't a "no blackouts" date (1970-01-01)
      * @param $rotNum - the desired rotation number to get blackouts for
@@ -203,10 +204,6 @@ class CongregationBlackout {
         }
     }//end getCongBlackoutsByCongIDAndRotNum
 
-    //Second, loop through all congregations with their blackout dates and
-    //count out each date that's blacked out
-
-    //Account for Congregations that don't have blackout dates
     /* function that gets the blackouts entered, counts the number of dates each congregation blacked out, then sorts them
      * function helps determine which congregation has the most blackout/unavailability week
      * @return $sortedBlackouts - sorted number of blackout dates entered for each congregation
@@ -240,7 +237,7 @@ class CongregationBlackout {
         $countedData = $this->countValues($result,$result[0]["congID"],"congID","count");
         $sortedBlackouts = $this->Functions->sortArray($countedData,"congID","count");
         return $sortedBlackouts;
-    }//end getCongBlackoutCountWithBlackouts
+    }//end getCongBlackoutCountByRotationWithBlackouts
 
     /* function that fetches all the congregations with no blackouts
      * @param $orderByVar - variable used to help order the incoming select query
