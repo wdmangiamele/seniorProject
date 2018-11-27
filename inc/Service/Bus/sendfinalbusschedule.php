@@ -47,9 +47,11 @@
        }
 
        function populateTable(month, year) {
+        
          <?php
-          $schedule = $BusDriver->getScheduleForMonth(month, year);
-         ?>;
+          $schedule = $BusDriver->getScheduleForMonth($_GET['month'], $_GET['year']);
+         ?>; 
+
 
          var schedule = <?php echo json_encode($schedule); ?>;
          //month -1 as our array begins at 0 index
@@ -162,8 +164,13 @@
   </body>
   <script type="text/javascript">
     
-    populateTable(<?php echo $_GET['month']?>,<?php echo $_GET['year']?>);
+    var month = "<?php echo $_GET['month'];?>";
+    var year = "<?php echo $_GET['year'];?>";
     
+
+
+    populateTable(month, year);
+
     var htmlTable = $('body').html();
 
     $.ajax({
