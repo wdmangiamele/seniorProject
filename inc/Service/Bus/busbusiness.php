@@ -121,21 +121,27 @@ if (isset($_POST['type'])){
             $month = (int)$_POST['month'];
             $year = (int)$_POST['year'];
 
-            $allBlackouts = $db->getNonSubmittedBlackouts($month, $year);
-            //var_dump($allBlackouts);
-            //var_dump($month);
-            //var_dump($year);
+            $allBlackouts = $db->getAllSubmittedBlackouts();
 
-            $blackouts = array();
+            $blackoutDrivers = $db->getNonSubmittedBlackouts($month, $year);
+
+            $blackoutsall = array();
             foreach($allBlackouts as $value){
                 //this is an array of all the drivers
                 //print_r($allBlackouts);
                 $blackouts[] = $value['name'];
             }
 
-            //print_r($blackouts);
+            $blackoutsthis = array();
+            foreach($blackoutDrivers as $value){
+                //this is an array of all the drivers
+                //print_r($allBlackouts);
+                $blackoutsthis[] = $value['name'];
+            }
 
-            echo json_encode($allBlackouts);
+            $diffArray = array_diff($blackouts, $blackoutsthis);
+
+            echo json_encode($diffArray);
             break;
 
 

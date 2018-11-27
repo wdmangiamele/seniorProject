@@ -303,9 +303,16 @@
 		}
 
 
+		function getAllSubmittedBlackouts(){
+			$sql = "select distinct name FROM bus_driver join bus_blackout using (driverID);";
+
+			$result = $this->db->executeQuery($sql, $this->Functions->paramsIsZero(),"select");
+
+			return $result;
+		}
+
 		function getNonSubmittedBlackouts($month, $year){
-			$sql = "SELECT DISTINCT name from bus_driver join bus_blackout using (driverID) where NOT EXISTS
-			(select distinct name from bus_driver join bus_blackout using (driverID) where SUBSTRING(date,1,4) = :year AND SUBSTRING(date,6,2) = :month)";
+			$sql = "SELECT distinct name from bus_driver join bus_blackout using (driverID) where SUBSTRING(date,1,4) = :year AND SUBSTRING(date,6,2) = :month";
 
 			$params = array(":year" => $year, ":month" => $month);
 
@@ -313,6 +320,7 @@
 
 			return $result;
 		}
+		
 
 
 

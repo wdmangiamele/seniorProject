@@ -251,13 +251,13 @@ $(document).ready(function() {
 
 
       function createTable(param){
-
+        console.log(param);
           $('#notSubmittedTable').show();
 
           $('#notSubmittedTable').empty();
           $('#notSubmittedTable').append("<tr><td>NO BLACKOUTS SUBMITTED </td></tr>")
           for (var key in param){
-              $('#notSubmittedTable').append("<tr><td>"+param[key]['name']+"</td></tr>");
+              $('#notSubmittedTable').append("<tr><td>"+param[key]+"</td></tr>");
           }
       }
 
