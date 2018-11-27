@@ -115,7 +115,7 @@ $(document).ready(function() {
 
     //Ok button for modal on adminCongSchedule.php page once scheduled has been finalized
     $("body").on("click", "#finalize-ok-btn", function() {
-        window.location.replace("adminCongSchedule.php");
+        window.location.replace("finalizedschedules.php");
     });
 
     //Ok button for input blackouts page (inputblackouts.php)
@@ -537,6 +537,7 @@ $(document).ready(function() {
         $(".blackoutWeek:checked").each(function(i) {
             congBlackouts.push($(this).val());
         });
+        console.log(congBlackouts);
         var currUserEmail = $("#curr-user").text();
         var insertResult = postData({congBlackoutData: congBlackouts, email: currUserEmail}, "inc/Service/Congregation/insertcongblackoutdata.php");
         $.when(insertResult).then(function(congInsertResult) {
@@ -785,10 +786,10 @@ $(document).ready(function() {
                                 var strongTag = $("<strong>");
                                 strongTag.text(fullSchedule[0][h]["startDate"]+" HOLIDAY!");
 
-                                tableData.append($("<img src='img/warningsymbol.svg'/>").addClass("warning-symbol").attr("id",fullSchedule[0][h]["reasonForFlag"]));
+                                tableData.append($("<img src='img/warningsymbol.svg'/>").addClass("warning-symbol").attr("id",fullSchedule[0][h]["reasonForFlag"]).attr("title",fullSchedule[0][h]["reasonForFlag"]));
                                 tableData.append(strongTag);
                             }else {
-                                tableData.append($("<img src='img/warningsymbol.svg'/>").addClass("warning-symbol").attr("id",fullSchedule[0][h]["reasonForFlag"]));
+                                tableData.append($("<img src='img/warningsymbol.svg'/>").addClass("warning-symbol").attr("id",fullSchedule[0][h]["reasonForFlag"]).attr("title",fullSchedule[0][h]["reasonForFlag"]));
                                 tableData.append("  "+fullSchedule[0][h]["startDate"]);
                             }
                         }else {
