@@ -9,6 +9,15 @@
 	src: url('../fonts/Freight Sans Book Italic.otf');
 }
 
+#notSubmittedTable{
+	margin-top: 5em;
+    display: none;
+}
+
+#generateDiv{
+	margin: 2em;
+}
+
 /* CORE ELEMENTS */
 hr {
 	border: 1px solid rgb(204,204,204);

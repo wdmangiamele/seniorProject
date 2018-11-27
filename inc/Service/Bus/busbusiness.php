@@ -16,7 +16,7 @@
 
     $result = $db->updateDriverLimits($driverID, $dayLimit);
 
-    header('Location: ../../../inputBusBlackouts.php'); 
+    header('Location: ../../../inputBusBlackouts.php');
 
 }
 
@@ -113,7 +113,31 @@ if (isset($_POST['type'])){
             $driverID = $db->getBusDriverID($_SESSION['userID']);
 
             $db->insertBlackouts($driverID, $date, $timeOfDay);
-        
+        case 'checkblackouts':
+
+            $db = new BusDriver();
+
+
+            $month = (int)$_POST['month'];
+            $year = (int)$_POST['year'];
+
+            $allBlackouts = $db->getNonSubmittedBlackouts($month, $year);
+            //var_dump($allBlackouts);
+            //var_dump($month);
+            //var_dump($year);
+
+            $blackouts = array();
+            foreach($allBlackouts as $value){
+                //this is an array of all the drivers
+                //print_r($allBlackouts);
+                $blackouts[] = $value['name'];
+            }
+
+            //print_r($blackouts);
+
+            echo json_encode($allBlackouts);
+            break;
+
 
     }
 

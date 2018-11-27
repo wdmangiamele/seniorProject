@@ -36,9 +36,9 @@
 
 		function updateDriverLimits($driverID, $dayLimit){
 			$sql = "UPDATE bus_driver SET drivingLimit = :drivingLimit WHERE (driverID = :driverID)";
-			
+
 			$params= array(":drivingLimit" => $dayLimit, ":driverID" => $driverID);
-			
+
 			$result = $this->db->executeQuery($sql, $params, "update");
 
 			if($result > 0) {
@@ -282,7 +282,6 @@
 
 
 		function clearTable($tableName, $month, $year){
-
 			$sql = "DELETE FROM $tableName where SUBSTRING(date,1,4) = :year AND SUBSTRING(date,6,2) = :month";
 
 			$params = array(":month" => $month, ":year" => $year);
@@ -291,6 +290,31 @@
 
 			return $tableName;
 		}
+
+
+		function getSubmittedBlackouts($month, $year){
+			$sql = "SELECT DISTINCT name from bus_driver join bus_blackout using (driverID) where SUBSTRING(date,1,4) = :year AND SUBSTRING(date,6,2) = :month";
+
+			$params = array(":year" => $year, ":month" => $month);
+
+			$result = $this->db->executeQuery($sql, $params, "select");
+
+			return $result;
+		}
+
+
+		function getNonSubmittedBlackouts($month, $year){
+			$sql = "SELECT DISTINCT name from bus_driver join bus_blackout using (driverID) where NOT EXISTS
+			(select distinct name from bus_driver join bus_blackout using (driverID) where SUBSTRING(date,1,4) = :year AND SUBSTRING(date,6,2) = :month)";
+
+			$params = array(":year" => $year, ":month" => $month);
+
+			$result = $this->db->executeQuery($sql, $params, "select");
+
+			return $result;
+		}
+
+
 
 		/* function to grab the bus driver data from MySQL
 		 * echos back a formatted HTML Bootstrap table of the MySQL return results

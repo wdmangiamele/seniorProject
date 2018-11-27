@@ -62,7 +62,7 @@ $(document).ready(function() {
         $(".modal-body").append(modalLoader);
         window.location.replace("inc/Service/Bus/sendfinalbusschedule.php?month="+monthNum+"&year="+year);
 
-        //post month and year to url 
+        //post month and year to url
         // console.log(monthNum);
         // console.log(year);
 
@@ -101,9 +101,70 @@ $(document).ready(function() {
     });
 
 
-    $('#generateButton').on("click", function() {
-        var month = $("#months option:selected").text();
+    $('#checkBlackouts').on("click",function(){
+
+        var month = $("#months option:selected").val();
         var year = $("#year option:selected").text();
+
+
+
+
+    });
+
+
+
+    $('#generateButton').on("click", function() {
+        var month = $("#months option:selected").val();
+        var year = $("#year option:selected").text();
+
+        $.ajax({
+            method: "POST",
+            url: "inc/Service/Bus/busbusiness.php",
+            data: {
+                'type' : 'checkblackouts',
+                'month': month,
+                'year' : year
+            },
+            success: function(data) {
+                var obj = JSON.parse(data);
+
+                var size = (Object.objsize(obj));
+                //this means all blackouts were submitted
+                if (size == 0){
+
+                    $.ajax({
+                      method: "POST",
+                      url: "inc/Service/Bus/CreateBusSchedule.php",
+                      data: {
+                        'month': month,
+                        'year': year
+                      },
+                      success:  function(data) {
+                          console.log(data);
+
+                        if(data) {
+                            window.location.replace("finalBusSchedule.php");
+                        }else {
+                            console.log("Error creating schedule!");
+                        }
+                      },
+                      error: function(XMLHttpRequest, textStatus, errorThrown) {
+                          alert(textStatus);
+                      }
+                    });
+
+                }
+                else{
+                    createTable(obj);
+                }
+
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(textStatus);
+            }
+        });
+
     });
 
 
@@ -155,9 +216,6 @@ $(document).ready(function() {
             });
 
             var result = new BstrapModal().Show();
-
-
-
         }
 
       });
@@ -190,6 +248,20 @@ $(document).ready(function() {
           }
 
       }
+
+
+      function createTable(param){
+
+          $('#notSubmittedTable').show();
+
+          $('#notSubmittedTable').empty();
+          $('#notSubmittedTable').append("<tr><td>NO BLACKOUTS SUBMITTED </td></tr>")
+          for (var key in param){
+              $('#notSubmittedTable').append("<tr><td>"+param[key]['name']+"</td></tr>");
+          }
+      }
+
+
 
       var BstrapModal = function (title, body, buttons) {
           var title = title || "Change Driver", body = body ||

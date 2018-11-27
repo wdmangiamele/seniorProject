@@ -13,7 +13,7 @@
 ?>
 
 
-        <form action="./inc/Service/Bus/createBusSchedule.php" method="post">
+<div id="generateDiv">
 
            <select name="year" id="year"></select>
 
@@ -34,12 +34,15 @@
                <option value='12'>December</option>
                </select>
             </div>
-
-
             <input id="generateButton"  type="submit" value="Generate Schedule" name="generateButton"></input>
 
 
-        </form>
+            <table id="notSubmittedTable">
+                <tr>
+                    <th> Didn't submit blackouts </th>
+                </tr>
+            </table>
+</div>
 
 <?php
 
