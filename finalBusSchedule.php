@@ -55,7 +55,7 @@ if ($_SESSION['role'] == 'Bus Driver Admin'){
 <?php
 
 }
-else if ($_SESSION['role'] == 'Bus Driver'){
+else {
 
 ?>
 
