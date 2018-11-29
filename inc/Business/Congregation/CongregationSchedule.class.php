@@ -121,7 +121,7 @@ class CongregationSchedule {
      * @return null - return no data if no data successfully fetched
      * */
     function getDistinctRotationNums() {
-        $sqlQuery = "SELECT DISTINCT rotationNumber FROM congregation_schedule";
+        $sqlQuery = "SELECT DISTINCT rotationNumber FROM congregation_schedule ORDER BY rotationNumber DESC";
         $result = $this->DB->executeQuery($sqlQuery, $this->Functions->paramsIsZero(), "select");
         if($result) {
             return $result;

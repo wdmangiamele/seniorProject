@@ -80,7 +80,8 @@
         function sendResetPassEmail($email, $token) {
             $to = $email;
             $subject   = 'Forgotten Password Reset - Raihn Scheduler App';
-            $resetlink = 'http://localhost:8012/seniorProjectOther/seniorProject/forgotpassword.php?state=pass&tok='.$token;
+            //Using remote server URL
+            $resetlink = 'http://team-citrine.ist.rit.edu/citrine/forgotpassword.php?state=pass&tok='.$token;
             $message   = '<html>
 										<head>
 											<title>Forgotten Password For Sports Agent Directory</title>

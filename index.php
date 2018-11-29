@@ -41,7 +41,7 @@
 				}elseif($_SESSION['role'] == "Congregation") {
 					header("Location: ./inputblackouts.php");
 				}elseif ($_SESSION['role'] == "Bus Driver Admin") {
-					header("Location: ./inputBusBlackouts.php");
+					header("Location: ./generateSchedule.php");
 				}elseif($_SESSION['role'] == "Congregation Admin") {
 					header("Location: ./enteredblackoutsCongregation.php");
 				}elseif($_SESSION['role'] == "Admin") {

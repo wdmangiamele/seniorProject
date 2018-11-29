@@ -81,7 +81,7 @@ $(document).ready(function() {
 
         for(var i = 0; i < congNames.length; i++) {
             var holiday = startDates.eq(i).text().substr(11,8);
-            if(holiday) {
+            if(holiday === "HOLIDAY!") {
                 $(".modal-body").append($("<p>").append($("<strong>").text(startDates.eq(i).text()+": "+congNames.eq(i).find(":selected").text())));
             }else {
                 $(".modal-body").append($("<p>").text(startDates.eq(i).text()+": "+congNames.eq(i).find(":selected").text()));
@@ -736,14 +736,14 @@ $(document).ready(function() {
                 $("#admin-schedule").append($("<p>").text("Select a scheduled rotation to edit"));
                 var selectWithAllSchRots = $("<select>").attr("id","sch-rot-nums-select");
                 selectWithAllSchRots.append(createHeader("Scheduled Rotations"));
-                for(var i = (rotationNums.length - 1); i >= 0; i--) {
+                for(var i = 0; i < rotationNums.length; i++) {
                     var rotationOption = $("<option>").attr("value",rotationNums[i]["rotationNumber"]).text(rotationNums[i]["rotationNumber"]);
                     selectWithAllSchRots.append(rotationOption);
                 }
                 $("#admin-schedule").append(selectWithAllSchRots);
 
-                var getFullSchedule = postData({rotation_number: rotationNums[rotationNums.length - 1]["rotationNumber"]},"inc/Service/Congregation/fetchfullschedule.php"),
-                    eligibleCongregations = postData({rotation_number: rotationNums[rotationNums.length - 1]["rotationNumber"]},"inc/Service/Congregation/fetchEligibleCongregations.php");
+                var getFullSchedule = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Service/Congregation/fetchfullschedule.php"),
+                    eligibleCongregations = postData({rotation_number: rotationNums[0]["rotationNumber"]},"inc/Service/Congregation/fetchEligibleCongregations.php");
                 $.when(getFullSchedule,eligibleCongregations).then(function(fullSchedule, eligibleCongs) {
                     $(".loader").hide();
 
@@ -763,8 +763,8 @@ $(document).ready(function() {
                     var tableRow = $("<tr>");
                     var tableHeading1 = $("<th>").attr("scope", "col").addClass("tbl-heading");
                     tableHeading1.text("Start Date");
-                    var tableHeading2 = $("<th>").attr("scope", "col").addClass("tbl-heading").attr("id","Rotation-"+rotationNums[rotationNums.length - 1]["rotationNumber"]);
-                    tableHeading2.text("Rotation #"+rotationNums[rotationNums.length - 1]["rotationNumber"]);
+                    var tableHeading2 = $("<th>").attr("scope", "col").addClass("tbl-heading").attr("id","Rotation-"+rotationNums[0]["rotationNumber"]);
+                    tableHeading2.text("Rotation #"+rotationNums[0]["rotationNumber"]);
                     var tableHeading3 = $("<th>").attr("scope", "col").addClass("tbl-heading");
                     tableHeading3.text("Approved Schedule as of:");
 
